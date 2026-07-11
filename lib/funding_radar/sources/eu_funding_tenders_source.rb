@@ -54,7 +54,7 @@ module FundingRadar
         /\btransnational\b/
       ].freeze
 
-      def initialize(http_client:, endpoint: ENDPOINT, topic_index_url: TOPIC_INDEX_URL, terms: nil, topic_ids: nil, page_size: 10, max_topic_ids: 40, current_year: Date.today.year)
+      def initialize(http_client:, endpoint: ENDPOINT, topic_index_url: TOPIC_INDEX_URL, terms: nil, topic_ids: nil, page_size: 10, max_topic_ids: 40, current_year: Date.today.year, single_topic: false)
         @http_client = http_client
         @endpoint = endpoint
         @topic_index_url = topic_index_url
@@ -63,6 +63,7 @@ module FundingRadar
         @page_size = page_size
         @max_topic_ids = max_topic_ids
         @current_year = current_year
+        @single_topic = single_topic
       end
 
       def fetch
@@ -72,6 +73,7 @@ module FundingRadar
         enrichment_results = enrichment_terms_for(topic_candidates).flat_map { |term| fetch_term(term) }
 
         best_topic_results(topic_candidates + enrichment_results)
+          .select { |result| !@single_topic || @topic_ids.include?(topic_id_for(result)) }
           .reject { |result| closed?(result.fetch("metadata", {})) }
           .map { |result| normalize(result) }
           .compact
@@ -127,10 +129,15 @@ module FundingRadar
       end
 
       def fetch_term(term)
-        url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(term)}&pageSize=#{@page_size}&pageNumber=1"
+        query = exact_topic_query?(term) ? %Q{"#{term}"} : term
+        url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(query)}&pageSize=#{@page_size}&pageNumber=1"
         JSON.parse(@http_client.post_json(url, headers: {"Accept" => "application/json"})).fetch("results", [])
       rescue JSON::ParserError, KeyError, StandardError
         []
+      end
+
+      def exact_topic_query?(term)
+        term.to_s.match?(/\A(?:#{DISCOVERY_PREFIXES.join("|")})-[A-Z0-9]+(?:-[A-Z0-9]+){3,}\z/i)
       end
 
       def best_topic_results(results)
@@ -138,16 +145,42 @@ module FundingRadar
           .select { |result| topic_result?(result) }
           .group_by { |result| topic_id_for(result) }
           .values
-          .map { |group| group.max_by { |result| topic_result_quality(result) } }
+          .map do |group|
+            selected = group.max_by { |result| topic_result_quality(result) }
+            english = group.find { |result| language_for(result.fetch("metadata", {})) == "en" }
+            next selected unless english && language_for(selected.fetch("metadata", {})) != "en"
+
+            metadata = selected.fetch("metadata", {}).merge(
+              "title" => metadata_value(english.fetch("metadata", {}), "title", "esST_title"),
+              "language" => ["en"]
+            )
+            selected.merge(
+              "metadata" => metadata,
+              "title" => english["title"],
+              "summary" => english["summary"],
+              "content" => english["content"]
+            )
+          end
       end
 
       def enrichment_terms_for(results)
         results
           .select { |result| topic_result?(result) }
           .select { |result| thin_topic_result?(result) }
+          .sort_by { |result| @single_topic && @topic_ids.include?(topic_id_for(result)) ? 0 : 1 }
           .uniq { |result| topic_id_for(result) }
           .first(@max_topic_ids)
-          .filter_map { |result| title_for(result) }
+          .flat_map do |result|
+            metadata = result.fetch("metadata", {})
+            title = title_for(result)
+            [
+              title,
+              title.sub(/\s*\([^)]*\)\z/, ""),
+              metadata_value(metadata, "callIdentifier")
+            ].compact
+          end
+          .reject(&:empty?)
+          .uniq
       end
 
       def topic_result?(result)
@@ -165,8 +198,13 @@ module FundingRadar
           metadata.key?("actions") ? 1 : 0,
           metadata.key?("status") || metadata.key?("sortStatus") ? 1 : 0,
           result.fetch("url", "").end_with?(".json") ? 0 : 1,
+          language_for(metadata) == "en" ? 1 : 0,
           metadata.keys.size
         ]
+      end
+
+      def language_for(metadata)
+        metadata_value(metadata, "language", "lang").to_s.downcase.split(/[-_]/).first
       end
 
       def thin_topic_result?(result)
@@ -229,7 +267,7 @@ module FundingRadar
 
       def deadline_for(metadata)
         value = metadata_value(metadata, "deadlineDate", "callDeadlineDate", "esDA_deadlineDate", "esST_deadlineDate", "deadline")
-        value ||= deadline_from_actions(metadata_value(metadata, "actions"))
+        value ||= deadline_from_metadata(metadata)
         parse_date(value)
       end
 
@@ -245,7 +283,7 @@ module FundingRadar
         text = searchable_text(result, metadata)
         return "O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar no aviso oficial." if PARTNERSHIP_PATTERNS.any? { |pattern| text.match?(pattern) }
 
-        "Confirmar requisitos de parceria no aviso oficial."
+        nil
       end
 
       def summary_for(result)
@@ -302,14 +340,32 @@ module FundingRadar
         text.include?("closed") || text.include?("31094503")
       end
 
-      def deadline_from_actions(value)
-        return nil if value.to_s.strip.empty?
+      def deadline_from_metadata(metadata)
+        deadline_values(metadata).lazy.map { |value| parse_date(value) }.find(&:itself)
+      end
 
-        actions = JSON.parse(value)
-        Array(actions).lazy
-          .flat_map { |action| Array(action["deadlineDates"]) }
-          .find { |deadline| !deadline.to_s.strip.empty? }
-      rescue JSON::ParserError, TypeError
+      def deadline_values(value, key = nil)
+        if value.is_a?(Hash)
+          value.flat_map { |child_key, child_value| deadline_values(child_value, child_key) }
+        elsif value.is_a?(Array)
+          value.flat_map { |child_value| deadline_values(child_value, key) }
+        elsif key.to_s.match?(/deadline/i)
+          parsed = parse_json_value(value)
+          parsed ? deadline_values(parsed, key) : [value]
+        elsif key.to_s.casecmp("actions").zero?
+          parsed = parse_json_value(value)
+          parsed ? deadline_values(parsed) : []
+        else
+          []
+        end
+      end
+
+      def parse_json_value(value)
+        return value if value.is_a?(Hash) || value.is_a?(Array)
+        return nil unless value.is_a?(String) && value.lstrip.match?(/[\[{]/)
+
+        JSON.parse(value)
+      rescue JSON::ParserError
         nil
       end
 

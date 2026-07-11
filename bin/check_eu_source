@@ -11,7 +11,8 @@ options = {
   page_size: 5,
   show_stats: false,
   topic_ids: [],
-  show_raw: false
+  show_raw: false,
+  single_topic: false
 }
 
 OptionParser.new do |parser|
@@ -21,6 +22,7 @@ OptionParser.new do |parser|
   parser.on("--page-size N", Integer, "Search API page size for each exact topic query") { |value| options[:page_size] = value }
   parser.on("--stats", "Print topic-index year/prefix diagnostics before querying") { options[:show_stats] = true }
   parser.on("--raw", "Print raw Search API hit diagnostics for selected topic IDs") { options[:show_raw] = true }
+  parser.on("--single-topic", "Restrict normalization to the explicitly supplied topic ID(s)") { options[:single_topic] = true }
   parser.on("--topic-id ID", "Query an exact topic ID instead of discovered IDs; can be repeated") { |value| options[:topic_ids] << value.upcase }
 end.parse!
 
@@ -90,7 +92,8 @@ source = FundingRadar::Sources::EuFundingTendersSource.new(
   http_client: client,
   topic_ids: ids,
   page_size: options[:page_size],
-  current_year: options[:current_year]
+  current_year: options[:current_year],
+  single_topic: options[:single_topic]
 )
 
 opportunities = source.fetch

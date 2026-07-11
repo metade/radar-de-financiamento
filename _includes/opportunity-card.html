@@ -27,7 +27,7 @@
 
   <p class="mt-4 max-w-4xl text-base leading-7 text-slate-700">{{ opportunity.summary }}</p>
 
-  <dl class="mt-5 grid gap-4 md:grid-cols-2">
+  <dl class="mt-5 grid gap-4 md:grid-cols-3">
     <div>
       <dt class="text-sm font-bold text-slate-600">Prazo</dt>
       <dd class="mt-1 text-base text-ink">{% if opportunity.deadline %}{{ opportunity.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
@@ -36,14 +36,12 @@
       <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>
       <dd class="mt-1 text-base text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
     </div>
-    <div>
-      <dt class="text-sm font-bold text-slate-600">Parceria</dt>
-      <dd class="mt-1 text-base text-ink">{{ opportunity.partnership_requirements }}</dd>
-    </div>
-    <div>
-      <dt class="text-sm font-bold text-slate-600">Próximo passo sugerido</dt>
-      <dd class="mt-1 text-base text-ink">{{ opportunity.suggested_next_step }}</dd>
-    </div>
+    {% if opportunity.partnership_requirements %}
+      <div>
+        <dt class="text-sm font-bold text-slate-600">Parceria</dt>
+        <dd class="mt-1 text-base text-ink">{{ opportunity.partnership_requirements }}</dd>
+      </div>
+    {% endif %}
   </dl>
 
   <div class="mt-5 border-l-4 border-line pl-4">

@@ -43,8 +43,9 @@ class EuFundingTendersSourceTest < Minitest::Test
   end
 
   def test_prefers_rich_topic_record_when_search_returns_thin_json_record_first
+    client = FakeHttpClient.new(thin_and_rich_topic_payload)
     source = FundingRadar::Sources::EuFundingTendersSource.new(
-      http_client: FakeHttpClient.new(thin_and_rich_topic_payload),
+      http_client: client,
       topic_ids: ["HORIZON-CL6-2026-01-CIRCBIO-04"],
       current_year: 2026
     )
@@ -54,6 +55,62 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_equal 1, opportunities.size
     assert_equal "eu-ft-horizon-cl6-2026-01-circbio-04", opportunities.first.id
     assert_equal "2026-09-17", opportunities.first.deadline
+    assert_includes client.requested_urls.first, "text=%22HORIZON-CL6-2026-01-CIRCBIO-04%22"
+  end
+
+  def test_extracts_deadline_from_nested_plural_deadline_field
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(nested_deadline_topic_payload),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026
+    )
+
+    assert_equal "2026-09-23", source.fetch.first.deadline
+  end
+
+  def test_single_topic_does_not_expand_to_related_topic_results
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(search_payload_with_related_topics),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026,
+      single_topic: true
+    )
+
+    assert_equal ["eu-ft-horizon-miss-2026-01-clima-02"], source.fetch.map(&:id)
+  end
+
+  def test_keeps_english_text_when_deadline_comes_from_localized_rich_record
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(localized_topic_payload),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026,
+      single_topic: true
+    )
+
+    opportunity = source.fetch.first
+
+    assert_equal "Facilitating implementation of actionable solutions for climate adaptation of regions and local authorities", opportunity.title
+    assert_equal "2026-09-23", opportunity.deadline
+  end
+
+  def test_enriches_explicit_topic_even_when_noisy_results_precede_it
+    noisy_results = Array.new(45) do |index|
+      {
+        "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL6-2026-01-NOISE-#{index}",
+        "metadata" => {"identifier" => ["HORIZON-CL6-2026-01-NOISE-#{index}"], "title" => ["Noise #{index}"]}
+      }
+    end
+    payload = JSON.parse(localized_topic_payload)
+    payload["results"] = noisy_results + payload["results"]
+
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(payload.to_json),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026,
+      single_topic: true
+    )
+
+    assert_equal "2026-09-23", source.fetch.first.deadline
   end
 
   def test_does_not_infer_local_relevance_from_substrings_or_portal_links
@@ -69,7 +126,7 @@ class EuFundingTendersSourceTest < Minitest::Test
     refute_includes opportunity.themes, "community_development"
     refute_includes opportunity.themes, "civic_participation"
     refute_includes opportunity.themes, "digital_public_services"
-    assert_equal "Confirmar requisitos de parceria no aviso oficial.", opportunity.partnership_requirements
+    assert_empty opportunity.partnership_requirements
   end
 
   def test_discovers_current_year_topic_ids_from_official_topic_index
@@ -260,6 +317,69 @@ class EuFundingTendersSourceTest < Minitest::Test
             "title" => ["Development of a research capacity building programme on cancer with and for Ukraine"],
             "deadlineDate" => ["2026-09-15T00:00:00.000+0000"],
             "links" => ["https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/how-to-participate/partner-search"]
+          }
+        }
+      ]
+    }.to_json
+  end
+
+  def nested_deadline_topic_payload
+    {
+      "results" => [
+        {
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-02",
+          "summary" => "Facilitating implementation of actionable solutions for climate adaptation of regions and local authorities",
+          "metadata" => {
+            "identifier" => ["HORIZON-MISS-2026-01-CLIMA-02"],
+            "title" => ["Facilitating implementation of actionable solutions for climate adaptation of regions and local authorities"],
+            "actions" => [
+              {"dates" => {"openingDate" => "2026-02-04", "deadlineDates" => ["2026-09-23T17:00:00+0200"]}}
+            ]
+          }
+        }
+      ]
+    }.to_json
+  end
+
+  def search_payload_with_related_topics
+    {
+      "results" => [
+        JSON.parse(nested_deadline_topic_payload).fetch("results").first,
+        {
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-03",
+          "metadata" => {
+            "identifier" => ["HORIZON-MISS-2026-01-CLIMA-03"],
+            "title" => ["Related topic"]
+          }
+        }
+      ]
+    }.to_json
+  end
+
+  def localized_topic_payload
+    {
+      "results" => [
+        {
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-02.json",
+          "summary" => "Facilitating implementation of actionable solutions for climate adaptation of regions and local authorities",
+          "content" => "Climate adaptation of regions and local authorities",
+          "metadata" => {
+            "identifier" => ["HORIZON-MISS-2026-01-CLIMA-02"],
+            "title" => ["Facilitating implementation of actionable solutions for climate adaptation of regions and local authorities"],
+            "language" => ["en"],
+            "callIdentifier" => ["HORIZON-MISS-2026-1"]
+          }
+        },
+        {
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-02.json",
+          "summary" => "Ułatwianie wdrażania wykonalnych rozwiązań w zakresie przystosowania się regionów i władz lokalnych do zmiany klimatu",
+          "metadata" => {
+            "identifier" => ["HORIZON-MISS-2026-01-CLIMA-02"],
+            "title" => ["Ułatwianie wdrażania wykonalnych rozwiązań w zakresie przystosowania się regionów i władz lokalnych do zmiany klimatu"],
+            "language" => ["pl"],
+            "deadlineDate" => ["2026-09-23T00:00:00.000+0000"],
+            "actions" => ["[{\"deadlineDates\":[\"2026-09-23\"]}]"],
+            "status" => ["31094502"]
           }
         }
       ]

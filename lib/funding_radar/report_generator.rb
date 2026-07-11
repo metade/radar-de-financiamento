@@ -1,5 +1,6 @@
 require "date"
 require "fileutils"
+require "time"
 require "yaml"
 
 module FundingRadar
@@ -23,6 +24,7 @@ module FundingRadar
         week_id: iso_week_id(today),
         title: "Radar semanal de financiamento - #{iso_week_label(today)}",
         generated_on: today.iso8601,
+        generated_at: Time.now.getlocal.iso8601,
         opportunities: scored
       )
 
@@ -49,7 +51,6 @@ module FundingRadar
         "relevance_score" => result.score,
         "relevance_category" => result.category,
         "relevance_explanation" => result.explanation,
-        "suggested_next_step" => result.suggested_next_step,
         "deadline_status" => deadline_status(opportunity, today)
       }
     end
@@ -60,6 +61,7 @@ module FundingRadar
         "title" => report.title,
         "week_id" => report.week_id,
         "generated_on" => report.generated_on,
+        "generated_at" => report.generated_at,
         "disclaimer" => DISCLAIMER,
         "opportunities" => report.opportunities
       }

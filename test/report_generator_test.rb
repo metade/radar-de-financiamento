@@ -14,6 +14,7 @@ class ReportGeneratorTest < Minitest::Test
       document = YAML.safe_load_file(first_path, permitted_classes: [Date], aliases: false)
       assert_equal "2026-W28", document.fetch("week_id")
       assert_equal "2026-07-12", document.fetch("generated_on")
+      assert_match(/\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}\z/, document.fetch("generated_at"))
       assert_operator document.fetch("opportunities").size, :>=, 1
       assert document.fetch("opportunities").first.key?("relevance_score")
       assert document.fetch("opportunities").first.key?("deadline_status")

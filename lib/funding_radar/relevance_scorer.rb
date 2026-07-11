@@ -26,7 +26,7 @@ module FundingRadar
       "community_development" => 10
     }.freeze
 
-    Result = Data.define(:score, :category, :explanation, :suggested_next_step)
+    Result = Data.define(:score, :category, :explanation)
 
     def score(opportunity, today: Date.today)
       score = 20
@@ -61,8 +61,7 @@ module FundingRadar
       Result.new(
         score: score,
         category: category_for(score),
-        explanation: explanation_for(score, reasons),
-        suggested_next_step: next_step_for(score, days)
+        explanation: explanation_for(score, reasons)
       )
     end
 
@@ -99,16 +98,5 @@ module FundingRadar
       "Esta oportunidade é relevante porque #{reasons.uniq.join(", ")}."
     end
 
-    def next_step_for(score, days)
-      if score >= 75
-        "Ler o aviso oficial, confirmar elegibilidade e identificar rapidamente uma equipa responsável."
-      elsif days && days <= 21
-        "Confirmar requisitos essenciais antes de investir tempo, porque o prazo está próximo."
-      elsif score >= 50
-        "Analisar o aviso e decidir se existe projeto municipal ou de freguesia alinhado."
-      else
-        "Guardar para referência e reavaliar se surgirem parceiros ou enquadramento mais favorável."
-      end
-    end
   end
 end
