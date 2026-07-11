@@ -52,12 +52,13 @@ module FundingRadar
       def fetch
         seed_results = search_terms.flat_map { |term| fetch_term(term) }
         exact_topic_results = extract_topic_ids(seed_results).flat_map { |topic_id| fetch_term(topic_id) }
+        topic_candidates = seed_results + exact_topic_results
+        enrichment_results = enrichment_terms_for(topic_candidates).flat_map { |term| fetch_term(term) }
 
-        (seed_results + exact_topic_results)
-          .select { |result| topic_result?(result) }
+        best_topic_results(topic_candidates + enrichment_results)
+          .reject { |result| closed?(result.fetch("metadata", {})) }
           .map { |result| normalize(result) }
           .compact
-          .uniq(&:id)
       end
 
       def self.discoverable_topic_id?(topic_id, current_year: Date.today.year)
@@ -116,23 +117,51 @@ module FundingRadar
         []
       end
 
+      def best_topic_results(results)
+        results
+          .select { |result| topic_result?(result) }
+          .group_by { |result| topic_id_for(result) }
+          .values
+          .map { |group| group.max_by { |result| topic_result_quality(result) } }
+      end
+
+      def enrichment_terms_for(results)
+        results
+          .select { |result| topic_result?(result) }
+          .select { |result| thin_topic_result?(result) }
+          .uniq { |result| topic_id_for(result) }
+          .first(@max_topic_ids)
+          .filter_map { |result| title_for(result) }
+      end
+
       def topic_result?(result)
         url = result.fetch("url", "")
         return false unless url.include?(PORTAL_TOPIC_PATH) || url.include?(DATA_TOPIC_PATH)
 
         topic_id = topic_id_for(result)
-        !topic_id.empty? && self.class.discoverable_topic_id?(topic_id, current_year: @current_year) && !closed?(result.fetch("metadata", {}))
+        !topic_id.empty? && self.class.discoverable_topic_id?(topic_id, current_year: @current_year)
+      end
+
+      def topic_result_quality(result)
+        metadata = result.fetch("metadata", {})
+        [
+          deadline_for(metadata) ? 1 : 0,
+          metadata.key?("actions") ? 1 : 0,
+          metadata.key?("status") || metadata.key?("sortStatus") ? 1 : 0,
+          result.fetch("url", "").end_with?(".json") ? 0 : 1,
+          metadata.keys.size
+        ]
+      end
+
+      def thin_topic_result?(result)
+        metadata = result.fetch("metadata", {})
+        !deadline_for(metadata) && !metadata.key?("actions") && !metadata.key?("status") && !metadata.key?("sortStatus")
       end
 
       def normalize(result)
         metadata = result.fetch("metadata", {})
         topic_id = topic_id_for(result)
-        title = clean(first_present(
-          metadata_value(metadata, "title", "esST_title", "esST_Title", "identifier"),
-          result["title"],
-          result["content"],
-          topic_id
-        ))
+        title = title_for(result)
 
         return nil if topic_id.empty? || title.empty?
 
@@ -157,6 +186,16 @@ module FundingRadar
         clean(first_present(metadata_value(metadata, "identifier"), url_topic, result["reference"])).delete_suffix(".json").upcase
       end
 
+      def title_for(result)
+        metadata = result.fetch("metadata", {})
+        clean(first_present(
+          metadata_value(metadata, "title", "esST_title", "esST_Title", "identifier"),
+          result["title"],
+          result["content"],
+          topic_id_for(result)
+        ))
+      end
+
       def official_link_for(topic_id)
         "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/#{topic_id.downcase}"
       end
@@ -174,6 +213,7 @@ module FundingRadar
 
       def deadline_for(metadata)
         value = metadata_value(metadata, "deadlineDate", "callDeadlineDate", "esDA_deadlineDate", "esST_deadlineDate", "deadline")
+        value ||= deadline_from_actions(metadata_value(metadata, "actions"))
         parse_date(value)
       end
 
@@ -241,6 +281,17 @@ module FundingRadar
         ].compact.join(" ").downcase
 
         text.include?("closed") || text.include?("31094503")
+      end
+
+      def deadline_from_actions(value)
+        return nil if value.to_s.strip.empty?
+
+        actions = JSON.parse(value)
+        Array(actions).lazy
+          .flat_map { |action| Array(action["deadlineDates"]) }
+          .find { |deadline| !deadline.to_s.strip.empty? }
+      rescue JSON::ParserError, TypeError
+        nil
       end
 
       def first_present(*values)

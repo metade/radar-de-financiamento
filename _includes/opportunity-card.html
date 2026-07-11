@@ -10,7 +10,13 @@
   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div>
       <p class="text-sm font-semibold text-slate-600">{{ opportunity.programme }} · {{ opportunity.funding_source }}</p>
-      <h2 class="mt-1 text-2xl font-bold text-ink">{{ opportunity.title }}</h2>
+      <h2 class="mt-1 text-2xl font-bold text-ink">
+        <a class="group underline-offset-4 hover:text-civic-blue hover:underline focus:text-civic-blue focus:underline" href="{{ opportunity.official_link }}" target="_blank" rel="noopener noreferrer">
+          {{ opportunity.title }}
+          <span class="inline-block text-lg opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100" aria-hidden="true">↗</span>
+          <span class="sr-only">(abre em novo separador)</span>
+        </a>
+      </h2>
     </div>
     <div class="flex flex-wrap gap-2">
       <span class="border px-3 py-1 text-sm font-bold {{ category_class }}">{{ opportunity.relevance_category }}</span>
@@ -45,7 +51,4 @@
     <p class="mt-1 text-base leading-7 text-slate-700">{{ opportunity.relevance_explanation }}</p>
   </div>
 
-  <p class="mt-5">
-    <a class="font-bold text-civic-blue underline-offset-4 hover:underline" href="{{ opportunity.official_link }}">Abrir documentação oficial</a>
-  </p>
 </article>

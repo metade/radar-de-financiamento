@@ -42,6 +42,20 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_includes client.requested_urls.last, "HORIZON-CL6-2026-02-CLIMATE-02"
   end
 
+  def test_prefers_rich_topic_record_when_search_returns_thin_json_record_first
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(thin_and_rich_topic_payload),
+      topic_ids: ["HORIZON-CL6-2026-01-CIRCBIO-04"],
+      current_year: 2026
+    )
+
+    opportunities = source.fetch
+
+    assert_equal 1, opportunities.size
+    assert_equal "eu-ft-horizon-cl6-2026-01-circbio-04", opportunities.first.id
+    assert_equal "2026-09-17", opportunities.first.deadline
+  end
+
   def test_discovers_current_year_topic_ids_from_official_topic_index
     client = FakeHttpClient.new(search_payload, topic_index_body: topic_index_html)
     source = FundingRadar::Sources::EuFundingTendersSource.new(
@@ -182,6 +196,35 @@ class EuFundingTendersSourceTest < Minitest::Test
             "deadlineDate" => ["2026-09-24T17:00:00+0200"],
             "frameworkProgramme" => ["HORIZON2027"],
             "tags" => ["climate", "water", "local authorities"]
+          }
+        }
+      ]
+    }.to_json
+  end
+
+  def thin_and_rich_topic_payload
+    {
+      "results" => [
+        {
+          "reference" => "501460096141222",
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL6-2026-01-CIRCBIO-04.json",
+          "summary" => "Thin search document",
+          "metadata" => {
+            "identifier" => ["HORIZON-CL6-2026-01-CIRCBIO-04"],
+            "title" => ["Textile circularity systems"],
+            "startDate" => ["2026-05-05T07:57:38.395+0000"]
+          }
+        },
+        {
+          "reference" => "50146009TOPICSen",
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL6-2026-01-CIRCBIO-04",
+          "summary" => "Rich topic document",
+          "metadata" => {
+            "identifier" => ["HORIZON-CL6-2026-01-CIRCBIO-04"],
+            "title" => ["Textile circularity systems"],
+            "status" => ["31094502"],
+            "sortStatus" => ["1"],
+            "actions" => ["[{\"deadlineDates\":[\"2026-09-17\"]}]"]
           }
         }
       ]
