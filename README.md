@@ -148,7 +148,7 @@ Use this checklist to track the source suggestions from the project’s funding-
 ## Future Improvements
 
 - Add deeper EU Funding & Tenders topic-detail enrichment if a stable official detail endpoint is identified.
-- Add official source adapters for Portugal 2030, Lisboa 2030, Interreg, LIFE, Erasmus+, and CERV where separate programme APIs are available.
+- Add official source adapters for Lisboa 2030, Interreg, LIFE, Erasmus+, and CERV where separate programme APIs are available.
 - Add stronger deadline status labels and filters.
 - Add historical change detection between weekly reports.
 - Add optional LLM-assisted summarization and relevance explanations behind the existing scorer interface.
