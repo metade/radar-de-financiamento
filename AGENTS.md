@@ -56,11 +56,21 @@ Inspect the live European Urban Initiative source without writing a report:
 bundle exec ruby bin/check_european_urban_initiative_source --raw --limit 20
 ```
 
+Inspect the live Interreg Sudoe source without writing a report:
+
+```sh
+bundle exec ruby bin/check_interreg_sudoe_source
+```
+
 ## Funding Sources
 
-The default sources are `FundingRadar::Sources::EuFundingTendersSource`, `FundingRadar::Sources::Portugal2030Source`, and `FundingRadar::Sources::EuropeanUrbanInitiativeSource`.
+The default sources are `FundingRadar::Sources::EuFundingTendersSource`, `FundingRadar::Sources::Portugal2030Source`, `FundingRadar::Sources::InterregSudoeSource`, and `FundingRadar::Sources::EuropeanUrbanInitiativeSource`.
 
 The Portugal 2030 adapter reads the official annual-plan XLSX workbook. It retains Lisboa/AML opportunities, multi-region opportunities that explicitly include AML, and nationwide or extra-regional opportunities; it excludes notices limited to other regions. It must not depend on live calls in tests.
+
+The Lisboa 2030 programme is covered by the Portugal 2030 workbook and should not be added as a separate adapter unless it publishes regional detail missing from the central plan.
+
+The Interreg Sudoe adapter discovers candidate call pages from the official calls, calendar, and next-calls pages, with current call URLs as fallback. It must skip results/closed/navigation pages, tolerate future call URL patterns, normalize HTML as UTF-8, and preserve valid records when one candidate page is malformed. It must not depend on live calls in tests.
 
 Fixture data exists in `data/sources/fixtures.yml`, but normal report generation must not include it. Fixtures are opt-in only:
 
