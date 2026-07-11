@@ -1,6 +1,9 @@
 name: Build and publish EU Funding Radar
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "15 7 * * 1"
   workflow_dispatch:
