@@ -25,6 +25,8 @@ module FundingRadar
       "digital_public_services" => 9,
       "community_development" => 10
     }.freeze
+    LISBON_TERMS = /\b(?:aml|lisboa|lisbon|lisboa2030)\b/i
+    LISBON_BONUS = 8
 
     Result = Data.define(:score, :category, :explanation)
 
@@ -41,6 +43,11 @@ module FundingRadar
 
       matched_theme_names(opportunity).each do |theme|
         score += THEME_WEIGHTS.fetch(theme)
+      end
+
+      if lisbon_relevant?(opportunity)
+        score += LISBON_BONUS
+        reasons << "tem incidência territorial em Lisboa ou na Área Metropolitana de Lisboa"
       end
 
       unless matched_theme_names(opportunity).empty?
@@ -70,6 +77,10 @@ module FundingRadar
     def eligible_local_authority?(opportunity)
       text = opportunity.eligible_applicants.join(" ").downcase
       MUNICIPAL_TERMS.any? { |term| text.include?(term) }
+    end
+
+    def lisbon_relevant?(opportunity)
+      [opportunity.programme, opportunity.title, opportunity.summary, opportunity.other_requirements].join(" ").match?(LISBON_TERMS)
     end
 
     def matched_theme_names(opportunity)

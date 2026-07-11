@@ -8,7 +8,8 @@ module FundingRadar
       )
 
       sources = [
-        Sources::EuFundingTendersSource.new(http_client: http_client)
+        Sources::EuFundingTendersSource.new(http_client: http_client),
+        Sources::Portugal2030Source.new(http_client: http_client)
       ]
 
       if env.fetch("INCLUDE_FIXTURES", "false") == "true"

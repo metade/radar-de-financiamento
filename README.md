@@ -43,7 +43,7 @@ The generation pipeline is implemented in `lib/funding_radar`.
 5. A dated ISO-week report is written to `_reports/YYYY-Www.md`, with a matching `_reports/YYYY-Www.csv` export of its opportunities.
 6. Jekyll renders the homepage, individual report pages, and archive.
 
-By default, report generation queries the official EU Funding & Tenders Portal search API and normalizes Funding & Tenders topic records. Fixture data remains available for local fallback and demos.
+By default, report generation queries the official EU Funding & Tenders Portal search API and the official Portugal 2030 annual notice plan workbook, normalizing both into the same opportunity model. Fixture data remains available for local fallback and demos.
 
 HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
 
@@ -65,6 +65,12 @@ To inspect the live EU Funding & Tenders source without writing a report:
 
 ```sh
 bundle exec ruby bin/check_eu_source --year 2026 --limit 20
+```
+
+To inspect the live Portugal 2030 workbook source without writing a report:
+
+```sh
+bundle exec ruby bin/check_portugal_2030_source --limit 20
 ```
 
 ## GitHub Actions
@@ -103,6 +109,8 @@ After adding the adapter:
 3. Ensure duplicate handling still produces one record per real opportunity.
 
 The scoring, report generation, and Jekyll templates should not need source-specific changes.
+
+The Portugal 2030 adapter reads the official open-data workbook linked from the [annual notice plan](https://portugal2030.pt/plano-anual-de-avisos/). It follows the workbook’s current `.xlsx` link, keeps planned opening and closing dates, links each normalized opportunity back to the official plan, and currently retains notices applicable to Lisboa/AML, nationwide or extra-regional notices, and multi-region notices that explicitly include AML.
 
 ## Current Limitations
 

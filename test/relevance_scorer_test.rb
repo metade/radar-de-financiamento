@@ -41,4 +41,23 @@ class RelevanceScorerTest < Minitest::Test
     assert_equal "Prioridade baixa", result.category
     assert_match "faltam sinais fortes", result.explanation
   end
+
+  def test_prioritizes_lisbon_or_aml_opportunities
+    opportunity = FundingRadar::Opportunity.from_hash(
+      "id" => "lisbon",
+      "title" => "Mobilidade urbana sustentável",
+      "programme" => "SUSTENTAVEL2030",
+      "funding_source" => "Portugal 2030",
+      "official_link" => "https://example.test/lisbon",
+      "eligible_applicants" => ["Entidades públicas"],
+      "other_requirements" => "FEDER · AML",
+      "summary" => "Apoio à mobilidade urbana.",
+      "themes" => ["mobility"]
+    )
+
+    result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
+
+    assert_equal 67, result.score
+    assert_match "Lisboa", result.explanation
+  end
 end
