@@ -45,6 +45,8 @@ The generation pipeline is implemented in `lib/funding_radar`.
 
 By default, report generation queries the official EU Funding & Tenders Portal search API and normalizes Funding & Tenders topic records. Fixture data remains available for local fallback and demos.
 
+HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
+
 To generate a report for a specific date:
 
 ```sh
