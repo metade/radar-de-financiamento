@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require_relative "../lib/funding_radar"
+
+options = {limit: 10}
+OptionParser.new do |parser|
+  parser.banner = "Usage: bin/check_turismo_de_portugal_source [options]"
+  parser.on("-l", "--limit N", Integer, "Number of opportunities to show") { |value| options[:limit] = value }
+end.parse!
+
+source = FundingRadar::Sources::TurismoDePortugalSource.new(http_client: FundingRadar::HttpClient.new)
+opportunities = source.fetch
+puts "Turismo de Portugal opportunities: #{opportunities.size}"
+opportunities.first(options[:limit]).each do |opportunity|
+  amount = opportunity.funding_amount.empty? ? "Montante por confirmar" : opportunity.funding_amount
+  puts "- #{opportunity.id}: #{opportunity.title}"
+  puts "  #{opportunity.deadline || 'Por confirmar'} | #{amount}"
+  puts "  link: #{opportunity.official_link}"
+end
