@@ -6,7 +6,7 @@
   {% assign category_class = "border-civic-blue bg-soft-sky text-civic-blue" %}
 {% endif %}
 
-<article class="opportunity-card border border-line bg-white p-5 shadow-sm" data-opening-date="{{ opportunity.opening_date }}" data-deadline="{{ opportunity.deadline }}">
+<article class="opportunity-card border border-line bg-white p-5 shadow-sm" data-opening-date="{{ opportunity.opening_date }}" data-deadline="{{ opportunity.deadline }}" data-themes="{% for theme in opportunity.themes %}{{ site.data.theme_labels[theme].query | default: theme }}{% unless forloop.last %},{% endunless %}{% endfor %}">
   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div>
       <p class="text-sm font-semibold text-slate-600">{{ opportunity.programme }} · {{ opportunity.funding_source }}</p>
@@ -42,7 +42,13 @@
     </div>
     <div>
       <dt class="text-sm font-bold text-slate-600">Temas</dt>
-      <dd class="mt-1 text-sm text-ink">{% if opportunity.themes and opportunity.themes != empty %}{{ opportunity.themes | join: ", " | replace: "_", " " }}{% else %}Por confirmar{% endif %}</dd>
+      <dd class="mt-1 text-sm text-ink">
+        {% if opportunity.themes and opportunity.themes != empty %}
+          {% for theme in opportunity.themes %}
+            {% assign theme_label = site.data.theme_labels[theme].label | default: theme | replace: "_", " " %}{{ theme_label }}{% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        {% else %}Por confirmar{% endif %}
+      </dd>
     </div>
     <div>
       <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>

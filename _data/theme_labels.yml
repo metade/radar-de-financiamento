@@ -1,0 +1,33 @@
+accessibility:
+  label: Acessibilidade
+  query: acessibilidade
+civic_participation:
+  label: Participação cívica
+  query: participacao-civica
+climate:
+  label: Clima
+  query: clima
+community_development:
+  label: Desenvolvimento comunitário
+  query: desenvolvimento-comunitario
+digital_public_services:
+  label: Serviços públicos digitais
+  query: servicos-publicos-digitais
+environment:
+  label: Ambiente
+  query: ambiente
+equality:
+  label: Igualdade
+  query: igualdade
+inclusion:
+  label: Inclusão
+  query: inclusao
+mobility:
+  label: Mobilidade
+  query: mobilidade
+public_space:
+  label: Espaço público
+  query: espaco-publico
+volunteering:
+  label: Voluntariado
+  query: voluntariado

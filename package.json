@@ -4,9 +4,14 @@
   "private": true,
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/site.css --minify",
+    "build:js": "esbuild assets/js/input.js --bundle --format=esm --outdir=assets/build --minify",
     "watch:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/site.css --watch"
   },
   "devDependencies": {
+    "esbuild": "^0.28.1",
     "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "@awesome.me/webawesome": "^3.10.0"
   }
 }
