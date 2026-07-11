@@ -24,19 +24,35 @@ module FundingRadar
       }.freeze
       DISCOVERY_PREFIXES = PROGRAMME_PREFIXES.keys.freeze
 
-      THEME_KEYWORDS = {
-        "accessibility" => ["accessibility", "accessible", "disability"],
-        "civic_participation" => ["citizen", "participation", "democracy", "democratic"],
-        "climate" => ["climate", "adaptation", "resilience"],
-        "community_development" => ["community", "local", "cities", "municipalities"],
-        "digital_public_services" => ["digital", "interoperability", "public services"],
-        "environment" => ["environment", "biodiversity", "nature", "pollution"],
-        "equality" => ["equality", "rights", "non-discrimination"],
-        "inclusion" => ["inclusion", "integration", "social"],
-        "mobility" => ["mobility", "transport", "urban"],
-        "public_space" => ["public space", "urban", "neighbourhood"],
-        "volunteering" => ["volunteer", "volunteering"]
+      THEME_PATTERNS = {
+        "accessibility" => [/\baccessibility\b/, /\baccessible\b/, /\bdisabilit(?:y|ies)\b/],
+        "civic_participation" => [/\bcitizen participation\b/, /\bpublic participation\b/, /\bdemocrac(?:y|ies)\b/, /\bdemocratic\b/],
+        "climate" => [/\bclimate\b/, /\badaptation\b/, /\bresilience\b/],
+        "community_development" => [/\blocal authorities\b/, /\blocal communities\b/, /\bmunicipal(?:ities)?\b/, /\bcities\b/, /\bregional development\b/, /\bneighbou?rhoods?\b/],
+        "digital_public_services" => [/\bdigital public services\b/, /\bpublic services\b/, /\binteroperability\b/, /\be-government\b/, /\bsmart cit(?:y|ies)\b/],
+        "environment" => [/\benvironment(?:al)?\b/, /\bbiodiversity\b/, /\bnature\b/, /\bpollution\b/],
+        "equality" => [/\bequality\b/, /\bfundamental rights\b/, /\bnon-discrimination\b/],
+        "inclusion" => [/\binclusion\b/, /\bsocial inclusion\b/, /\bintegration\b/],
+        "mobility" => [/\bmobility\b/, /\btransport\b/, /\burban mobility\b/],
+        "public_space" => [/\bpublic spaces?\b/, /\burban\b/, /\bneighbou?rhoods?\b/],
+        "volunteering" => [/\bvolunteer(?:ing)?\b/]
       }.freeze
+      LOCAL_AUTHORITY_PATTERNS = [
+        /\bmunicipal(?:ities)?\b/,
+        /\bcities\b/,
+        /\blocal authorit(?:y|ies)\b/
+      ].freeze
+      PUBLIC_BODY_PATTERNS = [
+        /\bpublic authorit(?:y|ies)\b/,
+        /\bpublic bod(?:y|ies)\b/,
+        /\bpublic entit(?:y|ies)\b/
+      ].freeze
+      PARTNERSHIP_PATTERNS = [
+        /\bconsorti(?:um|a)\b/,
+        /\bpartners?\b/,
+        /\bpartnerships?\b/,
+        /\btransnational\b/
+      ].freeze
 
       def initialize(http_client:, endpoint: ENDPOINT, topic_index_url: TOPIC_INDEX_URL, terms: nil, topic_ids: nil, page_size: 10, max_topic_ids: 40, current_year: Date.today.year)
         @http_client = http_client
@@ -219,15 +235,15 @@ module FundingRadar
 
       def eligible_applicants_for(result, metadata)
         text = searchable_text(result, metadata)
-        applicants = ["Consultar aviso oficial"]
-        applicants << "Municípios ou autoridades locais" if text.match?(/municipal|cities|local authorit/)
-        applicants << "Entidades públicas" if text.match?(/public authorit|public bod|public entit/)
+        applicants = []
+        applicants << "Municípios ou autoridades locais" if LOCAL_AUTHORITY_PATTERNS.any? { |pattern| text.match?(pattern) }
+        applicants << "Entidades públicas" if PUBLIC_BODY_PATTERNS.any? { |pattern| text.match?(pattern) }
         applicants.uniq
       end
 
       def partnership_requirements_for(result, metadata)
         text = searchable_text(result, metadata)
-        return "O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar no aviso oficial." if text.match?(/consortium|partner|partnership|transnational/)
+        return "O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar no aviso oficial." if PARTNERSHIP_PATTERNS.any? { |pattern| text.match?(pattern) }
 
         "Confirmar requisitos de parceria no aviso oficial."
       end
@@ -241,8 +257,8 @@ module FundingRadar
 
       def themes_for(result, metadata)
         text = searchable_text(result, metadata)
-        THEME_KEYWORDS.each_with_object([]) do |(theme, keywords), themes|
-          themes << theme if keywords.any? { |keyword| text.include?(keyword) }
+        THEME_PATTERNS.each_with_object([]) do |(theme, patterns), themes|
+          themes << theme if patterns.any? { |pattern| text.match?(pattern) }
         end
       end
 
@@ -250,9 +266,12 @@ module FundingRadar
         [
           result["summary"],
           result["content"],
-          result["url"],
-          metadata.values.flatten
+          searchable_metadata_values(metadata)
         ].flatten.compact.join(" ").downcase
+      end
+
+      def searchable_metadata_values(metadata)
+        metadata.reject { |key, _value| key.to_s.match?(/\A(?:url|esST_URL|links?|supportInfo)\z/i) }.values.flatten
       end
 
       def extract_topic_ids(results)

@@ -39,5 +39,6 @@ class RelevanceScorerTest < Minitest::Test
     result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
 
     assert_equal "Prioridade baixa", result.category
+    assert_match "faltam sinais fortes", result.explanation
   end
 end

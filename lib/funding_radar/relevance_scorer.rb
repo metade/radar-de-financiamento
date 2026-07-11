@@ -61,7 +61,7 @@ module FundingRadar
       Result.new(
         score: score,
         category: category_for(score),
-        explanation: explanation_for(reasons),
+        explanation: explanation_for(score, reasons),
         suggested_next_step: next_step_for(score, days)
       )
     end
@@ -92,8 +92,9 @@ module FundingRadar
       end
     end
 
-    def explanation_for(reasons)
+    def explanation_for(score, reasons)
       return "A oportunidade pode ser relevante, mas faltam sinais fortes nos dados disponíveis." if reasons.empty?
+      return "Prioridade baixa: faltam sinais fortes de elegibilidade ou alinhamento municipal nos dados disponíveis." if score < 50
 
       "Esta oportunidade é relevante porque #{reasons.uniq.join(", ")}."
     end

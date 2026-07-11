@@ -56,6 +56,22 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_equal "2026-09-17", opportunities.first.deadline
   end
 
+  def test_does_not_infer_local_relevance_from_substrings_or_portal_links
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(cancer_capacity_payload),
+      topic_ids: ["HORIZON-MISS-2026-02-CANCER-06"],
+      current_year: 2026
+    )
+
+    opportunity = source.fetch.first
+
+    assert_empty opportunity.eligible_applicants
+    refute_includes opportunity.themes, "community_development"
+    refute_includes opportunity.themes, "civic_participation"
+    refute_includes opportunity.themes, "digital_public_services"
+    assert_equal "Confirmar requisitos de parceria no aviso oficial.", opportunity.partnership_requirements
+  end
+
   def test_discovers_current_year_topic_ids_from_official_topic_index
     client = FakeHttpClient.new(search_payload, topic_index_body: topic_index_html)
     source = FundingRadar::Sources::EuFundingTendersSource.new(
@@ -225,6 +241,25 @@ class EuFundingTendersSourceTest < Minitest::Test
             "status" => ["31094502"],
             "sortStatus" => ["1"],
             "actions" => ["[{\"deadlineDates\":[\"2026-09-17\"]}]"]
+          }
+        }
+      ]
+    }.to_json
+  end
+
+  def cancer_capacity_payload
+    {
+      "results" => [
+        {
+          "reference" => "50152099TOPICSen",
+          "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-02-CANCER-06",
+          "summary" => "Development of a research capacity building programme on cancer with and for Ukraine",
+          "content" => "Research capacities, patients and citizens, digital capacity, and the European Atomic Energy Community.",
+          "metadata" => {
+            "identifier" => ["HORIZON-MISS-2026-02-CANCER-06"],
+            "title" => ["Development of a research capacity building programme on cancer with and for Ukraine"],
+            "deadlineDate" => ["2026-09-15T00:00:00.000+0000"],
+            "links" => ["https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/how-to-participate/partner-search"]
           }
         }
       ]
