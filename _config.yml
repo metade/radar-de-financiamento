@@ -1,0 +1,34 @@
+title: Radar de Financiamento da UE
+description: Serviço semanal de inteligência sobre oportunidades de financiamento público para autarquias portuguesas.
+url: ""
+baseurl: ""
+lang: pt-PT
+
+markdown: kramdown
+
+collections:
+  reports:
+    output: true
+    permalink: /relatorios/:name/
+
+exclude:
+  - assets/css/input.css
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - Rakefile
+  - bin/
+  - data/
+  - lib/
+  - node_modules/
+  - package-lock.json
+  - package.json
+  - test/
+  - tailwind.config.js
+
+defaults:
+  - scope:
+      path: ""
+      type: reports
+    values:
+      layout: report

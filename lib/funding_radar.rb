@@ -1,0 +1,7 @@
+require_relative "funding_radar/opportunity"
+require_relative "funding_radar/source_registry"
+require_relative "funding_radar/sources/fixture_source"
+require_relative "funding_radar/duplicate_resolver"
+require_relative "funding_radar/relevance_scorer"
+require_relative "funding_radar/report"
+require_relative "funding_radar/report_generator"

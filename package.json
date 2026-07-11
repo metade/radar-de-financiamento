@@ -1,0 +1,12 @@
+{
+  "name": "eu-funding-radar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/site.css --minify",
+    "watch:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/site.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

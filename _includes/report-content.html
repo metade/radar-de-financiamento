@@ -1,0 +1,35 @@
+{% assign report = include.report %}
+<section class="bg-soft-sky">
+  <div class="mx-auto max-w-6xl px-5 py-10">
+    <p class="text-sm font-semibold uppercase tracking-wide text-civic-blue">{{ report.week_id }}</p>
+    <h1 class="mt-2 max-w-4xl text-3xl font-bold text-ink sm:text-5xl">{{ report.title }}</h1>
+    <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-700">Resumo semanal de oportunidades de financiamento com potencial interesse para municípios, juntas de freguesia e outras entidades públicas locais.</p>
+    <p class="mt-5 inline-block border-l-4 border-civic-gold bg-white px-4 py-3 text-sm font-medium text-slate-700">{{ report.disclaimer }}</p>
+  </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-5 py-8">
+  <div class="grid gap-4 sm:grid-cols-3">
+    {% assign high = report.opportunities | where: "relevance_category", "Altamente relevante" | size %}
+    {% assign medium = report.opportunities | where: "relevance_category", "A investigar" | size %}
+    {% assign low = report.opportunities | where: "relevance_category", "Prioridade baixa" | size %}
+    <div class="border border-line bg-white p-5">
+      <p class="text-3xl font-bold text-civic-green">{{ high }}</p>
+      <p class="text-sm font-semibold text-slate-700">Altamente relevantes</p>
+    </div>
+    <div class="border border-line bg-white p-5">
+      <p class="text-3xl font-bold text-civic-blue">{{ medium }}</p>
+      <p class="text-sm font-semibold text-slate-700">A investigar</p>
+    </div>
+    <div class="border border-line bg-white p-5">
+      <p class="text-3xl font-bold text-civic-gold">{{ low }}</p>
+      <p class="text-sm font-semibold text-slate-700">Prioridade baixa</p>
+    </div>
+  </div>
+
+  <div class="mt-8 space-y-6">
+    {% for opportunity in report.opportunities %}
+      {% include opportunity-card.html opportunity=opportunity %}
+    {% endfor %}
+  </div>
+</section>

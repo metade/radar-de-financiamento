@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require "date"
+require_relative "../lib/funding_radar"
+
+root = File.expand_path("..", __dir__)
+today = ENV.fetch("REPORT_DATE", Date.today.iso8601)
+
+source = FundingRadar::Sources::FixtureSource.new(path: File.join(root, "data/sources/fixtures.yml"))
+registry = FundingRadar::SourceRegistry.new(sources: [source])
+generator = FundingRadar::ReportGenerator.new(
+  source_registry: registry,
+  duplicate_resolver: FundingRadar::DuplicateResolver.new,
+  scorer: FundingRadar::RelevanceScorer.new,
+  reports_dir: File.join(root, "_reports")
+)
+
+path = generator.generate(today: Date.iso8601(today))
+puts "Generated #{path}"

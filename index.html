@@ -1,0 +1,15 @@
+---
+layout: default
+title: Último relatório
+---
+{% assign reports = site.reports | sort: "generated_on" | reverse %}
+{% assign latest = reports | first %}
+
+{% if latest %}
+  {% include report-content.html report=latest %}
+{% else %}
+  <section class="mx-auto max-w-6xl px-5 py-16">
+    <h1 class="text-4xl font-bold text-ink">Radar de Financiamento da UE</h1>
+    <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-700">Ainda não existe um relatório publicado. Execute <code>bundle exec ruby bin/generate_report</code> para gerar o primeiro radar semanal.</p>
+  </section>
+{% endif %}

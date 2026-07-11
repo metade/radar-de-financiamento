@@ -1,0 +1,51 @@
+{% assign opportunity = include.opportunity %}
+{% assign category_class = "border-civic-gold bg-soft-amber text-civic-gold" %}
+{% if opportunity.relevance_category == "Altamente relevante" %}
+  {% assign category_class = "border-civic-green bg-soft-mint text-civic-green" %}
+{% elsif opportunity.relevance_category == "A investigar" %}
+  {% assign category_class = "border-civic-blue bg-soft-sky text-civic-blue" %}
+{% endif %}
+
+<article class="border border-line bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <p class="text-sm font-semibold text-slate-600">{{ opportunity.programme }} · {{ opportunity.funding_source }}</p>
+      <h2 class="mt-1 text-2xl font-bold text-ink">{{ opportunity.title }}</h2>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <span class="border px-3 py-1 text-sm font-bold {{ category_class }}">{{ opportunity.relevance_category }}</span>
+      <span class="border border-line bg-slate-50 px-3 py-1 text-sm font-bold text-slate-700">{{ opportunity.relevance_score }}/100</span>
+      <span class="border border-civic-gold bg-soft-amber px-3 py-1 text-sm font-bold text-civic-gold">{{ opportunity.deadline_status }}</span>
+    </div>
+  </div>
+
+  <p class="mt-4 max-w-4xl text-base leading-7 text-slate-700">{{ opportunity.summary }}</p>
+
+  <dl class="mt-5 grid gap-4 md:grid-cols-2">
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Prazo</dt>
+      <dd class="mt-1 text-base text-ink">{% if opportunity.deadline %}{{ opportunity.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
+    </div>
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>
+      <dd class="mt-1 text-base text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
+    </div>
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Parceria</dt>
+      <dd class="mt-1 text-base text-ink">{{ opportunity.partnership_requirements }}</dd>
+    </div>
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Próximo passo sugerido</dt>
+      <dd class="mt-1 text-base text-ink">{{ opportunity.suggested_next_step }}</dd>
+    </div>
+  </dl>
+
+  <div class="mt-5 border-l-4 border-line pl-4">
+    <p class="text-sm font-bold text-slate-600">Porque aparece no radar</p>
+    <p class="mt-1 text-base leading-7 text-slate-700">{{ opportunity.relevance_explanation }}</p>
+  </div>
+
+  <p class="mt-5">
+    <a class="font-bold text-civic-blue underline-offset-4 hover:underline" href="{{ opportunity.official_link }}">Abrir documentação oficial</a>
+  </p>
+</article>
