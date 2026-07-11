@@ -11,29 +11,28 @@
 </section>
 
 <section class="mx-auto max-w-6xl px-5 py-8">
-  <div class="grid gap-4 sm:grid-cols-3">
-    {% assign high = report.opportunities | where: "relevance_category", "Altamente relevante" | size %}
-    {% assign medium = report.opportunities | where: "relevance_category", "A investigar" | size %}
-    {% assign low = report.opportunities | where: "relevance_category", "Prioridade baixa" | size %}
-    <div class="border border-line bg-white p-5">
-      <p class="text-3xl font-bold text-civic-green">{{ high }}</p>
-      <p class="text-sm font-semibold text-slate-700">Altamente relevantes</p>
-    </div>
-    <div class="border border-line bg-white p-5">
-      <p class="text-3xl font-bold text-civic-blue">{{ medium }}</p>
-      <p class="text-sm font-semibold text-slate-700">A investigar</p>
-    </div>
-    <div class="border border-line bg-white p-5">
-      <p class="text-3xl font-bold text-civic-gold">{{ low }}</p>
-      <p class="text-sm font-semibold text-slate-700">Prioridade baixa</p>
-    </div>
-  </div>
-
   <div class="mt-8 space-y-6">
     <details id="opportunity-filter-panel" class="border border-line bg-white" open>
       <summary class="flex cursor-pointer items-center gap-3 px-5 py-4 text-lg font-bold text-ink"><span>Filtros de oportunidades</span><span class="text-sm font-normal text-slate-600" id="filter-count" aria-live="polite"></span><button class="ml-auto px-1 text-sm font-semibold text-civic-blue underline underline-offset-4 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40" id="clear-filters" type="button" disabled>Limpar tudo</button></summary>
       <form id="opportunity-filters" class="border-t border-line p-5" aria-label="Filtrar oportunidades">
       {% assign funding_sources = report.opportunities | map: "funding_source" | uniq | sort %}
+      <fieldset class="mb-5">
+        <legend class="text-sm font-bold text-slate-700">Relevância</legend>
+        <div class="mt-2 grid gap-3 sm:grid-cols-3">
+          <button class="relevance-filter border border-line bg-white p-4 text-left transition hover:border-civic-green" type="button" data-relevance="Altamente relevante" aria-pressed="false">
+            <span class="block text-3xl font-bold text-civic-green" data-relevance-count="Altamente relevante">0</span>
+            <span class="block text-sm font-semibold text-slate-700">Altamente relevantes</span>
+          </button>
+          <button class="relevance-filter border border-line bg-white p-4 text-left transition hover:border-civic-blue" type="button" data-relevance="A investigar" aria-pressed="false">
+            <span class="block text-3xl font-bold text-civic-blue" data-relevance-count="A investigar">0</span>
+            <span class="block text-sm font-semibold text-slate-700">A investigar</span>
+          </button>
+          <button class="relevance-filter border border-line bg-white p-4 text-left transition hover:border-civic-gold" type="button" data-relevance="Prioridade baixa" aria-pressed="false">
+            <span class="block text-3xl font-bold text-civic-gold" data-relevance-count="Prioridade baixa">0</span>
+            <span class="block text-sm font-semibold text-slate-700">Prioridade baixa</span>
+          </button>
+        </div>
+      </fieldset>
       <div class="grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,1fr)_minmax(14rem,1fr)] lg:items-start">
         <div class="grid gap-4 sm:grid-cols-2">
           <div><label class="block text-sm font-bold text-slate-700" for="opening-from">Abertura desde</label><input class="filter-date mt-1 w-full max-w-[15rem] border border-line px-3 py-2 text-sm" id="opening-from" type="date"></div>
@@ -60,44 +59,73 @@
     const themeFilter = document.querySelector('#theme-filter');
     const sourceFilter = document.querySelector('#source-filter');
     const count = document.querySelector('#filter-count');
+    const relevanceFilters = [...document.querySelectorAll('.relevance-filter')];
+    const relevanceCounts = [...document.querySelectorAll('[data-relevance-count]')];
     const themeAliases = { {% for theme in site.data.theme_labels %}"{{ theme[0] }}": "{{ theme[1].query }}"{% unless forloop.last %}, {% endunless %}{% endfor %} };
     const matches = (value, lower, upper) => (!lower && !upper) || (Boolean(value) && (!lower || value >= lower) && (!upper || value <= upper));
     const selectedThemes = () => themeFilter.value || [];
     const selectedSources = () => sourceFilter.value || [];
+    const selectedRelevance = () => relevanceFilters.filter((filter) => filter.getAttribute('aria-pressed') === 'true').map((filter) => filter.dataset.relevance);
     const syncUrl = () => {
       const url = new URL(window.location.href);
-      [...fields.map((field) => field.id), 'tema', 'theme', 'fonte', 'source'].forEach((key) => url.searchParams.delete(key));
+      [...fields.map((field) => field.id), 'tema', 'theme', 'fonte', 'source', 'relevancia', 'relevance'].forEach((key) => url.searchParams.delete(key));
       fields.forEach((field) => { if (field.value) url.searchParams.set(field.id, field.value); });
       selectedThemes().forEach((theme) => url.searchParams.append('tema', theme));
       selectedSources().forEach((source) => url.searchParams.append('fonte', source));
+      selectedRelevance().forEach((relevance) => url.searchParams.append('relevancia', relevance));
       window.history.replaceState({}, '', url);
     };
     const apply = ({updateUrl = true} = {}) => {
       const values = Object.fromEntries(fields.map((field) => [field.id, field.value]));
       const themes = selectedThemes();
       const sources = selectedSources();
+      const relevance = selectedRelevance();
       let visible = 0;
       cards.forEach((card) => {
         const cardThemes = card.dataset.themes ? card.dataset.themes.split(',') : [];
-        const show = matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.includes(card.dataset.source));
+        const matchesOtherFilters = matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.includes(card.dataset.source));
+        const show = matchesOtherFilters && (relevance.length === 0 || relevance.includes(card.dataset.relevance));
         card.hidden = !show;
         if (show) visible += 1;
       });
+      relevanceCounts.forEach((counter) => {
+        const category = counter.dataset.relevanceCount;
+        counter.textContent = cards.filter((card) => {
+          const cardThemes = card.dataset.themes ? card.dataset.themes.split(',') : [];
+          return card.dataset.relevance === category && matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.includes(card.dataset.source));
+        }).length;
+      });
       count.textContent = `${visible} de ${cards.length} oportunidades visíveis`;
-      clearFilters.disabled = fields.every((field) => !field.value) && themes.length === 0 && sources.length === 0;
+      clearFilters.disabled = fields.every((field) => !field.value) && themes.length === 0 && sources.length === 0 && relevance.length === 0;
       if (updateUrl) syncUrl();
     };
     fields.forEach((field) => field.addEventListener('input', apply));
     themeFilter.addEventListener('change', apply);
     sourceFilter.addEventListener('change', apply);
+    relevanceFilters.forEach((filter) => filter.addEventListener('click', () => {
+      const pressed = filter.getAttribute('aria-pressed') === 'true';
+      filter.setAttribute('aria-pressed', String(!pressed));
+      filter.classList.toggle('bg-slate-50', !pressed);
+      filter.classList.toggle('ring-2', !pressed);
+      filter.classList.toggle('ring-civic-blue', !pressed);
+      apply();
+    }));
     const clearFilters = document.querySelector('#clear-filters');
-    clearFilters.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); fields.forEach((field) => { field.value = ''; }); themeFilter.value = []; sourceFilter.value = []; apply(); });
+    clearFilters.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); fields.forEach((field) => { field.value = ''; }); themeFilter.value = []; sourceFilter.value = []; relevanceFilters.forEach((filter) => { filter.setAttribute('aria-pressed', 'false'); filter.classList.remove('bg-slate-50', 'ring-2', 'ring-civic-blue'); }); apply(); });
     const restoreFromUrl = () => {
       const params = new URL(window.location.href).searchParams;
       fields.forEach((field) => { field.value = params.get(field.id) || ''; });
       const themes = new Set([...params.getAll('tema'), ...params.getAll('theme')].map((theme) => themeAliases[theme] || theme));
       themeFilter.value = [...themes];
       sourceFilter.value = [...new Set([...params.getAll('fonte'), ...params.getAll('source')])];
+      const relevance = new Set([...params.getAll('relevancia'), ...params.getAll('relevance')]);
+      relevanceFilters.forEach((filter) => {
+        const selected = relevance.has(filter.dataset.relevance);
+        filter.setAttribute('aria-pressed', String(selected));
+        filter.classList.toggle('bg-slate-50', selected);
+        filter.classList.toggle('ring-2', selected);
+        filter.classList.toggle('ring-civic-blue', selected);
+      });
       apply({updateUrl: false});
     };
     window.addEventListener('popstate', restoreFromUrl);
