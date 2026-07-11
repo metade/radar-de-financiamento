@@ -5,6 +5,7 @@ permalink: /arquivo/
 ---
 
 {% assign reports = site.reports | sort: "generated_on" | reverse %}
+{% assign reports = reports | where_exp: "report", "report.name != 'latest'" %}
 
 <section class="bg-soft-sky">
   <div class="mx-auto max-w-6xl px-5 py-10">

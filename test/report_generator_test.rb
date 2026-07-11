@@ -36,15 +36,27 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_can_write_a_mutable_latest_report
+    Dir.mktmpdir do |dir|
+      generator = build_generator(dir, filename: "latest.md")
+
+      path = generator.generate(today: Date.new(2026, 7, 11))
+
+      assert_equal File.join(dir, "latest.md"), path
+      assert File.file?(path)
+    end
+  end
+
   private
 
-  def build_generator(dir)
+  def build_generator(dir, filename: nil)
     source = FundingRadar::Sources::FixtureSource.new(path: File.expand_path("../data/sources/fixtures.yml", __dir__))
     FundingRadar::ReportGenerator.new(
       source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
       duplicate_resolver: FundingRadar::DuplicateResolver.new,
       scorer: FundingRadar::RelevanceScorer.new,
-      reports_dir: dir
+      reports_dir: dir,
+      filename: filename
     )
   end
 end

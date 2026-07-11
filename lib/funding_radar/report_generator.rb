@@ -6,11 +6,12 @@ module FundingRadar
   class ReportGenerator
     DISCLAIMER = "A elegibilidade deve ser sempre confirmada nos avisos e documentação oficial de cada programa.".freeze
 
-    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:)
+    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil)
       @source_registry = source_registry
       @duplicate_resolver = duplicate_resolver
       @scorer = scorer
       @reports_dir = reports_dir
+      @filename = filename
     end
 
     def generate(today: Date.today)
@@ -26,7 +27,7 @@ module FundingRadar
       )
 
       FileUtils.mkdir_p(@reports_dir)
-      path = File.join(@reports_dir, "#{report.week_id}.md")
+      path = File.join(@reports_dir, @filename || "#{report.week_id}.md")
       File.write(path, render(report))
       path
     end

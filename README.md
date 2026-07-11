@@ -47,6 +47,8 @@ By default, report generation queries the official EU Funding & Tenders Portal s
 
 HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
 
+The project defaults to `REPORT_MODE=production` through mise, which writes the committed weekly report to `_reports/YYYY-Www.md`. For local development, use `mise set REPORT_MODE=development` or run `REPORT_MODE=development bundle exec ruby bin/generate_report`; this writes the mutable report to the ignored `_reports/latest.md`.
+
 To generate a report for a specific date:
 
 ```sh
