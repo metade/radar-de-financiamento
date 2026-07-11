@@ -25,8 +25,8 @@ class ReportGeneratorTest < Minitest::Test
       assert File.file?(csv_path)
       csv = CSV.read(csv_path, headers: true)
       assert_equal %w[
-        id title programme deadline funding_source official_link eligible_applicants
-        partnership_requirements summary themes relevance_score relevance_category
+        id title programme opening_date deadline funding_amount funding_source official_link eligible_applicants
+        partnership_requirements other_requirements summary themes relevance_score relevance_category
         relevance_explanation deadline_status
       ], csv.headers
       assert_equal document.fetch("opportunities").size, csv.size

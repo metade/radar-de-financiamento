@@ -6,7 +6,7 @@
   {% assign category_class = "border-civic-blue bg-soft-sky text-civic-blue" %}
 {% endif %}
 
-<article class="border border-line bg-white p-5 shadow-sm">
+<article class="opportunity-card border border-line bg-white p-5 shadow-sm" data-opening-date="{{ opportunity.opening_date }}" data-deadline="{{ opportunity.deadline }}">
   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div>
       <p class="text-sm font-semibold text-slate-600">{{ opportunity.programme }} · {{ opportunity.funding_source }}</p>
@@ -29,17 +29,35 @@
 
   <dl class="mt-5 grid gap-4 md:grid-cols-3">
     <div>
+      <dt class="text-sm font-bold text-slate-600">Abertura</dt>
+      <dd class="mt-1 text-sm text-ink">{% if opportunity.opening_date %}{{ opportunity.opening_date | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
+    </div>
+    <div>
       <dt class="text-sm font-bold text-slate-600">Prazo</dt>
-      <dd class="mt-1 text-base text-ink">{% if opportunity.deadline %}{{ opportunity.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
+      <dd class="mt-1 text-sm text-ink">{% if opportunity.deadline %}{{ opportunity.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
+    </div>
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Valor / orçamento</dt>
+      <dd class="mt-1 text-sm text-ink">{{ opportunity.funding_amount | default: "Por confirmar" }}</dd>
+    </div>
+    <div>
+      <dt class="text-sm font-bold text-slate-600">Temas</dt>
+      <dd class="mt-1 text-sm text-ink">{% if opportunity.themes and opportunity.themes != empty %}{{ opportunity.themes | join: ", " | replace: "_", " " }}{% else %}Por confirmar{% endif %}</dd>
     </div>
     <div>
       <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>
-      <dd class="mt-1 text-base text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
+      <dd class="mt-1 text-sm text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
     </div>
     {% if opportunity.partnership_requirements %}
       <div>
         <dt class="text-sm font-bold text-slate-600">Parceria</dt>
-        <dd class="mt-1 text-base text-ink">{{ opportunity.partnership_requirements }}</dd>
+        <dd class="mt-1 text-sm text-ink">{{ opportunity.partnership_requirements }}</dd>
+      </div>
+    {% endif %}
+    {% if opportunity.other_requirements %}
+      <div>
+        <dt class="text-sm font-bold text-slate-600">Outros requisitos</dt>
+        <dd class="mt-1 text-sm text-ink">{{ opportunity.other_requirements }}</dd>
       </div>
     {% endif %}
   </dl>

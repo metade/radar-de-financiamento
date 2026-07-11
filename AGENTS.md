@@ -56,7 +56,11 @@ The official no-JavaScript topic index is mostly historical, so the source falls
 
 The EC search API can return noisy records such as FAQs and organisations. The source should normalize only Funding & Tenders topic records and skip closed calls where the payload exposes closed status.
 
+Prefer the API's English results (`language=en`). If a topic has only explicitly non-English records, omit it rather than publishing a translated title or summary. When the API returns no language metadata, retain the record and prefer the richest available topic payload.
+
 Many topic records do not expose deadlines reliably. Preserve `nil` deadlines and let the report show "Por confirmar".
+
+Budget data may be nested in `budgetOverview`/`budgetTopicActionMap`, including total topic budgets and maximum contributions per project. Normalize these into readable euro amounts, and leave the amount blank when no numeric budget is available.
 
 ## Verification Expectations
 

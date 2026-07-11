@@ -73,6 +73,7 @@ module FundingRadar
         enrichment_results = enrichment_terms_for(topic_candidates).flat_map { |term| fetch_term(term) }
 
         best_topic_results(topic_candidates + enrichment_results)
+          .compact
           .select { |result| !@single_topic || @topic_ids.include?(topic_id_for(result)) }
           .reject { |result| closed?(result.fetch("metadata", {})) }
           .map { |result| normalize(result) }
@@ -130,7 +131,7 @@ module FundingRadar
 
       def fetch_term(term)
         query = exact_topic_query?(term) ? %Q{"#{term}"} : term
-        url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(query)}&pageSize=#{@page_size}&pageNumber=1"
+        url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(query)}&pageSize=#{@page_size}&pageNumber=1&language=en"
         JSON.parse(@http_client.post_json(url, headers: {"Accept" => "application/json"})).fetch("results", [])
       rescue JSON::ParserError, KeyError, StandardError
         []
@@ -148,7 +149,12 @@ module FundingRadar
           .map do |group|
             selected = group.max_by { |result| topic_result_quality(result) }
             english = group.find { |result| language_for(result.fetch("metadata", {})) == "en" }
-            next selected unless english && language_for(selected.fetch("metadata", {})) != "en"
+            if english.nil?
+              next group.select { |result| language_for(result.fetch("metadata", {})).empty? }
+                .max_by { |result| topic_result_quality(result) }
+            end
+
+            next selected if language_for(selected.fetch("metadata", {})) == "en"
 
             metadata = selected.fetch("metadata", {}).merge(
               "title" => metadata_value(english.fetch("metadata", {}), "title", "esST_title"),
@@ -204,7 +210,7 @@ module FundingRadar
       end
 
       def language_for(metadata)
-        metadata_value(metadata, "language", "lang").to_s.downcase.split(/[-_]/).first
+        metadata_value(metadata, "language", "lang").to_s.downcase.split(/[-_]/).first.to_s
       end
 
       def thin_topic_result?(result)
@@ -223,11 +229,14 @@ module FundingRadar
           "id" => "eu-ft-#{topic_id.downcase}",
           "title" => title,
           "programme" => programme_for(topic_id, metadata),
+          "opening_date" => opening_date_for(metadata),
           "deadline" => deadline_for(metadata),
+          "funding_amount" => funding_amount_for(result, metadata),
           "funding_source" => "EU Funding & Tenders Portal",
           "official_link" => official_link_for(topic_id),
           "eligible_applicants" => eligible_applicants_for(result, metadata),
           "partnership_requirements" => partnership_requirements_for(result, metadata),
+          "other_requirements" => other_requirements_for(result, metadata),
           "summary" => summary_for(result),
           "themes" => themes_for(result, metadata)
         )
@@ -271,6 +280,143 @@ module FundingRadar
         parse_date(value)
       end
 
+      def opening_date_for(metadata)
+        value = metadata_value(metadata, "openingDate", "callOpeningDate", "startDate", "esDA_startDate", "esST_startDate", "start")
+        parse_date(value)
+      end
+
+      def funding_amount_for(result, metadata)
+        preferred_keys = %w[
+          fundingAmount grantAmount maxGrantAmount budget estimatedBudget
+          euContribution maximumGrantAmount esDA_budget esDA_maxGrantAmount
+        ]
+        preferred_keys.each do |key|
+          candidate = metadata_value(metadata, key)
+          normalized = normalize_funding_amount(candidate, metadata)
+          return normalized if normalized
+        end
+
+        topic_budget = topic_budget_from_metadata(metadata, topic_id_for(result))
+        return topic_budget if topic_budget
+
+        nested_candidate = budget_value_from_metadata(metadata)
+        return nested_candidate if nested_candidate
+
+        funding_amount_from_text(searchable_text(result, metadata))
+      end
+
+      def normalize_funding_amount(value, metadata)
+        return nil if value.nil?
+
+        if value.is_a?(Hash)
+          amount = first_present(value["amount"], value[:amount], value["value"], value[:value])
+          currency = first_present(value["currency"], value[:currency], "EUR")
+          return format_funding_amount(amount, currency) if amount_numeric?(amount)
+        end
+
+        return nil if value.is_a?(Hash) || value.is_a?(Array)
+
+        text = clean(value)
+        return nil unless text.match?(/\d/)
+
+        text.gsub(/\bEUR\b/i, "€")
+      end
+
+      def budget_value_from_metadata(value, key = nil)
+        if value.is_a?(Hash)
+          amount = value.each_with_object({}) { |(child_key, child_value), found| found[child_key.to_s.downcase] = child_value }
+          amount_value = amount.values_at("amount", "value", "budget", "fundingamount", "grantamount", "maxgrantamount").compact.first
+          currency = amount.values_at("currency", "currencycode").compact.first || "EUR"
+          return format_funding_amount(amount_value, currency) if amount_numeric?(amount_value)
+
+          value.each do |child_key, child_value|
+            next unless child_key.to_s.match?(/budget|funding|grant|contribution|amount/i)
+
+            candidate = budget_value_from_metadata(child_value, child_key)
+            return candidate if candidate
+          end
+        elsif value.is_a?(Array)
+          value.each do |child_value|
+            candidate = budget_value_from_metadata(child_value, key)
+            return candidate if candidate
+          end
+        elsif key.to_s.match?(/\A(?:budget|fundingamount|grantamount|maxgrantamount|eucontribution|maximumgrantamount)\z/i)
+          return normalize_funding_amount(value, {})
+        end
+
+        nil
+      end
+
+      def topic_budget_from_metadata(metadata, topic_id)
+        maps = []
+        collect_metadata_values(metadata, "budgetTopicActionMap", maps)
+        maps.each do |map|
+          map = parse_json_value(map) || map
+          actions = map.values.flatten.select { |action| action.is_a?(Hash) }
+          action = actions.find { |candidate| candidate["action"].to_s.upcase.start_with?(topic_id) }
+          next unless action
+
+          total = action.fetch("budgetYearMap", {}).values.sum { |amount| numeric_amount(amount) }
+          maximum = numeric_amount(action["maxContribution"])
+          next if total.zero? && maximum.zero?
+
+          parts = []
+          parts << "€#{format_integer(total)} total" unless total.zero?
+          parts << "até €#{format_integer(maximum)}/projeto" unless maximum.zero?
+          return parts.join("; ")
+        end
+
+        nil
+      end
+
+      def collect_metadata_values(value, target_key, found)
+        if value.is_a?(String)
+          parsed = parse_json_value(value)
+          return collect_metadata_values(parsed, target_key, found) if parsed
+        end
+
+        if value.is_a?(Hash)
+          value.each do |key, child_value|
+            found << child_value if key.to_s.casecmp(target_key).zero?
+            collect_metadata_values(child_value, target_key, found)
+          end
+        elsif value.is_a?(Array)
+          value.each { |child_value| collect_metadata_values(child_value, target_key, found) }
+        end
+      end
+
+      def numeric_amount(value)
+        return 0 unless value.to_s.match?(/\A\d+(?:\.\d+)?\z/)
+
+        value.to_f
+      end
+
+      def format_integer(value)
+        value.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+      end
+
+      def funding_amount_from_text(text)
+        matches = text.scan(/(?:€|EUR)\s*\d[\d\s.,]*(?:\s*(?:million|billion|milhões|milhão|m|bn|b))?|\d[\d\s.,]*(?:\s*(?:million|billion|milhões|milhão|m|bn|b))?\s*(?:EUR|€)/i)
+        matches.map(&:strip).reject { |match| match.match?(/\A(?:EUR|€)[,.]?\z/i) }.max_by(&:length)
+      end
+
+      def amount_numeric?(value)
+        value.to_s.match?(/\d/)
+      end
+
+      def format_funding_amount(amount, currency)
+        return nil unless amount_numeric?(amount)
+
+        formatted_amount = if amount.to_s.match?(/\A\d+\z/)
+          amount.to_i.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        else
+          clean(amount)
+        end
+
+        currency_label = clean(currency).sub(/\AEUR\z/i, "€")
+        "#{currency_label} #{formatted_amount}".strip
+      end
+
       def eligible_applicants_for(result, metadata)
         text = searchable_text(result, metadata)
         applicants = []
@@ -283,6 +429,12 @@ module FundingRadar
         text = searchable_text(result, metadata)
         return "O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar no aviso oficial." if PARTNERSHIP_PATTERNS.any? { |pattern| text.match?(pattern) }
 
+        nil
+      end
+
+      def other_requirements_for(result, metadata)
+        value = metadata_value(metadata, "requirements", "eligibilityConditions", "conditions", "esIN_requirements", "esIN_eligibility")
+        return clean(value) unless value.to_s.strip.empty?
         nil
       end
 

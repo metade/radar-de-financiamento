@@ -30,8 +30,40 @@
   </div>
 
   <div class="mt-8 space-y-6">
+    <form id="opportunity-filters" class="border border-line bg-white p-5" aria-label="Filtrar oportunidades">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end">
+        <div><label class="block text-sm font-bold text-slate-700" for="opening-from">Abertura desde</label><input class="filter-date mt-1 border border-line px-3 py-2" id="opening-from" type="date"></div>
+        <div><label class="block text-sm font-bold text-slate-700" for="opening-to">Abertura até</label><input class="filter-date mt-1 border border-line px-3 py-2" id="opening-to" type="date"></div>
+        <div><label class="block text-sm font-bold text-slate-700" for="deadline-from">Prazo desde</label><input class="filter-date mt-1 border border-line px-3 py-2" id="deadline-from" type="date"></div>
+        <div><label class="block text-sm font-bold text-slate-700" for="deadline-to">Prazo até</label><input class="filter-date mt-1 border border-line px-3 py-2" id="deadline-to" type="date"></div>
+        <button class="border border-civic-blue px-4 py-2 text-sm font-bold text-civic-blue hover:bg-soft-sky" id="clear-filters" type="button">Limpar filtros</button>
+      </div>
+      <p class="mt-4 text-sm text-slate-600" id="filter-count" aria-live="polite"></p>
+    </form>
     {% for opportunity in report.opportunities %}
       {% include opportunity-card.html opportunity=opportunity %}
     {% endfor %}
   </div>
 </section>
+
+<script>
+  (() => {
+    const cards = [...document.querySelectorAll('.opportunity-card')];
+    const fields = [...document.querySelectorAll('.filter-date')];
+    const count = document.querySelector('#filter-count');
+    const matches = (value, lower, upper) => (!lower && !upper) || (Boolean(value) && (!lower || value >= lower) && (!upper || value <= upper));
+    const apply = () => {
+      const values = Object.fromEntries(fields.map((field) => [field.id, field.value]));
+      let visible = 0;
+      cards.forEach((card) => {
+        const show = matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']);
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      count.textContent = `${visible} de ${cards.length} oportunidades visíveis`;
+    };
+    fields.forEach((field) => field.addEventListener('input', apply));
+    document.querySelector('#clear-filters').addEventListener('click', () => { fields.forEach((field) => { field.value = ''; }); apply(); });
+    apply();
+  })();
+</script>

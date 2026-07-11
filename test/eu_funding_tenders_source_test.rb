@@ -56,6 +56,7 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_equal "eu-ft-horizon-cl6-2026-01-circbio-04", opportunities.first.id
     assert_equal "2026-09-17", opportunities.first.deadline
     assert_includes client.requested_urls.first, "text=%22HORIZON-CL6-2026-01-CIRCBIO-04%22"
+    assert_includes client.requested_urls.first, "language=en"
   end
 
   def test_extracts_deadline_from_nested_plural_deadline_field
@@ -66,6 +67,32 @@ class EuFundingTendersSourceTest < Minitest::Test
     )
 
     assert_equal "2026-09-23", source.fetch.first.deadline
+  end
+
+  def test_extracts_opening_date_amount_and_requirements
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(topic_with_opening_amount_and_requirements_payload),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026
+    )
+
+    opportunity = source.fetch.first
+
+    assert_equal "2026-05-12", opportunity.opening_date
+    assert_equal "€2,000,000", opportunity.funding_amount
+    assert_equal "Applicants must demonstrate previous experience.", opportunity.other_requirements
+  end
+
+  def test_extracts_nested_budget_and_ignores_currency_noise
+    source = FundingRadar::Sources::EuFundingTendersSource.new(
+      http_client: FakeHttpClient.new(nested_budget_payload),
+      topic_ids: ["HORIZON-MISS-2026-01-CLIMA-02"],
+      current_year: 2026
+    )
+
+    opportunity = source.fetch.first
+
+    assert_equal "€9,000,000 total; até €4,500,000/projeto", opportunity.funding_amount
   end
 
   def test_single_topic_does_not_expand_to_related_topic_results
@@ -338,6 +365,49 @@ class EuFundingTendersSourceTest < Minitest::Test
           }
         }
       ]
+    }.to_json
+  end
+
+  def topic_with_opening_amount_and_requirements_payload
+    {
+      "results" => [{
+        "reference" => "HORIZON-MISS-2026-01-CLIMA-02",
+        "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-02",
+        "summary" => "Climate adaptation for local authorities.",
+        "metadata" => {
+          "identifier" => ["HORIZON-MISS-2026-01-CLIMA-02"],
+          "title" => ["Climate adaptation"],
+          "openingDate" => ["2026-05-12T09:00:00+0200"],
+          "fundingAmount" => ["€2,000,000"],
+          "requirements" => ["Applicants must demonstrate previous experience."],
+          "callDeadlineDate" => ["2026-09-23T17:00:00+0200"]
+        }
+      }]
+    }.to_json
+  end
+
+  def nested_budget_payload
+    {
+      "results" => [{
+        "reference" => "HORIZON-MISS-2026-01-CLIMA-02",
+        "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-MISS-2026-01-CLIMA-02",
+        "summary" => "Support for local adaptation. The available budget is EUR 9 million.",
+        "metadata" => {
+          "identifier" => ["HORIZON-MISS-2026-01-CLIMA-02"],
+          "title" => ["Local adaptation"],
+          "budget" => {
+            "budgetTopicActionMap" => {
+              "113365" => [{
+                "action" => "HORIZON-MISS-2026-01-CLIMA-02 - HORIZON-RIA",
+                "maxContribution" => 4_500_000,
+                "budgetYearMap" => {"2026" => "9000000"}
+              }]
+            }
+          },
+          "noise" => ["eur,"],
+          "callDeadlineDate" => ["2026-09-23T17:00:00+0200"]
+        }
+      }]
     }.to_json
   end
 
