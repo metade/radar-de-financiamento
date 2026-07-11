@@ -43,12 +43,24 @@ The generation pipeline is implemented in `lib/funding_radar`.
 5. A dated ISO-week report is written to `_reports/YYYY-Www.md`.
 6. Jekyll renders the homepage, individual report pages, and archive.
 
-By default, the first implementation loads fixture data from `data/sources/fixtures.yml`.
+By default, report generation queries the official EU Funding & Tenders Portal search API and normalizes Funding & Tenders topic records. Fixture data remains available for local fallback and demos.
 
 To generate a report for a specific date:
 
 ```sh
 REPORT_DATE=2026-07-11 bundle exec ruby bin/generate_report
+```
+
+To include local fixture opportunities alongside live portal results:
+
+```sh
+INCLUDE_FIXTURES=true bundle exec ruby bin/generate_report
+```
+
+To inspect the live EU Funding & Tenders source without writing a report:
+
+```sh
+bundle exec ruby bin/check_eu_source --year 2026 --limit 20
 ```
 
 ## GitHub Actions
@@ -90,14 +102,16 @@ The scoring, report generation, and Jekyll templates should not need source-spec
 
 ## Current Limitations
 
-- The initial version uses fixture data and does not yet call live funding APIs.
+- The EU Funding & Tenders source uses the public portal search API and filters for topic-detail records; the portal does not provide a small, formally documented grants-only API in this project yet.
+- Fixture data remains available for tests, demos, and development without network access.
 - Scoring is deterministic and based on explicit eligibility and thematic signals.
 - Deadlines and eligibility still require manual confirmation in official documentation.
 - The project does not send alerts or emails.
 
 ## Future Improvements
 
-- Add official source adapters for EU Funding & Tenders Portal, Portugal 2030, Lisboa 2030, Interreg, LIFE, Erasmus+, and CERV.
+- Add deeper EU Funding & Tenders topic-detail enrichment if a stable official detail endpoint is identified.
+- Add official source adapters for Portugal 2030, Lisboa 2030, Interreg, LIFE, Erasmus+, and CERV where separate programme APIs are available.
 - Add stronger deadline status labels and filters.
 - Add historical change detection between weekly reports.
 - Add optional LLM-assisted summarization and relevance explanations behind the existing scorer interface.

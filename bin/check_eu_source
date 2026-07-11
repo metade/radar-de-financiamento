@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+
+require "cgi"
+require "json"
+require "optparse"
+require_relative "../lib/funding_radar"
+
+options = {
+  current_year: Date.today.year,
+  limit: 20,
+  page_size: 5,
+  show_stats: false,
+  topic_ids: [],
+  show_raw: false
+}
+
+OptionParser.new do |parser|
+  parser.banner = "Usage: bin/check_eu_source [options]"
+  parser.on("--year YEAR", Integer, "Topic year to inspect, defaults to current year") { |value| options[:current_year] = value }
+  parser.on("--limit N", Integer, "Maximum discovered topic IDs to query") { |value| options[:limit] = value }
+  parser.on("--page-size N", Integer, "Search API page size for each exact topic query") { |value| options[:page_size] = value }
+  parser.on("--stats", "Print topic-index year/prefix diagnostics before querying") { options[:show_stats] = true }
+  parser.on("--raw", "Print raw Search API hit diagnostics for selected topic IDs") { options[:show_raw] = true }
+  parser.on("--topic-id ID", "Query an exact topic ID instead of discovered IDs; can be repeated") { |value| options[:topic_ids] << value.upcase }
+end.parse!
+
+client = FundingRadar::HttpClient.new
+index_body = client.get(FundingRadar::Sources::EuFundingTendersSource::TOPIC_INDEX_URL, headers: {"Accept" => "text/html"})
+
+all_ids = index_body.scan(%r{/topic-details/([^"<>]+)}i)
+  .flatten
+  .map { |id| CGI.unescapeHTML(id).upcase }
+  .uniq
+
+if options[:show_stats]
+  years = all_ids.each_with_object(Hash.new(0)) do |id, counts|
+    id.scan(/20\d{2}/).each { |year| counts[year] += 1 }
+  end
+  prefixes = all_ids.each_with_object(Hash.new(0)) do |id, counts|
+    prefix = id.split("-").first
+    counts[prefix] += 1 if prefix
+  end
+
+  puts "Topic index IDs: #{all_ids.size}"
+  puts "Years:"
+  years.sort_by { |year, _count| year }.last(12).each { |year, count| puts "  #{year}: #{count}" }
+  puts "Known programme prefixes:"
+  FundingRadar::Sources::EuFundingTendersSource::PROGRAMME_PREFIXES.keys.each do |prefix|
+    puts "  #{prefix}: #{prefixes.fetch(prefix, 0)}"
+  end
+  puts
+end
+
+ids = if options[:topic_ids].empty?
+  all_ids
+    .select { |id| FundingRadar::Sources::EuFundingTendersSource.discoverable_topic_id?(id, current_year: options[:current_year]) }
+    .first(options[:limit])
+else
+  options[:topic_ids]
+end
+
+puts "Topic-index candidate IDs: #{ids.size}"
+ids.each { |id| puts "  #{id}" }
+if ids.empty? && options[:topic_ids].empty?
+  puts "No usable current-year topic IDs were found in the topic index."
+  puts "Falling back to structured default search terms:"
+  FundingRadar::Sources::EuFundingTendersSource.default_terms(current_year: options[:current_year]).each { |term| puts "  #{term}" }
+end
+
+if options[:show_raw]
+  puts
+  puts "Raw Search API hits"
+  ids.each do |id|
+    url = "#{FundingRadar::Sources::EuFundingTendersSource::ENDPOINT}?apiKey=SEDIA&text=#{CGI.escape(id)}&pageSize=#{options[:page_size]}&pageNumber=1"
+    payload = JSON.parse(client.post_json(url, headers: {"Accept" => "application/json"}))
+    puts "#{id}: #{payload.fetch("results", []).size} hits"
+    payload.fetch("results", []).each do |result|
+      metadata = result.fetch("metadata", {})
+      puts "  url: #{result["url"]}"
+      puts "  datasource: #{Array(metadata["DATASOURCE"] || metadata["datasource"]).join(", ")}"
+      puts "  type: #{Array(metadata["type"]).join(", ")}"
+      puts "  status: #{Array(metadata["status"]).join(", ")}"
+      puts "  title: #{Array(metadata["title"] || metadata["esST_title"]).join(" | ")}"
+      puts "  summary: #{result["summary"]}"
+    end
+  end
+end
+
+source = FundingRadar::Sources::EuFundingTendersSource.new(
+  http_client: client,
+  topic_ids: ids,
+  page_size: options[:page_size],
+  current_year: options[:current_year]
+)
+
+opportunities = source.fetch
+puts
+puts "Normalized #{opportunities.size} open opportunities"
+opportunities.each do |opportunity|
+  puts "- #{opportunity.id}"
+  puts "  title: #{opportunity.title}"
+  puts "  programme: #{opportunity.programme}"
+  puts "  deadline: #{opportunity.deadline || "unknown"}"
+  puts "  link: #{opportunity.official_link}"
+end

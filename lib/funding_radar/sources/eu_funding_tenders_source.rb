@@ -1,0 +1,270 @@
+require "cgi"
+require "date"
+require "json"
+
+module FundingRadar
+  module Sources
+    class EuFundingTendersSource
+      ENDPOINT = "https://api.tech.ec.europa.eu/search-api/prod/rest/search".freeze
+      TOPIC_INDEX_URL = "https://ec.europa.eu/info/funding-tenders/opportunities/data/topic-list.html".freeze
+      PORTAL_TOPIC_PATH = "/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/".freeze
+      DATA_TOPIC_PATH = "/info/funding-tenders/opportunities/data/topicDetails/".freeze
+      PROGRAMME_PREFIXES = {
+        "AMIF" => "AMIF",
+        "CEF" => "Connecting Europe Facility",
+        "CERV" => "CERV",
+        "CREA" => "Europa Criativa",
+        "DIGITAL" => "Europa Digital",
+        "ERASMUS" => "Erasmus+",
+        "EU4H" => "EU4Health",
+        "HORIZON" => "Horizon Europe",
+        "LIFE" => "LIFE",
+        "SMP" => "Single Market Programme",
+        "UCPM" => "Union Civil Protection Mechanism"
+      }.freeze
+      DISCOVERY_PREFIXES = PROGRAMME_PREFIXES.keys.freeze
+
+      THEME_KEYWORDS = {
+        "accessibility" => ["accessibility", "accessible", "disability"],
+        "civic_participation" => ["citizen", "participation", "democracy", "democratic"],
+        "climate" => ["climate", "adaptation", "resilience"],
+        "community_development" => ["community", "local", "cities", "municipalities"],
+        "digital_public_services" => ["digital", "interoperability", "public services"],
+        "environment" => ["environment", "biodiversity", "nature", "pollution"],
+        "equality" => ["equality", "rights", "non-discrimination"],
+        "inclusion" => ["inclusion", "integration", "social"],
+        "mobility" => ["mobility", "transport", "urban"],
+        "public_space" => ["public space", "urban", "neighbourhood"],
+        "volunteering" => ["volunteer", "volunteering"]
+      }.freeze
+
+      def initialize(http_client:, endpoint: ENDPOINT, topic_index_url: TOPIC_INDEX_URL, terms: nil, topic_ids: nil, page_size: 10, max_topic_ids: 40, current_year: Date.today.year)
+        @http_client = http_client
+        @endpoint = endpoint
+        @topic_index_url = topic_index_url
+        @terms = terms || self.class.default_terms(current_year: current_year)
+        @topic_ids = topic_ids
+        @page_size = page_size
+        @max_topic_ids = max_topic_ids
+        @current_year = current_year
+      end
+
+      def fetch
+        seed_results = search_terms.flat_map { |term| fetch_term(term) }
+        exact_topic_results = extract_topic_ids(seed_results).flat_map { |topic_id| fetch_term(topic_id) }
+
+        (seed_results + exact_topic_results)
+          .select { |result| topic_result?(result) }
+          .map { |result| normalize(result) }
+          .compact
+          .uniq(&:id)
+      end
+
+      def self.discoverable_topic_id?(topic_id, current_year: Date.today.year)
+        relevant_year = topic_id.match?(/(?:\A|-)(#{current_year}|#{current_year + 1})(?:-|\z)/)
+        relevant_prefix = DISCOVERY_PREFIXES.any? { |prefix| topic_id.start_with?(prefix) }
+        relevant_year && relevant_prefix
+      end
+
+      def self.default_terms(current_year: Date.today.year)
+        years = [current_year, current_year + 1]
+        stems = [
+          "CERV",
+          "CREA-CROSS",
+          "CREA-CULT",
+          "DIGITAL",
+          "ERASMUS-SPORT",
+          "HORIZON-CL3",
+          "HORIZON-CL6",
+          "HORIZON-MISS",
+          "HORIZON-NEB",
+          "LIFE"
+        ]
+
+        years.flat_map { |year| stems.map { |stem| "#{stem}-#{year}" } }
+      end
+
+      private
+
+      def search_terms
+        discovered = @topic_ids || discover_topic_ids
+        return discovered unless discovered.empty?
+
+        @terms
+      end
+
+      def discover_topic_ids
+        body = @http_client.get(@topic_index_url, headers: {"Accept" => "text/html"})
+        body.scan(%r{/topic-details/([^"<>]+)}i)
+          .flatten
+          .map { |id| CGI.unescapeHTML(id).upcase }
+          .select { |id| discoverable_topic_id?(id) }
+          .uniq
+          .first(@max_topic_ids)
+      rescue StandardError
+        []
+      end
+
+      def discoverable_topic_id?(topic_id)
+        self.class.discoverable_topic_id?(topic_id, current_year: @current_year)
+      end
+
+      def fetch_term(term)
+        url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(term)}&pageSize=#{@page_size}&pageNumber=1"
+        JSON.parse(@http_client.post_json(url, headers: {"Accept" => "application/json"})).fetch("results", [])
+      rescue JSON::ParserError, KeyError, StandardError
+        []
+      end
+
+      def topic_result?(result)
+        url = result.fetch("url", "")
+        return false unless url.include?(PORTAL_TOPIC_PATH) || url.include?(DATA_TOPIC_PATH)
+
+        topic_id = topic_id_for(result)
+        !topic_id.empty? && self.class.discoverable_topic_id?(topic_id, current_year: @current_year) && !closed?(result.fetch("metadata", {}))
+      end
+
+      def normalize(result)
+        metadata = result.fetch("metadata", {})
+        topic_id = topic_id_for(result)
+        title = clean(first_present(
+          metadata_value(metadata, "title", "esST_title", "esST_Title", "identifier"),
+          result["title"],
+          result["content"],
+          topic_id
+        ))
+
+        return nil if topic_id.empty? || title.empty?
+
+        Opportunity.from_hash(
+          "id" => "eu-ft-#{topic_id.downcase}",
+          "title" => title,
+          "programme" => programme_for(topic_id, metadata),
+          "deadline" => deadline_for(metadata),
+          "funding_source" => "EU Funding & Tenders Portal",
+          "official_link" => official_link_for(topic_id),
+          "eligible_applicants" => eligible_applicants_for(result, metadata),
+          "partnership_requirements" => partnership_requirements_for(result, metadata),
+          "summary" => summary_for(result),
+          "themes" => themes_for(result, metadata)
+        )
+      end
+
+      def topic_id_for(result)
+        metadata = result.fetch("metadata", {})
+        url_topic = result.fetch("url", "").split(PORTAL_TOPIC_PATH, 2).last.to_s
+        url_topic = result.fetch("url", "").split(DATA_TOPIC_PATH, 2).last.to_s.delete_suffix(".json") if url_topic == result.fetch("url", "")
+        clean(first_present(metadata_value(metadata, "identifier"), url_topic, result["reference"])).delete_suffix(".json").upcase
+      end
+
+      def official_link_for(topic_id)
+        "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/#{topic_id.downcase}"
+      end
+
+      def programme_for(topic_id, metadata)
+        explicit = clean(metadata_value(metadata, "programme", "esST_programmeName", "esST_programme"))
+        return explicit unless explicit.empty? || explicit.match?(/\A\d+\z/)
+
+        PROGRAMME_PREFIXES.each do |prefix, name|
+          return name if topic_id.upcase.start_with?(prefix)
+        end
+
+        topic_id.split("-").first.to_s
+      end
+
+      def deadline_for(metadata)
+        value = metadata_value(metadata, "deadlineDate", "callDeadlineDate", "esDA_deadlineDate", "esST_deadlineDate", "deadline")
+        parse_date(value)
+      end
+
+      def eligible_applicants_for(result, metadata)
+        text = searchable_text(result, metadata)
+        applicants = ["Consultar aviso oficial"]
+        applicants << "Municípios ou autoridades locais" if text.match?(/municipal|cities|local authorit/)
+        applicants << "Entidades públicas" if text.match?(/public authorit|public bod|public entit/)
+        applicants.uniq
+      end
+
+      def partnership_requirements_for(result, metadata)
+        text = searchable_text(result, metadata)
+        return "O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar no aviso oficial." if text.match?(/consortium|partner|partnership|transnational/)
+
+        "Confirmar requisitos de parceria no aviso oficial."
+      end
+
+      def summary_for(result)
+        summary = clean(first_present(result["summary"], result["content"]))
+        return summary unless summary.empty?
+
+        "Oportunidade publicada no portal EU Funding & Tenders. Consultar a página oficial para confirmar âmbito, elegibilidade e documentação."
+      end
+
+      def themes_for(result, metadata)
+        text = searchable_text(result, metadata)
+        THEME_KEYWORDS.each_with_object([]) do |(theme, keywords), themes|
+          themes << theme if keywords.any? { |keyword| text.include?(keyword) }
+        end
+      end
+
+      def searchable_text(result, metadata)
+        [
+          result["summary"],
+          result["content"],
+          result["url"],
+          metadata.values.flatten
+        ].flatten.compact.join(" ").downcase
+      end
+
+      def extract_topic_ids(results)
+        regex = /\b(?:#{DISCOVERY_PREFIXES.join("|")})-[A-Z0-9-]*(?:#{@current_year}|#{@current_year + 1})[A-Z0-9-]*\b/i
+        results.flat_map do |result|
+          metadata = result.fetch("metadata", {})
+          searchable_text(result, metadata).scan(regex)
+        end.map(&:upcase).uniq.first(@max_topic_ids)
+      end
+
+      def metadata_value(metadata, *keys)
+        keys.each do |key|
+          next unless metadata.key?(key)
+
+          value = Array(metadata[key]).compact.first
+          return value unless value.to_s.strip.empty?
+        end
+        nil
+      end
+
+      def closed?(metadata)
+        text = [
+          metadata_value(metadata, "status"),
+          metadata_value(metadata, "sortStatus"),
+          metadata_value(metadata, "actions")
+        ].compact.join(" ").downcase
+
+        text.include?("closed") || text.include?("31094503")
+      end
+
+      def first_present(*values)
+        values.find { |value| !value.to_s.strip.empty? }.to_s
+      end
+
+      def clean(value)
+        value.to_s
+          .gsub(/<[^>]*>/, " ")
+          .gsub(/\s+/, " ")
+          .strip
+      end
+
+      def parse_date(value)
+        return nil if value.to_s.strip.empty?
+
+        text = value.to_s.strip
+        return Time.at(text.to_i / 1000).utc.to_date.iso8601 if text.match?(/\A\d{12,}\z/)
+        return Date.iso8601(text[0, 10]).iso8601 if text.match?(/\A\d{4}-\d{2}-\d{2}/)
+
+        nil
+      rescue Date::Error, ArgumentError
+        nil
+      end
+    end
+  end
+end
