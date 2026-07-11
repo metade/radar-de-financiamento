@@ -50,9 +50,15 @@ Inspect the live Portugal 2030 source without writing a report:
 bundle exec ruby bin/check_portugal_2030_source --limit 20
 ```
 
+Inspect the live European Urban Initiative source without writing a report:
+
+```sh
+bundle exec ruby bin/check_european_urban_initiative_source --raw --limit 20
+```
+
 ## Funding Sources
 
-The default sources are `FundingRadar::Sources::EuFundingTendersSource` and `FundingRadar::Sources::Portugal2030Source`.
+The default sources are `FundingRadar::Sources::EuFundingTendersSource`, `FundingRadar::Sources::Portugal2030Source`, and `FundingRadar::Sources::EuropeanUrbanInitiativeSource`.
 
 The Portugal 2030 adapter reads the official annual-plan XLSX workbook. It retains Lisboa/AML opportunities, multi-region opportunities that explicitly include AML, and nationwide or extra-regional opportunities; it excludes notices limited to other regions. It must not depend on live calls in tests.
 

@@ -8,9 +8,10 @@ class SourceBuilderTest < Minitest::Test
       http_client: Object.new
     )
 
-    assert_equal 2, sources.size
+    assert_equal 3, sources.size
     assert_instance_of FundingRadar::Sources::EuFundingTendersSource, sources.first
-    assert_instance_of FundingRadar::Sources::Portugal2030Source, sources.last
+    assert_instance_of FundingRadar::Sources::Portugal2030Source, sources[1]
+    assert_instance_of FundingRadar::Sources::EuropeanUrbanInitiativeSource, sources[2]
   end
 
   def test_fixtures_are_opt_in
@@ -20,7 +21,7 @@ class SourceBuilderTest < Minitest::Test
       http_client: Object.new
     )
 
-    assert_equal 3, sources.size
+    assert_equal 4, sources.size
     assert_instance_of FundingRadar::Sources::EuFundingTendersSource, sources.first
     assert_instance_of FundingRadar::Sources::FixtureSource, sources.last
   end

@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+require "cgi"
+require "optparse"
+require_relative "../lib/funding_radar"
+
+options = {limit: 10, show_raw: false}
+OptionParser.new do |parser|
+  parser.banner = "Usage: bin/check_european_urban_initiative_source [options]"
+  parser.on("-l", "--limit N", Integer, "Number of opportunities to show") { |value| options[:limit] = value }
+  parser.on("--raw", "Print basic diagnostics from the catalogue HTML") { options[:show_raw] = true }
+end.parse!
+
+client = FundingRadar::HttpClient.new
+url = FundingRadar::Sources::EuropeanUrbanInitiativeSource::CATALOGUE_URL
+html = client.get(url, headers: {"Accept" => "text/html"})
+
+if options[:show_raw]
+  articles = html.scan(/<article\b.*?<\/article>/im)
+  statuses = html.scan(/\b(Open|Upcoming|Closed)\b/i).flatten.tally
+  puts "Catalogue: #{url}"
+  puts "HTML bytes: #{html.bytesize}"
+  puts "Article cards: #{articles.size}"
+  puts "Headings: #{html.scan(/<h[1-6]\b/i).size}"
+  puts "Status labels: #{statuses.empty? ? 'none' : statuses.map { |status, count| "#{status}=#{count}" }.join(', ')}"
+  puts "Sample card text:"
+  articles.first(2).each do |article|
+    text = CGI.unescapeHTML(article.gsub(/<[^>]+>/, " ")).gsub(/\s+/, " ").strip
+    puts "  #{text[0, 500]}"
+  end
+  puts
+end
+
+source = FundingRadar::Sources::EuropeanUrbanInitiativeSource.new(http_client: client)
+opportunities = source.fetch
+puts "European Urban Initiative opportunities: #{opportunities.size}"
+opportunities.first(options[:limit]).each do |opportunity|
+  amount = opportunity.funding_amount.empty? ? "Montante por confirmar" : opportunity.funding_amount
+  puts "- #{opportunity.id}: #{opportunity.title}"
+  puts "  #{opportunity.deadline || 'Por confirmar'} | #{amount}"
+  puts "  applicants: #{opportunity.eligible_applicants.join(', ')}"
+  puts "  link: #{opportunity.official_link}"
+end

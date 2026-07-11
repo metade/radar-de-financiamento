@@ -43,7 +43,7 @@ The generation pipeline is implemented in `lib/funding_radar`.
 5. A dated ISO-week report is written to `_reports/YYYY-Www.md`, with a matching `_reports/YYYY-Www.csv` export of its opportunities.
 6. Jekyll renders the homepage, individual report pages, and archive.
 
-By default, report generation queries the official EU Funding & Tenders Portal search API and the official Portugal 2030 annual notice plan workbook, normalizing both into the same opportunity model. Fixture data remains available for local fallback and demos.
+By default, report generation queries the official EU Funding & Tenders Portal search API, the official Portugal 2030 annual notice plan workbook, and the European Urban Initiative call catalogue, normalizing them into the same opportunity model. Fixture data remains available for local fallback and demos.
 
 HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
 
@@ -71,6 +71,12 @@ To inspect the live Portugal 2030 workbook source without writing a report:
 
 ```sh
 bundle exec ruby bin/check_portugal_2030_source --limit 20
+```
+
+To inspect the live European Urban Initiative catalogue without writing a report:
+
+```sh
+bundle exec ruby bin/check_european_urban_initiative_source --raw --limit 20
 ```
 
 ## GitHub Actions
@@ -106,7 +112,8 @@ After adding the adapter:
 
 1. Add tests for the adapter.
 2. Register it in `bin/generate_report`.
-3. Ensure duplicate handling still produces one record per real opportunity.
+3. Add a `bin/check_<source>_source` debugging script that can inspect the live/raw source without writing a report.
+4. Ensure duplicate handling still produces one record per real opportunity.
 
 The scoring, report generation, and Jekyll templates should not need source-specific changes.
 
@@ -123,7 +130,7 @@ Use this checklist to track the source suggestions from the project’s funding-
 | Lisboa 2030 | Viable — later | Easy | [Lisboa 2030 notices](https://lisboa.portugal2030.pt/avisos/) | Portal HTML; same official annual-plan XLSX | High for AML municipalities, but not a distinct national source | Very high; programme is already represented in Portugal 2030 | Official regional programme and stable notice filters, but implementing it separately would duplicate existing records. Revisit only for regional detail missing from the central plan. |
 | Turismo de Portugal | Viable — later | Easy | [Candidaturas e avisos](https://business.turismodeportugal.pt/pt/Investir/Financiamento/avisos-concursos/Paginas/default.aspx) | Stable HTML listing and linked notices; no public feed/API found | Low to medium; mainly tourism companies/private promoters, with occasional public-sector relevance | High for Portugal 2030 notices | Publishes actual open/closed calls and deadlines, but the page is a mixed listing and eligibility must be read from each notice. Static scheduled scraping is feasible, though HTML/link changes and private-platform submissions add maintenance. |
 | Interreg Sudoe | Viable — later | Medium | [Official calls](https://interreg-sudoe.eu/en/las-convocatorias-sudoe-ya-estan-abiertas/call/) | Official HTML pages plus PDF/DOCX call kits; eSudoe2127 is a private submission application; no public API/feed found | Medium to high for municipalities able to join transnational partnerships across Portugal, Spain and southwest France | Low to medium; distinct Interreg programme, though thematic EU overlap is possible | Actual periodic calls, including 2026 calls with 30 September deadline. Discovery can be scheduled from the calls/news pages, but documents must be parsed and eligibility is partnership-specific. Authentication is required to submit, not to read calls. |
-| European Urban Initiative | Viable — next | Medium | [EUI call catalogue](https://portico.urban-initiative.eu/urban-panorama/call-for-proposals) and [EUI site](https://www.urban-initiative.eu/) | Stable official HTML catalogue with status/deadline/support/amount fields and linked call documents; no public API/feed found | Very high for urban authorities and cities; municipalities are explicit eligible applicants for Innovative Actions and related calls | Low; distinct ERDF urban initiative, not normally a Funding & Tenders or Portugal 2030 notice | Publishes actual grants and calls for applications, not just news. Static scheduled generation is feasible from the catalogue, with periodic-call coverage and possible HTML/schema changes. Current 4th Innovative Actions call closed 15 June 2026; capacity-building calls remain recurring. |
+| European Urban Initiative | Done | Medium | [EUI call catalogue](https://portico.urban-initiative.eu/urban-panorama/call-for-proposals) and [EUI site](https://www.urban-initiative.eu/) | Stable official HTML catalogue with status/deadline/support/amount fields and linked call documents; no public API/feed found | Very high for urban authorities and cities; municipalities are explicit eligible applicants for Innovative Actions and related calls | Low; distinct ERDF urban initiative, not normally a Funding & Tenders or Portugal 2030 notice | Adapter imports open and upcoming catalogue entries, including eligibility, deadline and funding support where published; closed calls are omitted. |
 | IPDJ | Not suitable | Medium | [IPDJ candidaturas](https://ipdj.gov.pt/candidaturas) | Official HTML programme pages and online forms; no public API/feed found | Low for municipalities/juntas as direct applicants; mostly associations, clubs, federations and youth organisations | Low; mostly outside existing sources | It publishes real calls, but eligibility is narrowly organisation-based and an official sports-prize notice explicitly excludes local authorities. Keep as a manual signpost only if the product later expands to local partner organisations. |
 | FCT | Not suitable | Medium | [myFCT calls](https://outsystems.fct.pt/MyFCT/) and [FCT contests](https://www.fct.pt/concursos/) | Dynamic official call catalogue; detailed PDFs and myFCT authenticated submission; no public feed/API found | Low as a direct municipal source; primarily researchers, SNCT institutions and R&D consortia | Some thematic overlap with EU Funding & Tenders, but different national research funding | Actual calls are published, but direct municipal eligibility is uncommon and requires notice-by-notice interpretation. Dynamic rendering, login and document-heavy details make it poor for the current static radar. |
 | LEADER | Viable — later | Hard | [PEPAC GAL and contests](https://pepacc.pt/leader/) | Central official HTML territory/GAL directory and contest pages; individual GAL sites and PDF notices; no common public API/feed found | Medium in rural territories; direct eligibility varies and many calls target farms/SMEs, though public/local partners can be relevant | Low to medium; PEPAC/LEADER is distinct, but rural calls can resemble Portugal 2030 local-development opportunities | The PEPAC site currently maps 52 GALs, territories and available contests, so discovery is possible. The blocker is heterogeneous GAL content, changing links and notice-by-notice eligibility; scheduled static generation would need a central-first strategy plus fallbacks. |
