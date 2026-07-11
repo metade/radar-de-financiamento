@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/funding_radar"
+
+http_client = FundingRadar::HttpClient.new
+urls = [
+  FundingRadar::Sources::InterregSudoeSource::INDEX_URL,
+  *FundingRadar::Sources::InterregSudoeSource::CALL_URLS
+]
+
+urls.each do |url|
+  begin
+    body = http_client.get(url, headers: FundingRadar::Sources::InterregSudoeSource::REQUEST_HEADERS)
+    title = body.to_s[/<title[^>]*>(.*?)<\/title>/im, 1].to_s.gsub(/\s+/, " ").strip
+    puts "HTTP OK #{body.to_s.bytesize} bytes | #{url} | #{title}"
+  rescue StandardError => error
+    warn "HTTP ERROR #{url} | #{error.class}: #{error.message}"
+  end
+end
+
+source = FundingRadar::Sources::InterregSudoeSource.new(http_client: http_client)
+
+opportunities = source.fetch
+puts "Interreg Sudoe opportunities: #{opportunities.size}"
+opportunities.each do |opportunity|
+  puts "- #{opportunity.title} | #{opportunity.deadline || 'Por confirmar'} | #{opportunity.official_link}"
+end
