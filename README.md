@@ -40,7 +40,7 @@ The generation pipeline is implemented in `lib/funding_radar`.
 2. Opportunities are normalized into a common Ruby object.
 3. Duplicate opportunities are removed deterministically.
 4. The relevance scorer assigns a score, category, explanation, and suggested next step.
-5. A dated ISO-week report is written to `_reports/YYYY-Www.md`.
+5. A dated ISO-week report is written to `_reports/YYYY-Www.md`, with a matching `_reports/YYYY-Www.csv` export of its opportunities.
 6. Jekyll renders the homepage, individual report pages, and archive.
 
 By default, report generation queries the official EU Funding & Tenders Portal search API and normalizes Funding & Tenders topic records. Fixture data remains available for local fallback and demos.

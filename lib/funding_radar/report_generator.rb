@@ -1,4 +1,5 @@
 require "date"
+require "csv"
 require "fileutils"
 require "time"
 require "yaml"
@@ -29,8 +30,10 @@ module FundingRadar
       )
 
       FileUtils.mkdir_p(@reports_dir)
-      path = File.join(@reports_dir, @filename || "#{report.week_id}.md")
+      filename = @filename || "#{report.week_id}.md"
+      path = File.join(@reports_dir, filename)
       File.write(path, render(report))
+      File.write(csv_path_for(filename), render_csv(report))
       path
     end
 
@@ -67,6 +70,33 @@ module FundingRadar
       }
 
       "#{front_matter.to_yaml}---\n"
+    end
+
+    def render_csv(report)
+      CSV.generate(headers: true) do |csv|
+        csv << csv_headers
+        report.opportunities.each do |opportunity|
+          csv << csv_headers.map { |header| csv_value(opportunity.fetch(header)) }
+        end
+      end
+    end
+
+    def csv_headers
+      %w[
+        id title programme deadline funding_source official_link eligible_applicants
+        partnership_requirements summary themes relevance_score relevance_category
+        relevance_explanation deadline_status
+      ]
+    end
+
+    def csv_value(value)
+      return value.join("; ") if value.is_a?(Array)
+
+      value
+    end
+
+    def csv_path_for(filename)
+      File.join(@reports_dir, "#{File.basename(filename, ".md")}.csv")
     end
 
     def iso_week_id(date)

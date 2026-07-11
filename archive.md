@@ -5,7 +5,7 @@ permalink: /arquivo/
 ---
 
 {% assign reports = site.reports | sort: "generated_on" | reverse %}
-{% assign reports = reports | where_exp: "report", "report.name != 'latest'" %}
+{% assign reports = reports | where_exp: "report", "report.name != 'latest.md'" %}
 
 <section class="bg-soft-sky">
   <div class="mx-auto max-w-6xl px-5 py-10">
@@ -24,6 +24,7 @@ permalink: /arquivo/
             <a class="hover:underline" href="{{ report.url | relative_url }}">{{ report.title }}</a>
           </h2>
           <p class="mt-2 text-slate-700">{{ report.opportunities | size }} oportunidades analisadas.</p>
+          <p class="mt-3"><a class="text-sm font-semibold text-civic-blue underline hover:text-ink" href="{{ '/relatorios/' | append: report.name | replace: '.md', '' | append: '.csv' | relative_url }}">Descarregar CSV</a></p>
         </article>
       {% endfor %}
     </div>

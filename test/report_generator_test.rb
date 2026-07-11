@@ -1,4 +1,5 @@
 require "test_helper"
+require "csv"
 
 class ReportGeneratorTest < Minitest::Test
   def test_generates_iso_week_report_and_updates_same_week
@@ -19,6 +20,18 @@ class ReportGeneratorTest < Minitest::Test
       assert document.fetch("opportunities").first.key?("relevance_score")
       assert document.fetch("opportunities").first.key?("deadline_status")
       assert document.fetch("disclaimer").include?("documentação oficial")
+
+      csv_path = File.join(dir, "2026-W28.csv")
+      assert File.file?(csv_path)
+      csv = CSV.read(csv_path, headers: true)
+      assert_equal %w[
+        id title programme deadline funding_source official_link eligible_applicants
+        partnership_requirements summary themes relevance_score relevance_category
+        relevance_explanation deadline_status
+      ], csv.headers
+      assert_equal document.fetch("opportunities").size, csv.size
+      assert_equal document.fetch("opportunities").first.fetch("id"), csv.first.fetch("id")
+      assert_equal document.fetch("opportunities").first.fetch("eligible_applicants").join("; "), csv.first.fetch("eligible_applicants")
     end
   end
 
@@ -45,6 +58,7 @@ class ReportGeneratorTest < Minitest::Test
 
       assert_equal File.join(dir, "latest.md"), path
       assert File.file?(path)
+      assert File.file?(File.join(dir, "latest.csv"))
     end
   end
 

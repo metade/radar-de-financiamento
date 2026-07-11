@@ -6,6 +6,7 @@
     <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-700">Resumo semanal de oportunidades de financiamento com potencial interesse para municípios, juntas de freguesia e outras entidades públicas locais.</p>
     <p class="mt-3 text-sm text-slate-600">Gerado em {{ report.generated_at }}</p>
     <p class="mt-5 inline-block border-l-4 border-civic-gold bg-white px-4 py-3 text-sm font-medium text-slate-700">{{ report.disclaimer }}</p>
+    <p class="mt-5"><a class="text-sm font-semibold text-civic-blue underline hover:text-ink" href="{{ '/relatorios/' | append: report.name | replace: '.md', '' | append: '.csv' | relative_url }}">Descarregar oportunidades em CSV</a></p>
   </div>
 </section>
 
