@@ -1,4 +1,5 @@
 _site/
 node_modules/
+.mise.local.toml
 /tmp/cache/funding_radar/
 _reports/latest.md
