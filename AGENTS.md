@@ -44,9 +44,17 @@ Inspect the live EU source without writing a report:
 bundle exec ruby bin/check_eu_source --year 2026 --limit 20
 ```
 
+Inspect the live Portugal 2030 source without writing a report:
+
+```sh
+bundle exec ruby bin/check_portugal_2030_source --limit 20
+```
+
 ## Funding Sources
 
-The default source is `FundingRadar::Sources::EuFundingTendersSource`.
+The default sources are `FundingRadar::Sources::EuFundingTendersSource` and `FundingRadar::Sources::Portugal2030Source`.
+
+The Portugal 2030 adapter reads the official annual-plan XLSX workbook. It retains Lisboa/AML opportunities, multi-region opportunities that explicitly include AML, and nationwide or extra-regional opportunities; it excludes notices limited to other regions. It must not depend on live calls in tests.
 
 Fixture data exists in `data/sources/fixtures.yml`, but normal report generation must not include it. Fixtures are opt-in only:
 
@@ -86,6 +94,8 @@ The report theme filter uses locally bundled Web Awesome components. Keep the We
 Theme keys such as `climate` and `community_development` are canonical internal IDs used by scoring and source normalization. Portuguese labels and URL-safe query slugs are maintained in `_data/theme_labels.yml`. Shared filter URLs use repeated `tema` parameters, for example `?tema=clima&tema=inclusao`; the JavaScript continues to read legacy English `theme` parameters for compatibility.
 
 The date filters and theme filters are client-side only, preserve their state in the URL, and must continue to work on static GitHub Pages without a backend.
+
+The source filter is also client-side only and uses repeated Portuguese `fonte` parameters, for example `?fonte=Portugal%202030`; legacy `source` parameters remain readable for compatibility.
 
 If report generation is changed, confirm the generated report contains only live-source records unless `INCLUDE_FIXTURES=true` is explicitly used.
 
