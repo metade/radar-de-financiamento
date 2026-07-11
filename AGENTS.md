@@ -20,6 +20,12 @@ Build CSS:
 npm run build:css
 ```
 
+Build the local Web Awesome components used by the report filters:
+
+```sh
+npm run build:js
+```
+
 Build the site:
 
 ```sh
@@ -69,8 +75,17 @@ Before finishing source, report, or template changes, run:
 ```sh
 bundle exec rake test
 npm run build:css
+npm run build:js
 bundle exec jekyll build
 ```
+
+## Frontend Filter Notes
+
+The report theme filter uses locally bundled Web Awesome components. Keep the Web Awesome assets self-hosted; do not replace them with a CDN runtime dependency.
+
+Theme keys such as `climate` and `community_development` are canonical internal IDs used by scoring and source normalization. Portuguese labels and URL-safe query slugs are maintained in `_data/theme_labels.yml`. Shared filter URLs use repeated `tema` parameters, for example `?tema=clima&tema=inclusao`; the JavaScript continues to read legacy English `theme` parameters for compatibility.
+
+The date filters and theme filters are client-side only, preserve their state in the URL, and must continue to work on static GitHub Pages without a backend.
 
 If report generation is changed, confirm the generated report contains only live-source records unless `INCLUDE_FIXTURES=true` is explicitly used.
 
