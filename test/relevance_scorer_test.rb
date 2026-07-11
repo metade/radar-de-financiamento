@@ -42,6 +42,24 @@ class RelevanceScorerTest < Minitest::Test
     assert_match "faltam sinais fortes", result.explanation
   end
 
+  def test_recognizes_english_local_authority_eligibility
+    opportunity = FundingRadar::Opportunity.from_hash(
+      "id" => "eui",
+      "title" => "Circular city projects",
+      "programme" => "European Urban Initiative",
+      "funding_source" => "European Urban Initiative",
+      "official_link" => "https://example.test/eui",
+      "eligible_applicants" => ["Local/regional authorities, utilities and services"],
+      "summary" => "Support for sustainable urban development.",
+      "themes" => ["community_development", "environment"]
+    )
+
+    result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
+
+    assert_equal 70, result.score
+    assert_match "aceita autarquias", result.explanation
+  end
+
   def test_prioritizes_lisbon_or_aml_opportunities
     opportunity = FundingRadar::Opportunity.from_hash(
       "id" => "lisbon",

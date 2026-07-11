@@ -9,7 +9,12 @@ module FundingRadar
       "entidades públicas",
       "entidades publicas",
       "administração pública",
-      "administracao publica"
+      "administracao publica",
+      "local authorities",
+      "local/regional authorities",
+      "municipalities",
+      "public authorities",
+      "urban authorities"
     ].freeze
 
     THEME_WEIGHTS = {
