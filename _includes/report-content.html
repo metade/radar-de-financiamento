@@ -45,6 +45,7 @@
         <div><label class="block text-sm font-bold text-slate-700" for="theme-filter">Temas</label><wa-select class="mt-1 block" id="theme-filter" aria-label="Temas" hint="Pode selecionar vários temas." size="small" multiple with-clear max-options-visible="2">{% for theme in site.data.theme_labels %}<wa-option value="{{ theme[1].query }}">{{ theme[1].label }}</wa-option>{% endfor %}</wa-select></div>
         <div><label class="block text-sm font-bold text-slate-700" for="source-filter">Fontes / programas</label><wa-select class="mt-1 block" id="source-filter" aria-label="Fontes / programas" hint="Pode selecionar várias fontes ou programas." size="small" multiple with-clear max-options-visible="2">{% for source in funding_sources %}<wa-option value="{{ source | escape }}">{{ source }}</wa-option>{% endfor %}</wa-select></div>
       </div>
+      <label class="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700"><input id="include-expired" type="checkbox" class="h-4 w-4 accent-civic-blue"> Incluir oportunidades expiradas</label>
       </form>
     </details>
     {% for opportunity in report.opportunities %}
@@ -60,6 +61,7 @@
     const fields = [...document.querySelectorAll('.filter-date')];
     const themeFilter = document.querySelector('#theme-filter');
     const sourceFilter = document.querySelector('#source-filter');
+    const includeExpired = document.querySelector('#include-expired');
     const count = document.querySelector('#filter-count');
     const relevanceFilters = [...document.querySelectorAll('.relevance-filter')];
     const relevanceCounts = [...document.querySelectorAll('[data-relevance-count]')];
@@ -68,13 +70,19 @@
     const selectedThemes = () => themeFilter.value || [];
     const selectedSources = () => sourceFilter.value || [];
     const selectedRelevance = () => relevanceFilters.filter((filter) => filter.getAttribute('aria-pressed') === 'true').map((filter) => filter.dataset.relevance);
+    const today = () => {
+      const date = new Date();
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    };
+    const isExpired = (card) => Boolean(card.dataset.deadline) && card.dataset.deadline < today();
     const syncUrl = () => {
       const url = new URL(window.location.href);
-      [...fields.map((field) => field.id), 'tema', 'theme', 'fonte', 'source', 'relevancia', 'relevance'].forEach((key) => url.searchParams.delete(key));
+      [...fields.map((field) => field.id), 'tema', 'theme', 'fonte', 'source', 'relevancia', 'relevance', 'expiradas', 'expired'].forEach((key) => url.searchParams.delete(key));
       fields.forEach((field) => { if (field.value) url.searchParams.set(field.id, field.value); });
       selectedThemes().forEach((theme) => url.searchParams.append('tema', theme));
       selectedSources().forEach((source) => url.searchParams.append('fonte', source));
       selectedRelevance().forEach((relevance) => url.searchParams.append('relevancia', relevance));
+      if (includeExpired.checked) url.searchParams.set('expiradas', 'true');
       window.history.replaceState({}, '', url);
     };
     const apply = ({updateUrl = true} = {}) => {
@@ -82,11 +90,12 @@
       const themes = selectedThemes();
       const sources = selectedSources();
       const relevance = selectedRelevance();
+      const showExpired = includeExpired.checked;
       let visible = 0;
       cards.forEach((card) => {
         const cardThemes = card.dataset.themes ? card.dataset.themes.split(',') : [];
         const cardSources = card.dataset.source ? card.dataset.source.split('|') : [];
-        const matchesOtherFilters = matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.some((source) => cardSources.includes(source)));
+        const matchesOtherFilters = (showExpired || !isExpired(card)) && matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.some((source) => cardSources.includes(source)));
         const show = matchesOtherFilters && (relevance.length === 0 || relevance.includes(card.dataset.relevance));
         card.hidden = !show;
         if (show) visible += 1;
@@ -96,16 +105,17 @@
         counter.textContent = cards.filter((card) => {
           const cardThemes = card.dataset.themes ? card.dataset.themes.split(',') : [];
           const cardSources = card.dataset.source ? card.dataset.source.split('|') : [];
-          return card.dataset.relevance === category && matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.some((source) => cardSources.includes(source)));
+          return (showExpired || !isExpired(card)) && card.dataset.relevance === category && matches(card.dataset.openingDate, values['opening-from'], values['opening-to']) && matches(card.dataset.deadline, values['deadline-from'], values['deadline-to']) && (themes.length === 0 || themes.some((theme) => cardThemes.includes(theme))) && (sources.length === 0 || sources.some((source) => cardSources.includes(source)));
         }).length;
       });
       count.textContent = `${visible} de ${cards.length} oportunidades visíveis`;
-      clearFilters.disabled = fields.every((field) => !field.value) && themes.length === 0 && sources.length === 0 && relevance.length === 0;
+      clearFilters.disabled = fields.every((field) => !field.value) && themes.length === 0 && sources.length === 0 && relevance.length === 0 && !includeExpired.checked;
       if (updateUrl) syncUrl();
     };
     fields.forEach((field) => field.addEventListener('input', apply));
     themeFilter.addEventListener('change', apply);
     sourceFilter.addEventListener('change', apply);
+    includeExpired.addEventListener('change', apply);
     relevanceFilters.forEach((filter) => filter.addEventListener('click', () => {
       const pressed = filter.getAttribute('aria-pressed') === 'true';
       filter.setAttribute('aria-pressed', String(!pressed));
@@ -115,13 +125,14 @@
       apply();
     }));
     const clearFilters = document.querySelector('#clear-filters');
-    clearFilters.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); fields.forEach((field) => { field.value = ''; }); themeFilter.value = []; sourceFilter.value = []; relevanceFilters.forEach((filter) => { filter.setAttribute('aria-pressed', 'false'); filter.classList.remove('bg-slate-50', 'ring-2', 'ring-civic-blue'); }); apply(); });
+    clearFilters.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); fields.forEach((field) => { field.value = ''; }); themeFilter.value = []; sourceFilter.value = []; includeExpired.checked = false; relevanceFilters.forEach((filter) => { filter.setAttribute('aria-pressed', 'false'); filter.classList.remove('bg-slate-50', 'ring-2', 'ring-civic-blue'); }); apply(); });
     const restoreFromUrl = () => {
       const params = new URL(window.location.href).searchParams;
       fields.forEach((field) => { field.value = params.get(field.id) || ''; });
       const themes = new Set([...params.getAll('tema'), ...params.getAll('theme')].map((theme) => themeAliases[theme] || theme));
       themeFilter.value = [...themes];
       sourceFilter.value = [...new Set([...params.getAll('fonte'), ...params.getAll('source')])];
+      includeExpired.checked = params.get('expiradas') === 'true' || params.get('expired') === 'true';
       const relevance = new Set([...params.getAll('relevancia'), ...params.getAll('relevance')]);
       relevanceFilters.forEach((filter) => {
         const selected = relevance.has(filter.dataset.relevance);
