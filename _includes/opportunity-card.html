@@ -6,7 +6,7 @@
   {% assign category_class = "border-civic-blue bg-soft-sky text-civic-blue" %}
 {% endif %}
 
-<article class="opportunity-card border border-line bg-white p-5 shadow-sm" data-opening-date="{{ opportunity.opening_date }}" data-deadline="{{ opportunity.deadline }}" data-source="{{ opportunity.funding_source | escape }}" data-relevance="{{ opportunity.relevance_category | escape }}" data-themes="{% for theme in opportunity.themes %}{{ site.data.theme_labels[theme].query | default: theme }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+<article class="opportunity-card border border-line bg-white p-5 shadow-sm" data-opening-date="{{ opportunity.opening_date }}" data-deadline="{{ opportunity.deadline }}" data-source="{{ opportunity.funding_source | escape }}|{{ opportunity.programme | escape }}" data-relevance="{{ opportunity.relevance_category | escape }}" data-themes="{% for theme in opportunity.themes %}{{ site.data.theme_labels[theme].query | default: theme }}{% unless forloop.last %},{% endunless %}{% endfor %}">
   <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
     <div>
       <p class="text-sm font-semibold text-slate-600">{{ opportunity.programme }} · {{ opportunity.funding_source }}</p>
