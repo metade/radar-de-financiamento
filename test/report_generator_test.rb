@@ -62,16 +62,42 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_both_mode_writes_a_comparison_report
+    Dir.mktmpdir do |dir|
+      processor = Class.new do
+        def process(opportunity)
+          FundingRadar::LlmProcessing::Result.new(
+            opportunity,
+            "Resumo LLM.",
+            "generated",
+            "cache-key",
+            nil
+          )
+        end
+      end.new
+      generator = build_generator(dir, filename: "latest.md", llm_processor: processor, processing_mode: "both")
+
+      generator.generate(today: Date.new(2026, 7, 11))
+
+      comparison = File.join(dir, "latest-llm-comparison.md")
+      assert File.file?(comparison)
+      assert_includes File.read(comparison), "Resumo determinístico"
+      assert_includes File.read(comparison), "Resumo LLM"
+    end
+  end
+
   private
 
-  def build_generator(dir, filename: nil)
+  def build_generator(dir, filename: nil, llm_processor: nil, processing_mode: "deterministic")
     source = FundingRadar::Sources::FixtureSource.new(path: File.expand_path("../data/sources/fixtures.yml", __dir__))
     FundingRadar::ReportGenerator.new(
       source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
       duplicate_resolver: FundingRadar::DuplicateResolver.new,
       scorer: FundingRadar::RelevanceScorer.new,
       reports_dir: dir,
-      filename: filename
+      filename: filename,
+      llm_processor: llm_processor,
+      processing_mode: processing_mode
     )
   end
 end

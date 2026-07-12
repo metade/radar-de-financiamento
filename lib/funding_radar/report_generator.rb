@@ -8,18 +8,24 @@ module FundingRadar
   class ReportGenerator
     DISCLAIMER = "A elegibilidade deve ser sempre confirmada nos avisos e documentação oficial de cada programa.".freeze
 
-    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil)
+    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil, llm_processor: nil, processing_mode: "deterministic")
       @source_registry = source_registry
       @duplicate_resolver = duplicate_resolver
       @scorer = scorer
       @reports_dir = reports_dir
       @filename = filename
+      @llm_processor = llm_processor
+      @processing_mode = processing_mode
     end
 
     def generate(today: Date.today)
       opportunities = @duplicate_resolver.resolve(@source_registry.fetch_all)
-      scored = opportunities.map { |opportunity| serialize(opportunity, @scorer.score(opportunity, today: today), today) }
-      scored.sort_by! { |item| [-item.fetch("relevance_score"), item.fetch("deadline").to_s, item.fetch("title")] }
+      scored_pairs = opportunities.map { |opportunity| [opportunity, @scorer.score(opportunity, today: today)] }
+      scored_pairs.sort_by! { |opportunity, result| [-result.score, opportunity.deadline.to_s, opportunity.title] }
+
+      deterministic = scored_pairs.map { |opportunity, result| serialize(opportunity, result, today) }
+      processed = process(scored_pairs)
+      scored = processed.map { |opportunity, result| serialize(opportunity, result, today) }
 
       report = Report.new(
         week_id: iso_week_id(today),
@@ -34,6 +40,7 @@ module FundingRadar
       path = File.join(@reports_dir, filename)
       File.write(path, render(report))
       File.write(csv_path_for(filename), render_csv(report))
+      write_comparison(scored_pairs, deterministic, processed, report.week_id, filename, today) if @processing_mode == "both" && @llm_processor
       path
     end
 
@@ -59,6 +66,47 @@ module FundingRadar
         "relevance_explanation" => result.explanation,
         "deadline_status" => deadline_status(opportunity, today)
       }
+    end
+
+    def process(scored_pairs)
+      return scored_pairs if @processing_mode == "deterministic" || !@llm_processor
+
+      @processing_results = {}
+      scored_pairs.map do |opportunity, result|
+        processed = @llm_processor.process(opportunity)
+        @processing_results[opportunity.object_id] = processed
+        [opportunity.with(summary: processed.summary), result]
+      end
+    end
+
+    def write_comparison(scored_pairs, deterministic, processed, week_id, filename, today)
+      comparison_filename = "#{File.basename(filename, ".md")}-llm-comparison.md"
+      comparison_path = File.join(@reports_dir, comparison_filename)
+      rows = scored_pairs.each_with_index.map do |(opportunity, result), index|
+        llm_opportunity, = processed[index]
+        llm_result = @processing_results.fetch(opportunity.object_id)
+        [deterministic[index], llm_opportunity, llm_result]
+      end
+
+      content = [
+        {"layout" => "default", "title" => "Comparação LLM - #{week_id}", "week_id" => week_id}.to_yaml.sub(/\A---\n/, ""),
+        "---",
+        "\n# Comparação entre resumo determinístico e resumo LLM\n",
+        "Gerado em #{Time.now.getlocal.iso8601}. A versão determinística continua a ser a referência.\n"
+      ]
+      rows.each do |deterministic_item, llm_opportunity, llm_result|
+        content << "## #{deterministic_item.fetch("title")}\n"
+        content << "**Fonte:** #{deterministic_item.fetch("funding_source")}  \n"
+        content << "**Ligação oficial:** #{deterministic_item.fetch("official_link")}  \n"
+        content << "\n**Resumo determinístico**\n\n#{markdown_text(deterministic_item.fetch("summary"))}\n"
+        content << "\n**Resumo LLM (#{llm_result.status})**\n\n#{markdown_text(llm_opportunity.summary)}\n"
+        content << "\n---\n"
+      end
+      File.write(comparison_path, content.join("\n"))
+    end
+
+    def markdown_text(value)
+      value.to_s.gsub("\n", " ")
     end
 
     def render(report)

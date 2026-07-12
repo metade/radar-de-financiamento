@@ -61,6 +61,14 @@ To include local fixture opportunities alongside live portal results:
 INCLUDE_FIXTURES=true bundle exec ruby bin/generate_report
 ```
 
+LLM-assisted summaries are opt-in and configured per source in `data/llm_processing.yml`. The normal report remains deterministic. To run a local LLM report, set the global enable switch, provider key, and processing mode:
+
+```sh
+FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bundle exec ruby bin/generate_report
+```
+
+Use `REPORT_PROCESSING=both` to generate the deterministic report and a marked `*-llm-comparison.md` review report. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful summaries are cached in the committed `data/llm_cache/` directory and are invalidated when the source content, prompt version, model, or schema changes.
+
 To inspect the live EU Funding & Tenders source without writing a report:
 
 ```sh

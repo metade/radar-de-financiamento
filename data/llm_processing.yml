@@ -1,0 +1,36 @@
+# LLM processing is opt-in. Set REPORT_PROCESSING=source_config and
+# FUNDING_RADAR_LLM=enabled before any provider calls are made.
+profiles:
+  default:
+    instruction: >-
+      Escreve um resumo curto, factual e claro em português de Portugal para
+      autarquias. Usa apenas os dados fornecidos. Não inventes critérios,
+      prazos, valores ou beneficiários. Indica que a documentação oficial deve
+      ser consultada quando os dados forem incompletos.
+    max_characters: 420
+
+sources:
+  eu_funding_tenders:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  portugal_2030:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  interreg_sudoe:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  european_urban_initiative:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  turismo_de_portugal:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  fixtures:
+    enabled: false
+    profile: default
+    prompt_version: v1
