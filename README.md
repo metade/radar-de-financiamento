@@ -67,7 +67,19 @@ LLM-assisted summaries are opt-in and configured per source in `data/llm_process
 FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bundle exec ruby bin/generate_report
 ```
 
-Use `REPORT_PROCESSING=both` to generate the deterministic report and a marked `*-llm-comparison.md` review report. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful summaries are cached in the committed `data/llm_cache/` directory and are invalidated when the source content, prompt version, model, or schema changes.
+Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful summaries are cached in the committed `data/llm_cache/` directory and are invalidated when the source content, prompt version, model, or schema changes.
+
+For a small local LLM experiment, limit the report to a fixed number of opportunities per source. This limit is applied before duplicate resolution and works with deterministic, source-configured, or comparison processing:
+
+```sh
+mise exec -- env \
+  FUNDING_RADAR_LLM=enabled \
+  REPORT_PROCESSING=source_config \
+  REPORT_MODE=development \
+  bundle exec ruby bin/generate_report --tenders-per-source 1
+```
+
+The same setting can be supplied as `REPORT_TENDERS_PER_SOURCE=1`.
 
 To inspect the live EU Funding & Tenders source without writing a report:
 

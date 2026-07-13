@@ -49,7 +49,7 @@
       </form>
     </details>
     {% for opportunity in report.opportunities %}
-      {% include opportunity-card.html opportunity=opportunity %}
+      {% include opportunity-card.html opportunity=opportunity report=report %}
     {% endfor %}
   </div>
 </section>

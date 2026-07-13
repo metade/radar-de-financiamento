@@ -66,6 +66,18 @@ class LlmProcessingTest < Minitest::Test
     end
   end
 
+  def test_does_not_cut_model_output_at_a_character_boundary
+    Dir.mktmpdir do |dir|
+      client = FakeClient.new(summary: "Uma frase completa que ultrapassa o limite configurado.")
+      processor, = build_processor(dir, enabled: true, client: client, max_characters: 10)
+
+      result = processor.process(opportunity)
+
+      assert_equal "Uma frase completa que ultrapassa o limite configurado.", result.summary
+      assert_includes client.calls.first, "até 10 caracteres"
+    end
+  end
+
   private
 
   def opportunity
@@ -82,13 +94,13 @@ class LlmProcessingTest < Minitest::Test
     )
   end
 
-  def build_processor(dir, enabled:, env: {"FUNDING_RADAR_LLM" => "enabled"})
+  def build_processor(dir, enabled:, env: {"FUNDING_RADAR_LLM" => "enabled"}, client: nil, max_characters: 420)
     config_path = File.join(dir, "config.yml")
     File.write(config_path, {
-      "profiles" => {"default" => {"instruction" => "Resume.", "max_characters" => 420}},
+      "profiles" => {"default" => {"instruction" => "Resume.", "max_characters" => max_characters}},
       "sources" => {"eu_funding_tenders" => {"enabled" => enabled, "profile" => "default", "prompt_version" => "v1"}}
     }.to_yaml)
-    client = FakeClient.new
+    client ||= FakeClient.new
     configuration = FundingRadar::LlmProcessing::Configuration.new(path: config_path, env: env)
     processor = FundingRadar::LlmProcessing::Processor.new(
       configuration: configuration,

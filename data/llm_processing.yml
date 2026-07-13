@@ -6,12 +6,13 @@ profiles:
       Escreve um resumo curto, factual e claro em português de Portugal para
       autarquias. Usa apenas os dados fornecidos. Não inventes critérios,
       prazos, valores ou beneficiários. Indica que a documentação oficial deve
-      ser consultada quando os dados forem incompletos.
+      ser consultada quando os dados forem incompletos. Não repitas URLs ou
+      ligações no resumo.
     max_characters: 420
 
 sources:
   eu_funding_tenders:
-    enabled: false
+    enabled: true
     profile: default
     prompt_version: v1
   portugal_2030:

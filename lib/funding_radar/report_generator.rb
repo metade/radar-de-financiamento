@@ -18,14 +18,18 @@ module FundingRadar
       @processing_mode = processing_mode
     end
 
-    def generate(today: Date.today)
-      opportunities = @duplicate_resolver.resolve(@source_registry.fetch_all)
+    def generate(today: Date.today, tenders_per_source: nil)
+      opportunities = limit_per_source(@source_registry.fetch_all, tenders_per_source)
+      opportunities = @duplicate_resolver.resolve(opportunities)
       scored_pairs = opportunities.map { |opportunity| [opportunity, @scorer.score(opportunity, today: today)] }
       scored_pairs.sort_by! { |opportunity, result| [-result.score, opportunity.deadline.to_s, opportunity.title] }
 
       deterministic = scored_pairs.map { |opportunity, result| serialize(opportunity, result, today) }
       processed = process(scored_pairs)
       scored = processed.map { |opportunity, result| serialize(opportunity, result, today) }
+      if comparison_mode?
+        scored.each_with_index { |item, index| item["deterministic_summary"] = deterministic[index].fetch("summary") }
+      end
 
       report = Report.new(
         week_id: iso_week_id(today),
@@ -40,11 +44,28 @@ module FundingRadar
       path = File.join(@reports_dir, filename)
       File.write(path, render(report))
       File.write(csv_path_for(filename), render_csv(report))
-      write_comparison(scored_pairs, deterministic, processed, report.week_id, filename, today) if @processing_mode == "both" && @llm_processor
       path
     end
 
     private
+
+    def limit_per_source(opportunities, limit)
+      return opportunities if limit.nil?
+
+      limit = Integer(limit)
+      raise ArgumentError, "tenders_per_source must be greater than zero" unless limit.positive?
+
+      counts = Hash.new(0)
+      opportunities.select do |opportunity|
+        source = opportunity.funding_source.to_s
+        next false if counts[source] >= limit
+
+        counts[source] += 1
+        true
+      end
+    rescue ArgumentError
+      raise ArgumentError, "tenders_per_source must be a positive integer"
+    end
 
     def serialize(opportunity, result, today)
       {
@@ -79,34 +100,8 @@ module FundingRadar
       end
     end
 
-    def write_comparison(scored_pairs, deterministic, processed, week_id, filename, today)
-      comparison_filename = "#{File.basename(filename, ".md")}-llm-comparison.md"
-      comparison_path = File.join(@reports_dir, comparison_filename)
-      rows = scored_pairs.each_with_index.map do |(opportunity, result), index|
-        llm_opportunity, = processed[index]
-        llm_result = @processing_results.fetch(opportunity.object_id)
-        [deterministic[index], llm_opportunity, llm_result]
-      end
-
-      content = [
-        {"layout" => "default", "title" => "Comparação LLM - #{week_id}", "week_id" => week_id}.to_yaml.sub(/\A---\n/, ""),
-        "---",
-        "\n# Comparação entre resumo determinístico e resumo LLM\n",
-        "Gerado em #{Time.now.getlocal.iso8601}. A versão determinística continua a ser a referência.\n"
-      ]
-      rows.each do |deterministic_item, llm_opportunity, llm_result|
-        content << "## #{deterministic_item.fetch("title")}\n"
-        content << "**Fonte:** #{deterministic_item.fetch("funding_source")}  \n"
-        content << "**Ligação oficial:** #{deterministic_item.fetch("official_link")}  \n"
-        content << "\n**Resumo determinístico**\n\n#{markdown_text(deterministic_item.fetch("summary"))}\n"
-        content << "\n**Resumo LLM (#{llm_result.status})**\n\n#{markdown_text(llm_opportunity.summary)}\n"
-        content << "\n---\n"
-      end
-      File.write(comparison_path, content.join("\n"))
-    end
-
-    def markdown_text(value)
-      value.to_s.gsub("\n", " ")
+    def comparison_mode?
+      @processing_mode == "both" && @llm_processor
     end
 
     def render(report)
@@ -119,6 +114,7 @@ module FundingRadar
         "disclaimer" => DISCLAIMER,
         "opportunities" => report.opportunities
       }
+      front_matter["comparison"] = true if comparison_mode?
 
       "#{front_matter.to_yaml}---\n"
     end
