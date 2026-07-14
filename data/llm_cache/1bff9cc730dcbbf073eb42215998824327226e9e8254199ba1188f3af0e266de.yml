@@ -1,0 +1,22 @@
+---
+result:
+  summary: 'O prémio #BeActive EU Sport Awards na categoria de voluntariado, integrado
+    no programa Erasmus+, visa reconhecer iniciativas que promovam o voluntariado
+    no setor desportivo. A oportunidade tem candidatura aberta de 30 de junho a 17
+    de setembro de 2026, com uma dotação total de 25.000 euros para premiar projetos
+    exemplares.'
+  themes:
+  - volunteering
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não existe informação sobre requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-volunteering
+input_digest: 5903d7214769d9cc400325a1f9c5c4172c05126d4e343a32b7f5b1d3f7f4e6b6
+prompt_version: v1
+schema_version: structured-v1

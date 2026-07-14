@@ -1,0 +1,25 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa, previsto para 2026, visa combater
+    o fenómeno da sem-abrigo através de estratégias de habitação alinhadas com os
+    princípios da Nova Bauhaus Europeia. O financiamento total é de 12,6 milhões de
+    euros, com um limite de até 6,3 milhões de euros por projeto, sendo dirigido especificamente
+    a municípios ou autoridades locais.
+  themes:
+  - inclusion
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: unclear
+    details: O texto sugere a existência de requisitos de consórcio ou parceria, devendo
+      estes ser confirmados no aviso oficial da oportunidade.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-participation-01
+input_digest: a3deaaec9f836203542e6501b7e372acac87ff1304c562e6929234e62587c14e
+prompt_version: v1
+schema_version: structured-v1

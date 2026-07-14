@@ -13,6 +13,11 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  FUNDING_RADAR_LLM: ${{ vars.FUNDING_RADAR_LLM || 'enabled' }}
+  REPORT_PROCESSING: ${{ vars.REPORT_PROCESSING || 'both' }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -53,7 +58,7 @@ jobs:
           if [ -n "$(git status --porcelain _reports)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add _reports
+            git add _reports data/llm_cache
             git commit -m "Update weekly funding report"
             git push
           else

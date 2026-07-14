@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa Horizonte Europa financia soluções inovadoras para a utilização
+    sustentável e estética de espaços verticais. Com uma verba global de 15 milhões
+    de euros, a iniciativa apoia projetos até 5 milhões de euros, visando municípios
+    e autoridades locais.
+  themes:
+  - public_space
+  - climate
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-regen-03
+input_digest: 48c69d5a3d3774ace6d7933a6af3314d913a18fb5bd03c8aac5506f925619627
+prompt_version: v1
+schema_version: structured-v1

@@ -1,0 +1,22 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos focados em vigilância avançada
+    de fronteiras e consciência situacional. A oportunidade disponibiliza 12 milhões
+    de euros no total, com um limite de 6 milhões de euros por projeto, estando a
+    abertura prevista para maio de 2026.
+  themes:
+  - digital_public_services
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: unclear
+    details: O documento refere a existência de requisitos de consórcio ou parceria,
+      recomendando a verificação no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-bm-01
+input_digest: 875864c44e1a034424d65c44b26b9f0e11ccd4ccebd460b9ed5f48a57eecf883
+prompt_version: v1
+schema_version: structured-v1

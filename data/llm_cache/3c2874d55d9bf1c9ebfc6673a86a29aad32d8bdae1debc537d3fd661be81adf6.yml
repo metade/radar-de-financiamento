@@ -1,0 +1,23 @@
+---
+result:
+  summary: O convite à apresentação de propostas LIFE visa apoiar a implementação
+    eficaz de legislação fundamental no domínio da energia sustentável. A iniciativa
+    foca-se no desenvolvimento de políticas e medidas que promovam a transição energética
+    e o cumprimento de metas climáticas europeias através da aplicação de quadros
+    regulamentares.
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Os dados fornecidos não contêm informações sobre requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-policy
+input_digest: f5bdcb4683b7d9957212858c183db9151d0c4b94f884c7c9d2273dcf11d2b3eb
+prompt_version: v1
+schema_version: structured-v1

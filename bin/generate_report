@@ -15,7 +15,7 @@ end.parse!
 
 today = ENV.fetch("REPORT_DATE", Date.today.iso8601)
 report_mode = ENV.fetch("REPORT_MODE", "production")
-processing_mode = ENV.fetch("REPORT_PROCESSING", "deterministic")
+processing_mode = ENV.fetch("REPORT_PROCESSING", report_mode == "production" ? "both" : "deterministic")
 unless %w[deterministic source_config both].include?(processing_mode)
   abort "Unsupported REPORT_PROCESSING=#{processing_mode.inspect}; use deterministic, source_config or both"
 end

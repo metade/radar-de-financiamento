@@ -47,7 +47,7 @@ By default, report generation queries the official EU Funding & Tenders Portal s
 
 HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
 
-The project defaults to `REPORT_MODE=production` through mise, which writes the committed weekly report to `_reports/YYYY-Www.md`. For local development, use `mise set REPORT_MODE=development` or run `REPORT_MODE=development bundle exec ruby bin/generate_report`; this writes the mutable report to the ignored `_reports/latest.md`.
+The project defaults to `REPORT_MODE=production` through mise, which writes the committed weekly report to `_reports/YYYY-Www.md`. Production defaults to `REPORT_PROCESSING=both` while the LLM output is being evaluated; local development defaults to deterministic processing. For local development, use `mise set REPORT_MODE=development` or run `REPORT_MODE=development bundle exec ruby bin/generate_report`; this writes the mutable report to the ignored `_reports/latest.md`.
 
 To generate a report for a specific date:
 
@@ -110,9 +110,13 @@ The workflow in `.github/workflows/pages.yml`:
 - installs Ruby and Node dependencies
 - runs the Ruby test suite
 - generates the weekly report
-- commits generated `_reports` changes only when changes exist
+- commits generated `_reports` and LLM cache changes only when changes exist
 - builds Tailwind CSS and Jekyll
 - deploys `_site` to GitHub Pages
+
+The workflow enables LLM processing by default. Set the repository variable
+`FUNDING_RADAR_LLM` to `disabled` for an immediate kill switch, or set
+`REPORT_PROCESSING` to `source_config` when the comparison phase is complete.
 
 ## Enable GitHub Pages
 

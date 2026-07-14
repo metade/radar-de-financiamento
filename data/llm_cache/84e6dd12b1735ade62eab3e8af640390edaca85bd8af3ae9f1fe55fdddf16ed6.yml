@@ -1,0 +1,25 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa, previsto para maio de 2026,
+    financia projetos focados na conceção de novas estratégias para a sensibilização
+    ao risco e o reforço da preparação face a desastres. Com um orçamento global de
+    6 milhões de euros, o programa apoia propostas até 3 milhões de euros cada, visando
+    melhorar a resiliência e a resposta a situações de emergência.
+  themes:
+  - climate
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade aponta para a existência de requisitos de consórcio
+      ou parceria, devendo estes ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-drs-01
+input_digest: b2105dfa856648528bcce2d580c8653c415c75d5fe7536c8a28bc10de8c44522
+prompt_version: v1
+schema_version: structured-v1

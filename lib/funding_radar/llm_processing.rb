@@ -147,11 +147,12 @@ module FundingRadar
     end
 
     class Processor
-      def initialize(configuration:, cache:, client:, schema_version: "structured-v1")
+      def initialize(configuration:, cache:, client:, schema_version: "structured-v1", env: ENV)
         @configuration = configuration
         @cache = cache
         @client = client
         @schema_version = schema_version
+        @env = env
       end
 
       def process(opportunity)
@@ -207,7 +208,8 @@ module FundingRadar
 
       def cache_key(opportunity, input, profile)
         digest = Digest::SHA256.hexdigest(JSON.generate(input))
-        parts = [@configuration.source_key(opportunity), opportunity.id, digest, profile.fetch("prompt_version"), @schema_version]
+        model = @env.fetch("FUNDING_RADAR_LLM_MODEL", "gemini-3.1-flash-lite")
+        parts = [@configuration.source_key(opportunity), opportunity.id, digest, profile.fetch("prompt_version"), @schema_version, model]
         Digest::SHA256.hexdigest(parts.join("\0"))
       end
 

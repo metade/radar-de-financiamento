@@ -1,0 +1,22 @@
+---
+result:
+  summary: Este tópico do programa Horizonte Europa foca-se na revitalização de bairros
+    localizados na periferia de infraestruturas ferroviárias e rodoviárias existentes,
+    promovendo a regeneração urbana integrada nestas zonas específicas.
+  themes:
+  - community_development
+  - public_space
+  - mobility
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2027-01-regen-03
+input_digest: 8f1fda22e2cb43020518668bb1c7a7e2948d1c09e51bc8b71ca26652dae71968
+prompt_version: v1
+schema_version: structured-v1

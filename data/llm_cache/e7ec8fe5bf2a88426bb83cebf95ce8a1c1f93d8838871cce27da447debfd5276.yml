@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos destinados a promover medidas
+    de manutenção e reparação sustentáveis em edifícios já existentes. A iniciativa
+    disponibiliza um montante total de 10 milhões de euros, permitindo um financiamento
+    de até 5 milhões de euros por projeto. As candidaturas estão abertas entre 5 de
+    maio de 2026 e 1 de dezembro de 2026.
+  themes:
+  - climate
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-regen-02
+input_digest: 3ace99463229797ae73f3eb70e2032d0b6fc6a36e2048f78f2b6712f1327d802
+prompt_version: v1
+schema_version: structured-v1

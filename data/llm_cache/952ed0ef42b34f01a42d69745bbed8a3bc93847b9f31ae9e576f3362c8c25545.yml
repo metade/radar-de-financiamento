@@ -1,0 +1,21 @@
+---
+result:
+  summary: O programa LIFE visa reforçar os quadros nacionais para o aquecimento e
+    arrefecimento renovável e eficiente em edifícios já existentes, promovendo a transição
+    energética e a sustentabilidade no setor da construção europeia.
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Não é especificada informação sobre requisitos de parceria nesta oportunidade.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-renewhc
+input_digest: 9e54631eb5388a00df2cc70b3b0c61524c8315220f5c9793fd986ccad212d3c5
+prompt_version: v1
+schema_version: structured-v1

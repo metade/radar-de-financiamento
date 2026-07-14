@@ -1,0 +1,21 @@
+---
+result:
+  summary: Este concurso do programa Horizonte Europa foca-se no apoio à investigação
+    pré-normativa para a normalização de produtos de base biológica. Com um orçamento
+    total de 8 milhões de euros, prevê financiamentos até 4 milhões de euros por projeto.
+  themes:
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: unclear
+    details: O documento refere a existência de requisitos de consórcio ou parceria,
+      recomendando a verificação no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl6-2026-01-circbio-08
+input_digest: 5da4ab819bce0ab85f99940e6e413e6d83d8736e55b4f2986b7273068451e239
+prompt_version: v1
+schema_version: structured-v1

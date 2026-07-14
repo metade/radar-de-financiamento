@@ -1,0 +1,23 @@
+---
+result:
+  summary: O programa Horizonte Europa financia o desenvolvimento de ferramentas e
+    processos para realizar testes de stress em infraestruturas críticas. O aviso
+    disponibiliza um total de 9,67 milhões de euros, com um limite de 4,835 milhões
+    de euros por projeto, estando a abertura prevista para maio de 2026.
+  themes:
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: unclear
+    details: O documento refere a existência de requisitos de consórcio ou parceria,
+      sendo necessária a verificação direta no aviso oficial para confirmar as especificidades.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-infra-01
+input_digest: f1840935c9470fb294f9123200bdeda03a0ad1cbaf30b7f9e40a6166ff81901c
+prompt_version: v1
+schema_version: structured-v1

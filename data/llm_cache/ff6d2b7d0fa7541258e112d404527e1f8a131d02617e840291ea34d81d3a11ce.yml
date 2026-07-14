@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa LIFE disponibiliza um financiamento de 6,5 milhões de euros
+    para apoiar municípios e entidades públicas na elaboração de planos locais de
+    aquecimento e arrefecimento que sejam integrados, abrangentes e práticos para
+    a transição energética.
+  themes:
+  - climate
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: unclear
+    details: A documentação refere a existência de requisitos de consórcio ou parceria,
+      sendo necessária a verificação direta no aviso oficial para confirmar as condições
+      específicas.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-heatcoolplan
+input_digest: 3a14529bac9323e71b78cd28bb60c9c073fa902fb363b3407fa22488c0f21ae3
+prompt_version: v1
+schema_version: structured-v1
