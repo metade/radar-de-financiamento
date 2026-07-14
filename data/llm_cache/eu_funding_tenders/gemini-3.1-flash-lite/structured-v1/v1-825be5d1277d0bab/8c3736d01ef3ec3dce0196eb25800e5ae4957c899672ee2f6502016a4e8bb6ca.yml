@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este concurso do Horizonte Europa visa promover soluções sustentáveis,
+    inclusivas, acessíveis e esteticamente apelativas para o conforto térmico em edifícios.
+    O financiamento total disponível é de 12 milhões de euros, com um limite máximo
+    de 4 milhões de euros por projeto, sendo elegíveis municípios e autoridades locais.
+  themes:
+  - climate
+  - community_development
+  - inclusion
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-regen-01
+input_digest: 6847f5cb74690f1fb4ebe69ae91891d04fa2a3801a3d09bce8a0b400cfc46914
+prompt_version: v1
+schema_version: structured-v1

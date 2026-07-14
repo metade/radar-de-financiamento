@@ -1,0 +1,21 @@
+---
+result:
+  summary: O programa LIFE disponibiliza assistência ao desenvolvimento de projetos
+    para investimentos em energia sustentável. Esta iniciativa foca-se na preparação
+    técnica e financeira necessária para a implementação de soluções energéticas sustentáveis.
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-pda
+input_digest: 11876edaf80c10d579b586153ef8ad3298898ebfb3e1bd0b5a11243cb01bd3e2
+prompt_version: v1
+schema_version: structured-v1

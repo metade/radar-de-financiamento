@@ -8,18 +8,30 @@ module FundingRadar
   class ReportGenerator
     DISCLAIMER = "A elegibilidade deve ser sempre confirmada nos avisos e documentação oficial de cada programa.".freeze
 
-    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil)
+    def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil, llm_processor: nil, processing_mode: "deterministic")
       @source_registry = source_registry
       @duplicate_resolver = duplicate_resolver
       @scorer = scorer
       @reports_dir = reports_dir
       @filename = filename
+      @llm_processor = llm_processor
+      @processing_mode = processing_mode
     end
 
-    def generate(today: Date.today)
-      opportunities = @duplicate_resolver.resolve(@source_registry.fetch_all)
-      scored = opportunities.map { |opportunity| serialize(opportunity, @scorer.score(opportunity, today: today), today) }
-      scored.sort_by! { |item| [-item.fetch("relevance_score"), item.fetch("deadline").to_s, item.fetch("title")] }
+    def generate(today: Date.today, tenders_per_source: nil)
+      opportunities = limit_per_source(@source_registry.fetch_all, tenders_per_source)
+      opportunities = @duplicate_resolver.resolve(opportunities)
+      scored_pairs = opportunities.map { |opportunity| [opportunity, @scorer.score(opportunity, today: today)] }
+      scored_pairs.sort_by! { |opportunity, result| [-result.score, opportunity.deadline.to_s, opportunity.title] }
+
+      deterministic = scored_pairs.map { |opportunity, result| serialize(opportunity, result, today) }
+      processed = process(scored_pairs)
+      scored = processed.map do |opportunity, result|
+        serialize(opportunity, result, today, llm_result: @processing_results&.fetch(opportunity.id))
+      end
+      if comparison_mode?
+        scored.each_with_index { |item, index| item["deterministic_summary"] = deterministic[index].fetch("summary") }
+      end
 
       report = Report.new(
         week_id: iso_week_id(today),
@@ -39,8 +51,26 @@ module FundingRadar
 
     private
 
-    def serialize(opportunity, result, today)
-      {
+    def limit_per_source(opportunities, limit)
+      return opportunities if limit.nil?
+
+      limit = Integer(limit)
+      raise ArgumentError, "tenders_per_source must be greater than zero" unless limit.positive?
+
+      counts = Hash.new(0)
+      opportunities.select do |opportunity|
+        source = opportunity.funding_source.to_s
+        next false if counts[source] >= limit
+
+        counts[source] += 1
+        true
+      end
+    rescue ArgumentError
+      raise ArgumentError, "tenders_per_source must be a positive integer"
+    end
+
+    def serialize(opportunity, result, today, llm_result: nil)
+      item = {
         "id" => opportunity.id,
         "title" => opportunity.title,
         "programme" => opportunity.programme,
@@ -59,6 +89,27 @@ module FundingRadar
         "relevance_explanation" => result.explanation,
         "deadline_status" => deadline_status(opportunity, today)
       }
+      item["llm_analysis"] = llm_result.analysis if llm_result&.analysis
+      item
+    end
+
+    def process(scored_pairs)
+      return scored_pairs if @processing_mode == "deterministic" || !@llm_processor
+
+      @processing_results = {}
+      scored_pairs.map do |opportunity, result|
+        processed = @llm_processor.process(opportunity)
+        @processing_results[opportunity.id] = processed
+        processed_opportunity = opportunity.with(
+          summary: processed.summary,
+          themes: @processing_mode == "source_config" ? processed.themes : opportunity.themes
+        )
+        [processed_opportunity, result]
+      end
+    end
+
+    def comparison_mode?
+      @processing_mode == "both" && @llm_processor
     end
 
     def render(report)
@@ -71,6 +122,7 @@ module FundingRadar
         "disclaimer" => DISCLAIMER,
         "opportunities" => report.opportunities
       }
+      front_matter["comparison"] = true if comparison_mode?
 
       "#{front_matter.to_yaml}---\n"
     end

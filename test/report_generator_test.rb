@@ -62,16 +62,84 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_both_mode_embeds_both_summaries_in_the_report
+    Dir.mktmpdir do |dir|
+      processor = Class.new do
+        def process(opportunity)
+          FundingRadar::LlmProcessing::Result.new(
+            opportunity,
+            {
+              "summary" => "Resumo LLM.",
+              "themes" => ["climate"],
+              "eligibility" => {"status" => "unclear", "criteria" => [], "confidence" => "low"},
+              "partnership" => {"status" => "not_stated", "details" => "", "confidence" => "low"}
+            },
+            "generated",
+            "cache-key",
+            nil
+          )
+        end
+      end.new
+      generator = build_generator(dir, filename: "latest.md", llm_processor: processor, processing_mode: "both")
+
+      generator.generate(today: Date.new(2026, 7, 11))
+
+      document = YAML.safe_load_file(File.join(dir, "latest.md"), aliases: false)
+      assert_equal true, document.fetch("comparison")
+      item = document.fetch("opportunities").first
+      assert_equal "Resumo LLM.", item.fetch("summary")
+      assert item.fetch("deterministic_summary").to_s.length.positive?
+      assert_equal ["climate"], item.fetch("llm_analysis").fetch("themes")
+    end
+  end
+
+  def test_limits_opportunities_per_source_before_duplicate_resolution
+    Dir.mktmpdir do |dir|
+      opportunities = [
+        opportunity("one", "Source A"),
+        opportunity("two", "Source A"),
+        opportunity("three", "Source B"),
+        opportunity("four", "Source B")
+      ]
+      source = Struct.new(:opportunities) { def fetch = opportunities }.new(opportunities)
+      generator = FundingRadar::ReportGenerator.new(
+        source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
+        duplicate_resolver: FundingRadar::DuplicateResolver.new,
+        scorer: FundingRadar::RelevanceScorer.new,
+        reports_dir: dir
+      )
+
+      path = generator.generate(today: Date.new(2026, 7, 11), tenders_per_source: 1)
+      document = YAML.safe_load_file(path, permitted_classes: [Date], aliases: false)
+
+      assert_equal %w[one three], document.fetch("opportunities").map { |item| item.fetch("id") }.sort
+    end
+  end
+
   private
 
-  def build_generator(dir, filename: nil)
+  def opportunity(id, source)
+    FundingRadar::Opportunity.from_hash(
+      "id" => id,
+      "title" => "Tender #{id}",
+      "programme" => "Programme",
+      "funding_source" => source,
+      "official_link" => "https://example.test/#{id}",
+      "summary" => "Resumo #{id}.",
+      "themes" => ["climate"]
+    )
+  end
+
+  def build_generator(dir, filename: nil, llm_processor: nil, processing_mode: "deterministic")
     source = FundingRadar::Sources::FixtureSource.new(path: File.expand_path("../data/sources/fixtures.yml", __dir__))
     FundingRadar::ReportGenerator.new(
       source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
       duplicate_resolver: FundingRadar::DuplicateResolver.new,
       scorer: FundingRadar::RelevanceScorer.new,
       reports_dir: dir,
-      filename: filename
+      filename: filename,
+      llm_processor: llm_processor,
+      processing_mode: processing_mode
     )
   end
 end

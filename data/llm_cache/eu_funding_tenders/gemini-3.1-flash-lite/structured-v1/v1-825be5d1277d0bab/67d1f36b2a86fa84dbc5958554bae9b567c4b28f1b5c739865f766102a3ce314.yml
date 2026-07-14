@@ -1,0 +1,22 @@
+---
+result:
+  summary: 'O programa Erasmus+ apresenta o prémio #BeActive-EU-SPORT-AWARDS, focado
+    na promoção da inclusão através do desporto. A iniciativa, aberta a candidaturas
+    até 17 de setembro de 2026, conta com um financiamento total de 25.000 euros para
+    premiar projetos que demonstrem impacto nesta área.'
+  themes:
+  - inclusion
+  - equality
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-inclusion
+input_digest: daa46c467e47699bfcc8444201e77e2951f68d803b6c0d1e07b6f6b47cca13d1
+prompt_version: v1
+schema_version: structured-v1

@@ -1,0 +1,23 @@
+---
+result:
+  summary: 'O prémio #BeActive-EU-SPORT-AWARDS, inserido no programa Erasmus+, reconhece
+    projetos que promovam o desporto entre diferentes gerações. Com uma dotação total
+    de 25.000 euros, a iniciativa visa destacar boas práticas desportivas e estilos
+    de vida saudáveis a nível europeu.'
+  themes:
+  - community_development
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Não existe informação disponível sobre requisitos de parceria para esta
+      candidatura.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-generations
+input_digest: d2134d022e8dcf7a1d41e8c5af3ac74b2237b5576fd2f5fd481efea6659ca4a7
+prompt_version: v1
+schema_version: structured-v1

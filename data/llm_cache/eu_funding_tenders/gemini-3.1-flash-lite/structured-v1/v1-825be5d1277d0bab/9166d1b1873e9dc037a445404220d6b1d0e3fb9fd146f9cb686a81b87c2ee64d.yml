@@ -1,0 +1,21 @@
+---
+result:
+  summary: O programa LIFE promove a digitalização dos Operadores de Redes de Distribuição
+    para apoiar a transição energética inteligente através da Smart Grid Academy.
+    Esta oportunidade foca-se na modernização das infraestruturas energéticas.
+  themes:
+  - digital_public_services
+  - climate
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: A informação fornecida não especifica requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-digital
+input_digest: a5cb8a64ca409ab6f7ee2de601ae0be8b76e12a7d9decd61bf5bf38c4aa9b51e
+prompt_version: v1
+schema_version: structured-v1

@@ -1,0 +1,20 @@
+---
+result:
+  summary: Este tópico do Horizonte Europa financia ensaios clínicos pragmáticos focados
+    na otimização de intervenções de imunoterapia para doentes com cancros refratários,
+    visando melhorar resultados clínicos dentro da Missão do Cancro.
+  themes:
+  - digital_public_services
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-03
+input_digest: c6a507705ca2a29434ef8ac47fcb9b162bf063c740d9f96ca32b862e587c9da2
+prompt_version: v1
+schema_version: structured-v1

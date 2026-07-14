@@ -1,0 +1,23 @@
+---
+result:
+  summary: As Parcerias de Cooperação no âmbito do programa Erasmus+ visam fomentar
+    a colaboração em projetos de dimensão europeia. Os interessados devem consultar
+    o aviso oficial para verificar os critérios específicos de elegibilidade e os
+    requisitos de constituição de parcerias.
+  themes:
+  - community_development
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto refere a existência de requisitos de consórcio ou parceria que
+      devem ser confirmados através do aviso oficial da oportunidade.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-scp
+input_digest: 04176b9049a9e387571128ecc10ef21975831e70991e23d62be2bf367f377391
+prompt_version: v1
+schema_version: structured-v1

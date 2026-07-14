@@ -1,0 +1,49 @@
+# LLM processing is opt-in. Set REPORT_PROCESSING=source_config and
+# FUNDING_RADAR_LLM=enabled before any provider calls are made.
+profiles:
+  default:
+    instruction: >-
+      Analisa a oportunidade para autarquias portuguesas e responde
+      exclusivamente com o objeto estruturado pedido. Escreve o resumo em
+      português de Portugal. Usa apenas os dados fornecidos; não inventes
+      critérios, beneficiários, prazos, valores ou requisitos. Se a informação
+      não permitir concluir, usa "unclear" ou "not_stated" e uma lista vazia.
+      Não repitas URLs ou ligações no resumo.
+    max_characters: 420
+  eu_structured:
+    instruction: >-
+      Analisa a oportunidade abaixo para autarquias portuguesas e responde
+      exclusivamente com o objeto estruturado pedido. Escreve o resumo em
+      português de Portugal. Usa apenas os dados fornecidos; não inventes
+      critérios, beneficiários, prazos, valores ou requisitos. Se a informação
+      não permitir concluir, usa "unclear" ou "not_stated" e uma lista vazia.
+      Os temas devem ser escolhidos apenas da lista canónica. Os critérios de
+      elegibilidade e os detalhes de parceria devem ser paráfrases prudentes
+      do texto fornecido, não decisões jurídicas.
+    max_characters: 420
+
+sources:
+  eu_funding_tenders:
+    enabled: true
+    profile: eu_structured
+    prompt_version: v1
+  portugal_2030:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  interreg_sudoe:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  european_urban_initiative:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  turismo_de_portugal:
+    enabled: false
+    profile: default
+    prompt_version: v1
+  fixtures:
+    enabled: false
+    profile: default
+    prompt_version: v1

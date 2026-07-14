@@ -1,11 +1,24 @@
 #!/usr/bin/env ruby
 
 require "date"
+require "optparse"
 require_relative "../lib/funding_radar"
 
 root = File.expand_path("..", __dir__)
+options = {tenders_per_source: ENV["REPORT_TENDERS_PER_SOURCE"]}
+OptionParser.new do |parser|
+  parser.banner = "Usage: generate_report [options]"
+  parser.on("--tenders-per-source N", Integer, "Limit opportunities sampled from each source") do |value|
+    options[:tenders_per_source] = value
+  end
+end.parse!
+
 today = ENV.fetch("REPORT_DATE", Date.today.iso8601)
 report_mode = ENV.fetch("REPORT_MODE", "production")
+processing_mode = ENV.fetch("REPORT_PROCESSING", report_mode == "production" ? "both" : "deterministic")
+unless %w[deterministic source_config both].include?(processing_mode)
+  abort "Unsupported REPORT_PROCESSING=#{processing_mode.inspect}; use deterministic, source_config or both"
+end
 report_filename = case report_mode
 when "production"
   nil
@@ -18,13 +31,28 @@ end
 registry = FundingRadar::SourceRegistry.new(
   sources: FundingRadar::SourceBuilder.default(root: root)
 )
+llm_processor = if processing_mode != "deterministic" && ENV.fetch("FUNDING_RADAR_LLM", "disabled") == "enabled"
+  configuration = FundingRadar::LlmProcessing::Configuration.new(
+    path: File.join(root, "data/llm_processing.yml")
+  )
+  FundingRadar::LlmProcessing::Processor.new(
+    configuration: configuration,
+    cache: FundingRadar::LlmProcessing::Cache.new(directory: File.join(root, "data/llm_cache")),
+    client: FundingRadar::LlmProcessing::RubyLlmClient.new
+  )
+end
 generator = FundingRadar::ReportGenerator.new(
   source_registry: registry,
   duplicate_resolver: FundingRadar::DuplicateResolver.new,
   scorer: FundingRadar::RelevanceScorer.new,
   reports_dir: File.join(root, "_reports"),
-  filename: report_filename
+  filename: report_filename,
+  llm_processor: llm_processor,
+  processing_mode: processing_mode
 )
 
-path = generator.generate(today: Date.iso8601(today))
+path = generator.generate(
+  today: Date.iso8601(today),
+  tenders_per_source: options[:tenders_per_source]
+)
 puts "Generated #{path}"

@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa LIFE financia soluções para a renovação energética de edifícios,
+    com o objetivo de impulsionar a renovação através de mercados e instrumentos eficazes.
+    A oportunidade tem um montante total de 6 milhões de euros e destina-se a entidades
+    públicas. O prazo de candidatura termina a 16 de setembro de 2026.
+  themes:
+  - climate
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: unclear
+    details: O texto menciona requisitos de consórcio ou parceria, devendo estes ser
+      confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-betterreno
+input_digest: 62b3474e40b2cf38c967cc783a57f4323cc849e3758e002eb40925d45f1aad8e
+prompt_version: v1
+schema_version: structured-v1

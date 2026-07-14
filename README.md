@@ -47,7 +47,7 @@ By default, report generation queries the official EU Funding & Tenders Portal s
 
 HTTP responses are cached in `tmp/cache/funding_radar` for six hours by default. This avoids repeating source requests during local inspection and report generation while keeping the cache out of the generated site. Configure it with `FUNDING_RADAR_CACHE_DIR`, `FUNDING_RADAR_CACHE_TTL` (seconds), or disable it with `FUNDING_RADAR_CACHE=false`.
 
-The project defaults to `REPORT_MODE=production` through mise, which writes the committed weekly report to `_reports/YYYY-Www.md`. For local development, use `mise set REPORT_MODE=development` or run `REPORT_MODE=development bundle exec ruby bin/generate_report`; this writes the mutable report to the ignored `_reports/latest.md`.
+The project defaults to `REPORT_MODE=production` through mise, which writes the committed weekly report to `_reports/YYYY-Www.md`. Production defaults to `REPORT_PROCESSING=both` while the LLM output is being evaluated; local development defaults to deterministic processing. For local development, use `mise set REPORT_MODE=development` or run `REPORT_MODE=development bundle exec ruby bin/generate_report`; this writes the mutable report to the ignored `_reports/latest.md`.
 
 To generate a report for a specific date:
 
@@ -60,6 +60,28 @@ To include local fixture opportunities alongside live portal results:
 ```sh
 INCLUDE_FIXTURES=true bundle exec ruby bin/generate_report
 ```
+
+LLM-assisted summaries are opt-in and configured per source in `data/llm_processing.yml`. The normal report remains deterministic. To run a local LLM report, set the global enable switch, provider key, and processing mode:
+
+```sh
+FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bundle exec ruby bin/generate_report
+```
+
+Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful results are cached in the committed `data/llm_cache/` directory, namespaced by source, model, schema, and prompt fingerprint, and are invalidated when the source content or processing configuration changes.
+
+The structured LLM analysis currently enabled for EU Funding & Tenders returns a summary, canonical themes, an eligibility interpretation with status/criteria/confidence, and a partnership interpretation with status/details/confidence. These remain evaluation fields; deterministic dates, budgets, identity, and relevance scoring remain authoritative.
+
+For a small local LLM experiment, limit the report to a fixed number of opportunities per source. This limit is applied before duplicate resolution and works with deterministic, source-configured, or comparison processing:
+
+```sh
+mise exec -- env \
+  FUNDING_RADAR_LLM=enabled \
+  REPORT_PROCESSING=source_config \
+  REPORT_MODE=development \
+  bundle exec ruby bin/generate_report --tenders-per-source 1
+```
+
+The same setting can be supplied as `REPORT_TENDERS_PER_SOURCE=1`.
 
 To inspect the live EU Funding & Tenders source without writing a report:
 
@@ -88,9 +110,13 @@ The workflow in `.github/workflows/pages.yml`:
 - installs Ruby and Node dependencies
 - runs the Ruby test suite
 - generates the weekly report
-- commits generated `_reports` changes only when changes exist
+- commits generated `_reports` and LLM cache changes only when changes exist
 - builds Tailwind CSS and Jekyll
 - deploys `_site` to GitHub Pages
+
+The workflow enables LLM processing by default. Set the repository variable
+`FUNDING_RADAR_LLM` to `disabled` for an immediate kill switch, or set
+`REPORT_PROCESSING` to `source_config` when the comparison phase is complete.
 
 ## Enable GitHub Pages
 

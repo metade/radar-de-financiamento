@@ -1,0 +1,23 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos focados na prestação de cuidados
+    paliativos mais precoces e precisos, inseridos no âmbito do combate ao cancro.
+    A iniciativa disponibiliza um montante total de 15 milhões de euros para apoiar
+    propostas.
+  themes:
+  - digital_public_services
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Não existe informação disponível sobre requisitos de parceria para esta
+      oportunidade.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-04
+input_digest: 86faa8066f6bd95529156cbacced17114e34d52cc5b160babc90796528f962bd
+prompt_version: v1
+schema_version: structured-v1
