@@ -8,6 +8,9 @@ root = File.expand_path("..", __dir__)
 options = {tenders_per_source: ENV["REPORT_TENDERS_PER_SOURCE"]}
 OptionParser.new do |parser|
   parser.banner = "Usage: generate_report [options]"
+  parser.on("--debug", "Log fetched URLs, pipeline stages, and LLM activity") do
+    ENV["FUNDING_RADAR_DEBUG"] = "true"
+  end
   parser.on("--tenders-per-source N", Integer, "Limit opportunities sampled from each source") do |value|
     options[:tenders_per_source] = value
   end

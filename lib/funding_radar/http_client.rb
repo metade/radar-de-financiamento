@@ -34,7 +34,10 @@ module FundingRadar
     def cached_request(method, url, headers)
       return yield unless @cache
 
-      @cache.fetch(cache_key(method, url, headers), expires_in: @cache_expires_in) { yield }
+      key = cache_key(method, url, headers)
+      cache_hit = @cache.exist?(key)
+      Debug.log "#{method} #{url} (cache #{cache_hit ? "hit" : "miss"})"
+      @cache.fetch(key, expires_in: @cache_expires_in) { yield }
     end
 
     def cache_key(method, url, headers)
@@ -47,6 +50,7 @@ module FundingRadar
 
       attempts = 0
       begin
+        Debug.log "fetch #{request.method} #{uri} (attempt #{attempts + 1})"
         response = if @requester
           @requester.call(uri, request)
         else
@@ -64,6 +68,7 @@ module FundingRadar
 
       raise "HTTP #{response.code} from #{uri.host}" unless response.is_a?(Net::HTTPSuccess)
 
+      Debug.log "received #{request.method} #{uri} -> #{response.code} (#{response.body.to_s.bytesize} bytes)"
       response.body
     end
   end

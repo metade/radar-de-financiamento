@@ -61,6 +61,13 @@ To include local fixture opportunities alongside live portal results:
 INCLUDE_FIXTURES=true bundle exec ruby bin/generate_report
 ```
 
+For visibility while diagnosing a run, enable debug logging or pass `--debug`. Logs go to stderr and include fetched URLs, cache hits/misses, source counts, report stages, and LLM cache/invocation/fallback status:
+
+```sh
+FUNDING_RADAR_DEBUG=true bundle exec ruby bin/generate_report
+bundle exec ruby bin/generate_report --debug --tenders-per-source 1
+```
+
 LLM-assisted summaries are opt-in and configured per source in `data/llm_processing.yml`. The normal report remains deterministic. To run a local LLM report, set the global enable switch, provider key, and processing mode:
 
 ```sh

@@ -1,4 +1,5 @@
 require_relative "funding_radar/opportunity"
+require_relative "funding_radar/debug"
 require "active_support"
 require "active_support/cache"
 require_relative "funding_radar/http_client"

@@ -158,29 +158,38 @@ module FundingRadar
       end
 
       def process(opportunity)
-        return Result.new(opportunity, {}, "disabled", nil, nil) unless @configuration.enabled?(opportunity)
+        unless @configuration.enabled?(opportunity)
+          Debug.log "LLM skipped #{opportunity.id} (disabled for #{opportunity.funding_source})"
+          return Result.new(opportunity, {}, "disabled", nil, nil)
+        end
 
         profile = @configuration.profile_for(opportunity)
         input = input_for(opportunity)
         cache_key = cache_key(opportunity, input, profile)
         namespace = cache_namespace(opportunity, profile)
         cached = @cache.fetch(cache_key, namespace: namespace)
-        return Result.new(opportunity, cached.fetch("result"), "cached", cache_key, nil) if cached
+        if cached
+          Debug.log "LLM cache hit #{opportunity.id} (#{model})"
+          return Result.new(opportunity, cached.fetch("result"), "cached", cache_key, nil)
+        end
 
-        attributes = normalize_attributes(@client.analyze(prompt_for(opportunity, input, profile)))
+        Debug.timed("LLM invoke #{opportunity.id} (#{model})") do
+          attributes = normalize_attributes(@client.analyze(prompt_for(opportunity, input, profile)))
 
-        @cache.write(cache_key, {
-          "result" => attributes,
-          "source_key" => @configuration.source_key(opportunity),
-          "opportunity_id" => opportunity.id,
-          "input_digest" => Digest::SHA256.hexdigest(JSON.generate(input)),
-          "prompt_version" => profile.fetch("prompt_version"),
-          "prompt_digest" => prompt_digest(profile),
-          "model" => model,
-          "schema_version" => @schema_version
-        }, namespace: namespace)
-        Result.new(opportunity, attributes, "generated", cache_key, nil)
+          @cache.write(cache_key, {
+            "result" => attributes,
+            "source_key" => @configuration.source_key(opportunity),
+            "opportunity_id" => opportunity.id,
+            "input_digest" => Digest::SHA256.hexdigest(JSON.generate(input)),
+            "prompt_version" => profile.fetch("prompt_version"),
+            "prompt_digest" => prompt_digest(profile),
+            "model" => model,
+            "schema_version" => @schema_version
+          }, namespace: namespace)
+          Result.new(opportunity, attributes, "generated", cache_key, nil)
+        end
       rescue StandardError => error
+        Debug.log "LLM fallback #{opportunity.id}: #{error.class}: #{error.message}"
         Result.new(opportunity, {}, "fallback", cache_key, error.message)
       end
 
