@@ -1,0 +1,24 @@
+---
+result:
+  summary: O programa LIFE pretende promover a cooperação entre comunidades de energia.
+    A iniciativa, cuja abertura está prevista para 20 de abril de 2026, visa facilitar
+    a colaboração e o desenvolvimento de soluções energéticas partilhadas no âmbito
+    europeu.
+  themes:
+  - climate
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-enercom
+input_digest: cc3ca3b8a6a7ca90dda84a46691af26bfd632dffd76918c933251aebb347daf7
+prompt_version: v1
+prompt_digest: 825be5d1277d0bab6607a4186275126b95f2ebbc0e531a21b0eb1936b85d9eb2
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
