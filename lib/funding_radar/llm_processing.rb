@@ -79,8 +79,8 @@ module FundingRadar
         @directory = directory
       end
 
-      def fetch(key)
-        path = path_for(key)
+      def fetch(key, namespace: nil)
+        path = path_for(key, namespace: namespace)
         return unless File.file?(path)
 
         YAML.safe_load_file(path, aliases: false)
@@ -88,15 +88,17 @@ module FundingRadar
         nil
       end
 
-      def write(key, value)
-        FileUtils.mkdir_p(@directory)
-        File.write(path_for(key), value.to_yaml)
+      def write(key, value, namespace: nil)
+        path = path_for(key, namespace: namespace)
+        FileUtils.mkdir_p(File.dirname(path))
+        File.write(path, value.to_yaml)
       end
 
       private
 
-      def path_for(key)
-        File.join(@directory, "#{key}.yml")
+      def path_for(key, namespace: nil)
+        directory = namespace ? File.join(@directory, *namespace) : @directory
+        File.join(directory, "#{key}.yml")
       end
     end
 
@@ -161,7 +163,8 @@ module FundingRadar
         profile = @configuration.profile_for(opportunity)
         input = input_for(opportunity)
         cache_key = cache_key(opportunity, input, profile)
-        cached = @cache.fetch(cache_key)
+        namespace = cache_namespace(opportunity, profile)
+        cached = @cache.fetch(cache_key, namespace: namespace)
         return Result.new(opportunity, cached.fetch("result"), "cached", cache_key, nil) if cached
 
         attributes = normalize_attributes(@client.analyze(prompt_for(opportunity, input, profile)))
@@ -172,8 +175,10 @@ module FundingRadar
           "opportunity_id" => opportunity.id,
           "input_digest" => Digest::SHA256.hexdigest(JSON.generate(input)),
           "prompt_version" => profile.fetch("prompt_version"),
+          "prompt_digest" => prompt_digest(profile),
+          "model" => model,
           "schema_version" => @schema_version
-        })
+        }, namespace: namespace)
         Result.new(opportunity, attributes, "generated", cache_key, nil)
       rescue StandardError => error
         Result.new(opportunity, {}, "fallback", cache_key, error.message)
@@ -208,9 +213,29 @@ module FundingRadar
 
       def cache_key(opportunity, input, profile)
         digest = Digest::SHA256.hexdigest(JSON.generate(input))
-        model = @env.fetch("FUNDING_RADAR_LLM_MODEL", "gemini-3.1-flash-lite")
         parts = [@configuration.source_key(opportunity), opportunity.id, digest, profile.fetch("prompt_version"), @schema_version, model]
         Digest::SHA256.hexdigest(parts.join("\0"))
+      end
+
+      def cache_namespace(opportunity, profile)
+        [
+          @configuration.source_key(opportunity),
+          safe_component(model),
+          safe_component(@schema_version),
+          "#{safe_component(profile.fetch("prompt_version"))}-#{prompt_digest(profile)[0, 16]}"
+        ]
+      end
+
+      def prompt_digest(profile)
+        Digest::SHA256.hexdigest(JSON.generate(profile))
+      end
+
+      def model
+        @env.fetch("FUNDING_RADAR_LLM_MODEL", "gemini-3.1-flash-lite")
+      end
+
+      def safe_component(value)
+        value.to_s.gsub(/[^a-zA-Z0-9._-]+/, "_")
       end
 
       def normalize_attributes(attributes)

@@ -67,7 +67,7 @@ LLM-assisted summaries are opt-in and configured per source in `data/llm_process
 FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bundle exec ruby bin/generate_report
 ```
 
-Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful summaries are cached in the committed `data/llm_cache/` directory and are invalidated when the source content, prompt version, model, or schema changes.
+Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful results are cached in the committed `data/llm_cache/` directory, namespaced by source, model, schema, and prompt fingerprint, and are invalidated when the source content or processing configuration changes.
 
 The structured LLM analysis currently enabled for EU Funding & Tenders returns a summary, canonical themes, an eligibility interpretation with status/criteria/confidence, and a partnership interpretation with status/details/confidence. These remain evaluation fields; deterministic dates, budgets, identity, and relevance scoring remain authoritative.
 

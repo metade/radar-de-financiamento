@@ -56,7 +56,7 @@ class LlmProcessingTest < Minitest::Test
       assert_equal ["climate"], second.themes
       assert_equal "unclear", second.analysis.fetch("eligibility").fetch("status")
       assert_equal 1, client.calls.size
-      assert File.file?(File.join(dir, "#{first.cache_key}.yml"))
+      assert_equal 1, Dir[File.join(dir, "**", "#{first.cache_key}.yml")].size
     end
   end
 
@@ -70,6 +70,22 @@ class LlmProcessingTest < Minitest::Test
 
       assert_equal "generated", result.status
       assert_equal 2, client.calls.size
+    end
+  end
+
+  def test_prompt_configuration_change_invalidates_cache
+    Dir.mktmpdir do |dir|
+      first_processor, first_client = build_processor(dir, enabled: true, max_characters: 420)
+      first_processor.process(opportunity)
+
+      second_processor, second_client = build_processor(dir, enabled: true, max_characters: 410)
+      result = second_processor.process(opportunity)
+
+      assert_equal "generated", result.status
+      assert_equal 1, first_client.calls.size
+      assert_equal 1, second_client.calls.size
+      cache_files = Dir[File.join(dir, "**", "*.yml")].reject { |path| path.end_with?("config.yml") }
+      assert_equal 2, cache_files.size
     end
   end
 
