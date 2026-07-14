@@ -69,6 +69,8 @@ FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bun
 
 Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful summaries are cached in the committed `data/llm_cache/` directory and are invalidated when the source content, prompt version, model, or schema changes.
 
+The structured LLM analysis currently enabled for EU Funding & Tenders returns a summary, canonical themes, an eligibility interpretation with status/criteria/confidence, and a partnership interpretation with status/details/confidence. These remain evaluation fields; deterministic dates, budgets, identity, and relevance scoring remain authoritative.
+
 For a small local LLM experiment, limit the report to a fixed number of opportunities per source. This limit is applied before duplicate resolution and works with deterministic, source-configured, or comparison processing:
 
 ```sh

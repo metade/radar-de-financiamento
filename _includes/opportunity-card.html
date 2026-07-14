@@ -40,6 +40,26 @@
     <p class="mt-4 max-w-4xl text-base leading-7 text-slate-700">{{ opportunity.summary }}</p>
   {% endif %}
 
+  {% if report.comparison and opportunity.llm_analysis %}
+    <div class="mt-5 border-l-4 border-civic-blue bg-soft-sky p-4">
+      <p class="text-sm font-bold text-civic-blue">Interpretação LLM</p>
+      <dl class="mt-2 grid gap-3 md:grid-cols-3">
+        <div>
+          <dt class="text-sm font-bold text-slate-600">Temas sugeridos</dt>
+          <dd class="mt-1 text-sm text-ink">{% for theme in opportunity.llm_analysis.themes %}{% assign theme_label = site.data.theme_labels[theme].label | default: theme %}{{ theme_label }}{% unless forloop.last %}, {% endunless %}{% endfor %}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-bold text-slate-600">Elegibilidade</dt>
+          <dd class="mt-1 text-sm text-ink">{{ opportunity.llm_analysis.eligibility.status }} ({{ opportunity.llm_analysis.eligibility.confidence }}){% if opportunity.llm_analysis.eligibility.criteria != empty %}: {{ opportunity.llm_analysis.eligibility.criteria | join: "; " }}{% endif %}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-bold text-slate-600">Parceria</dt>
+          <dd class="mt-1 text-sm text-ink">{{ opportunity.llm_analysis.partnership.status }} ({{ opportunity.llm_analysis.partnership.confidence }}){% if opportunity.llm_analysis.partnership.details %}: {{ opportunity.llm_analysis.partnership.details }}{% endif %}</dd>
+        </div>
+      </dl>
+    </div>
+  {% endif %}
+
   <dl class="mt-5 grid gap-4 md:grid-cols-3">
     <div>
       <dt class="text-sm font-bold text-slate-600">Abertura</dt>
@@ -63,15 +83,29 @@
         {% else %}Por confirmar{% endif %}
       </dd>
     </div>
-    <div>
-      <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>
-      <dd class="mt-1 text-sm text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
-    </div>
-    {% if opportunity.partnership_requirements %}
+    {% if opportunity.llm_analysis and report.comparison == nil %}
+      <div>
+        <dt class="text-sm font-bold text-slate-600">Elegibilidade</dt>
+        <dd class="mt-1 text-sm text-ink">{{ opportunity.llm_analysis.eligibility.status }} ({{ opportunity.llm_analysis.eligibility.confidence }}){% if opportunity.llm_analysis.eligibility.criteria != empty %}: {{ opportunity.llm_analysis.eligibility.criteria | join: "; " }}{% endif %}</dd>
+      </div>
+    {% else %}
+      <div>
+        <dt class="text-sm font-bold text-slate-600">Candidatos elegíveis</dt>
+        <dd class="mt-1 text-sm text-ink">{{ opportunity.eligible_applicants | join: ", " }}</dd>
+      </div>
+    {% endif %}
+    {% if opportunity.llm_analysis and report.comparison == nil %}
       <div>
         <dt class="text-sm font-bold text-slate-600">Parceria</dt>
-        <dd class="mt-1 text-sm text-ink">{{ opportunity.partnership_requirements }}</dd>
+        <dd class="mt-1 text-sm text-ink">{{ opportunity.llm_analysis.partnership.status }} ({{ opportunity.llm_analysis.partnership.confidence }}){% if opportunity.llm_analysis.partnership.details %}: {{ opportunity.llm_analysis.partnership.details }}{% endif %}</dd>
       </div>
+    {% elsif opportunity.partnership_requirements %}
+      {% if report.comparison or opportunity.llm_analysis == nil %}
+        <div>
+          <dt class="text-sm font-bold text-slate-600">Parceria</dt>
+          <dd class="mt-1 text-sm text-ink">{{ opportunity.partnership_requirements }}</dd>
+        </div>
+      {% endif %}
     {% endif %}
     {% if opportunity.other_requirements %}
       <div>

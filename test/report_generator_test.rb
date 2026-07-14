@@ -68,7 +68,12 @@ class ReportGeneratorTest < Minitest::Test
         def process(opportunity)
           FundingRadar::LlmProcessing::Result.new(
             opportunity,
-            "Resumo LLM.",
+            {
+              "summary" => "Resumo LLM.",
+              "themes" => ["climate"],
+              "eligibility" => {"status" => "unclear", "criteria" => [], "confidence" => "low"},
+              "partnership" => {"status" => "not_stated", "details" => "", "confidence" => "low"}
+            },
             "generated",
             "cache-key",
             nil
@@ -84,6 +89,7 @@ class ReportGeneratorTest < Minitest::Test
       item = document.fetch("opportunities").first
       assert_equal "Resumo LLM.", item.fetch("summary")
       assert item.fetch("deterministic_summary").to_s.length.positive?
+      assert_equal ["climate"], item.fetch("llm_analysis").fetch("themes")
     end
   end
 

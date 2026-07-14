@@ -4,14 +4,19 @@ class LlmProcessingTest < Minitest::Test
   class FakeClient
     attr_reader :calls
 
-    def initialize(summary: "Resumo gerado pelo modelo.")
-      @summary = summary
+    def initialize(attributes: nil)
+      @attributes = attributes || {
+        "summary" => "Resumo gerado pelo modelo.",
+        "themes" => ["climate"],
+        "eligibility" => {"status" => "unclear", "criteria" => [], "confidence" => "low"},
+        "partnership" => {"status" => "not_stated", "details" => "", "confidence" => "low"}
+      }
       @calls = []
     end
 
-    def summarize(prompt)
+    def analyze(prompt)
       @calls << prompt
-      @summary
+      @attributes
     end
   end
 
@@ -48,6 +53,8 @@ class LlmProcessingTest < Minitest::Test
       assert_equal "generated", first.status
       assert_equal "cached", second.status
       assert_equal first.summary, second.summary
+      assert_equal ["climate"], second.themes
+      assert_equal "unclear", second.analysis.fetch("eligibility").fetch("status")
       assert_equal 1, client.calls.size
       assert File.file?(File.join(dir, "#{first.cache_key}.yml"))
     end
@@ -68,13 +75,18 @@ class LlmProcessingTest < Minitest::Test
 
   def test_does_not_cut_model_output_at_a_character_boundary
     Dir.mktmpdir do |dir|
-      client = FakeClient.new(summary: "Uma frase completa que ultrapassa o limite configurado.")
+      client = FakeClient.new(attributes: {
+        "summary" => "Uma frase completa que ultrapassa o limite configurado.",
+        "themes" => ["climate"],
+        "eligibility" => {"status" => "unclear", "criteria" => [], "confidence" => "low"},
+        "partnership" => {"status" => "not_stated", "details" => "", "confidence" => "low"}
+      })
       processor, = build_processor(dir, enabled: true, client: client, max_characters: 10)
 
       result = processor.process(opportunity)
 
       assert_equal "Uma frase completa que ultrapassa o limite configurado.", result.summary
-      assert_includes client.calls.first, "até 10 caracteres"
+      assert_includes client.calls.first, "summary até 10 caracteres"
     end
   end
 

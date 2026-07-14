@@ -3,17 +3,29 @@
 profiles:
   default:
     instruction: >-
-      Escreve um resumo curto, factual e claro em português de Portugal para
-      autarquias. Usa apenas os dados fornecidos. Não inventes critérios,
-      prazos, valores ou beneficiários. Indica que a documentação oficial deve
-      ser consultada quando os dados forem incompletos. Não repitas URLs ou
-      ligações no resumo.
+      Analisa a oportunidade para autarquias portuguesas e responde
+      exclusivamente com o objeto estruturado pedido. Escreve o resumo em
+      português de Portugal. Usa apenas os dados fornecidos; não inventes
+      critérios, beneficiários, prazos, valores ou requisitos. Se a informação
+      não permitir concluir, usa "unclear" ou "not_stated" e uma lista vazia.
+      Não repitas URLs ou ligações no resumo.
+    max_characters: 420
+  eu_structured:
+    instruction: >-
+      Analisa a oportunidade abaixo para autarquias portuguesas e responde
+      exclusivamente com o objeto estruturado pedido. Escreve o resumo em
+      português de Portugal. Usa apenas os dados fornecidos; não inventes
+      critérios, beneficiários, prazos, valores ou requisitos. Se a informação
+      não permitir concluir, usa "unclear" ou "not_stated" e uma lista vazia.
+      Os temas devem ser escolhidos apenas da lista canónica. Os critérios de
+      elegibilidade e os detalhes de parceria devem ser paráfrases prudentes
+      do texto fornecido, não decisões jurídicas.
     max_characters: 420
 
 sources:
   eu_funding_tenders:
     enabled: true
-    profile: default
+    profile: eu_structured
     prompt_version: v1
   portugal_2030:
     enabled: false

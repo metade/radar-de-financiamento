@@ -26,7 +26,9 @@ module FundingRadar
 
       deterministic = scored_pairs.map { |opportunity, result| serialize(opportunity, result, today) }
       processed = process(scored_pairs)
-      scored = processed.map { |opportunity, result| serialize(opportunity, result, today) }
+      scored = processed.map do |opportunity, result|
+        serialize(opportunity, result, today, llm_result: @processing_results&.fetch(opportunity.id))
+      end
       if comparison_mode?
         scored.each_with_index { |item, index| item["deterministic_summary"] = deterministic[index].fetch("summary") }
       end
@@ -67,8 +69,8 @@ module FundingRadar
       raise ArgumentError, "tenders_per_source must be a positive integer"
     end
 
-    def serialize(opportunity, result, today)
-      {
+    def serialize(opportunity, result, today, llm_result: nil)
+      item = {
         "id" => opportunity.id,
         "title" => opportunity.title,
         "programme" => opportunity.programme,
@@ -87,6 +89,8 @@ module FundingRadar
         "relevance_explanation" => result.explanation,
         "deadline_status" => deadline_status(opportunity, today)
       }
+      item["llm_analysis"] = llm_result.analysis if llm_result&.analysis
+      item
     end
 
     def process(scored_pairs)
@@ -95,8 +99,12 @@ module FundingRadar
       @processing_results = {}
       scored_pairs.map do |opportunity, result|
         processed = @llm_processor.process(opportunity)
-        @processing_results[opportunity.object_id] = processed
-        [opportunity.with(summary: processed.summary), result]
+        @processing_results[opportunity.id] = processed
+        processed_opportunity = opportunity.with(
+          summary: processed.summary,
+          themes: @processing_mode == "source_config" ? processed.themes : opportunity.themes
+        )
+        [processed_opportunity, result]
       end
     end
 
