@@ -121,7 +121,8 @@ module FundingRadar
           .select { |id| discoverable_topic_id?(id) }
           .uniq
           .first(@max_topic_ids)
-      rescue StandardError
+      rescue StandardError => error
+        Debug.log "EU Funding & Tenders topic discovery failed: #{error.class}: #{error.message}; using default search terms"
         []
       end
 
@@ -133,7 +134,8 @@ module FundingRadar
         query = exact_topic_query?(term) ? %Q{"#{term}"} : term
         url = "#{@endpoint}?apiKey=SEDIA&text=#{CGI.escape(query)}&pageSize=#{@page_size}&pageNumber=1&language=en"
         JSON.parse(@http_client.post_json(url, headers: {"Accept" => "application/json"})).fetch("results", [])
-      rescue JSON::ParserError, KeyError, StandardError
+      rescue StandardError => error
+        Debug.log "EU Funding & Tenders search failed for #{term.inspect}: #{error.class}: #{error.message}"
         []
       end
 
