@@ -260,7 +260,7 @@ module FundingRadar
       end
 
       def prompt_digest(profile)
-        prompt_profile = profile.reject { |key, _value| key.to_s == "include_document" }
+        prompt_profile = profile.reject { |key, value| key.to_s == "include_document" && value == false }
         Digest::SHA256.hexdigest(JSON.generate(prompt_profile))
       end
 
