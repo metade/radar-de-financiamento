@@ -14,6 +14,10 @@ module FundingRadar
       warn "[funding-radar] #{message}"
     end
 
+    def status(message)
+      warn "[funding-radar] #{message}"
+    end
+
     def timed(label)
       started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       log "#{label}..."

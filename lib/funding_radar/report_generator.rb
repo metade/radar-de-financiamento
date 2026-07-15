@@ -20,12 +20,12 @@ module FundingRadar
 
     def generate(today: Date.today, tenders_per_source: nil)
       opportunities = Debug.timed("fetch sources") { @source_registry.fetch_all }
-      Debug.log "fetched #{opportunities.size} opportunities"
+      Debug.status "fetched #{opportunities.size} opportunities"
       opportunities = limit_per_source(opportunities, tenders_per_source)
-      Debug.log "after per-source limit: #{opportunities.size}" if tenders_per_source
+      Debug.status "after per-source limit: #{opportunities.size} opportunities" if tenders_per_source
       before_duplicates = opportunities.size
       opportunities = @duplicate_resolver.resolve(opportunities)
-      Debug.log "resolved duplicates: #{before_duplicates} -> #{opportunities.size}"
+      Debug.status "resolved duplicates: #{before_duplicates} -> #{opportunities.size} opportunities"
       scored_pairs = opportunities.map { |opportunity| [opportunity, @scorer.score(opportunity, today: today)] }
       scored_pairs.sort_by! { |opportunity, result| [-result.score, opportunity.deadline.to_s, opportunity.title] }
 
@@ -51,7 +51,7 @@ module FundingRadar
       path = File.join(@reports_dir, filename)
       File.write(path, render(report))
       File.write(csv_path_for(filename), render_csv(report))
-      Debug.log "wrote #{path} and #{csv_path_for(filename)}"
+      Debug.status "wrote #{path} and #{csv_path_for(filename)}"
       path
     end
 

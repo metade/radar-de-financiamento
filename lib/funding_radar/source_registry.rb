@@ -10,7 +10,7 @@ module FundingRadar
         name = "anonymous source" if name.empty?
         opportunities = Debug.timed("source #{name}") { source.fetch }
         Debug.failure "source #{name} returned no opportunities" if opportunities.empty?
-        Debug.log "source #{name}: #{opportunities.size} opportunities"
+        Debug.status "source #{name}: #{opportunities.size} opportunities"
         opportunities
       end
     end
