@@ -16,6 +16,21 @@ class Portugal2030SourceTest < Minitest::Test
     end
   end
 
+  class PortugalPlanFakeHttpClient
+    attr_reader :requested_urls
+
+    def initialize(plan:, workbook: "xlsx")
+      @plan = plan
+      @workbook = workbook
+      @requested_urls = []
+    end
+
+    def get(url, headers: {})
+      @requested_urls << url
+      url.end_with?("/plan") ? @plan : @workbook
+    end
+  end
+
   def test_fetches_and_normalizes_open_data_rows
     headers = {"A" => "ID", "B" => "Tipo Ent. Beneficiária", "C" => "Designacao do Aviso", "D" => "Programa", "E" => "Objetivo Especifico", "F" => "Fundo", "G" => "Dotação Fundo", "H" => "Data Inicio Prevista", "I" => "Data Fim Prevista", "J" => "NUTS II", "K" => "Modalidade Apresentação Candidatura"}
     row = {"A" => "7900", "B" => "Pública", "C" => "Gestão de Resíduos Urbanos", "D" => "SUSTENTAVEL2030", "E" => "RSO2.6 - Economia circular", "F" => "FEDER", "G" => "990000", "H" => "46272", "I" => "46325", "J" => "AML", "K" => "Individual"}
@@ -40,5 +55,19 @@ class Portugal2030SourceTest < Minitest::Test
     assert_includes opportunity.themes, "environment"
     assert_equal "https://example.test/plan#aviso-7900", opportunity.official_link
     assert_equal ["pt2030-7900", "pt2030-7902"], opportunities.map(&:id)
+  end
+
+  def test_prefers_the_direct_aviso_page_link_from_the_plan
+    headers = {"A" => "ID", "B" => "Tipo Ent. Beneficiária", "C" => "Designacao do Aviso", "D" => "Programa", "E" => "Objetivo Especifico", "F" => "Fundo", "G" => "Dotação Fundo", "H" => "Data Inicio Prevista", "I" => "Data Fim Prevista", "J" => "NUTS II", "K" => "Modalidade Apresentação Candidatura"}
+    row = {"A" => "7906", "B" => "Pública", "C" => "Inquéritos de mobilidade nas Áreas Metropolitana de Lisboa e do Porto", "D" => "SUSTENTAVEL2030", "E" => "RSO2.8 - Mobilidade urbana sustentável", "F" => "FC", "G" => "1000000", "H" => "46366", "I" => "46544", "J" => "Norte | AML", "K" => "Individual"}
+    direct_link = "https://example.test/aviso-2024/inqueritos-de-mobilidade-nas-areas-metropolitana-de-lisboa-e-do-porto/"
+    client = PortugalPlanFakeHttpClient.new(plan: %(<h3><a class="card-link" href="#{direct_link}"></a><a class="card-link" href="#{direct_link}"><span>Inqueritos de mobilidade nas Areas Metropolitana de Lisboa e do Porto</span> — previsão</a></h3>))
+    source = FundingRadar::Sources::Portugal2030Source.new(
+      http_client: client,
+      workbook_reader: FakeWorkbookReader.new([headers, row]),
+      plan_url: "https://example.test/plan"
+    )
+
+    assert_equal direct_link, source.fetch.first.official_link
   end
 end

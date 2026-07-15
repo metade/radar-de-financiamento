@@ -1,4 +1,6 @@
 require "date"
+require "cgi"
+require "nokogiri"
 require "uri"
 require_relative "../xlsx_reader"
 
@@ -43,11 +45,14 @@ module FundingRadar
       def workbook_url
         return @workbook_url if @workbook_url
 
-        page = @http_client.get(@plan_url, headers: {"Accept" => "text/html"})
-        href = page.match(/href=["']([^"']+\.xlsx(?:\?[^"']*)?)["']/i)&.captures&.first
+        href = plan_document.css("a[href]").map { |node| CGI.unescapeHTML(node["href"].to_s.strip) }.find { |value| value.match?(/\.xlsx(?:\?[^"']*)?\z/i) }
         href ? URI.join(@plan_url, href).to_s : WORKBOOK_URL
       rescue StandardError
         WORKBOOK_URL
+      end
+
+      def plan_page
+        @plan_page ||= @http_client.get(@plan_url, headers: {"Accept" => "text/html"})
       end
 
       def normalize(headers, row)
@@ -65,13 +70,55 @@ module FundingRadar
           "deadline" => excel_date(data["Data Fim Prevista"]),
           "funding_amount" => euro_amount(data["Dotação Fundo"]),
           "funding_source" => FUNDING_SOURCE,
-          "official_link" => "#{@plan_url}#aviso-#{id}",
+          "official_link" => official_link(id, title),
           "eligible_applicants" => eligible_applicants(data["Tipo Ent. Beneficiária"]),
           "partnership_requirements" => data["Modalidade Apresentação Candidatura"].to_s.include?("Parceria") ? "A modalidade do aviso prevê parceria; confirmar os requisitos no aviso oficial." : nil,
           "other_requirements" => [data["Fundo"], data["NUTS II"]].reject(&:empty?).join(" · "),
           "summary" => summary(data),
           "themes" => themes_for(text)
         )
+      end
+
+      def official_link(id, title)
+        anchor = plan_links.find do |link, anchor_text|
+          next false unless URI(link).path.match?(%r{/aviso-[^/]+/}i)
+          next false if anchor_text.empty?
+
+          target_text = normalize_html_text(title)
+          anchor_text == target_text || anchor_text.include?(target_text) || slug_matches?(link, target_text)
+        end
+        return anchor.first if anchor
+
+        "#{@plan_url}#aviso-#{id}"
+      rescue StandardError
+        "#{@plan_url}#aviso-#{id}"
+      end
+
+      def plan_links
+        @plan_links ||= plan_document.css("a[href]").filter_map do |node|
+          href = CGI.unescapeHTML(node["href"].to_s.strip)
+          next if href.empty?
+
+          [URI.join(@plan_url, href).to_s, normalize_html_text(node.text)]
+        end
+      end
+
+      def plan_document
+        @plan_document ||= Nokogiri::HTML(plan_page.to_s)
+      end
+
+      def normalize_html_text(value)
+        CGI.unescapeHTML(value.to_s.gsub(/<[^>]+>/, " ")).gsub(/\s+/, " ").strip
+      end
+
+      def slug_matches?(link, title)
+        title_slug = slug(title)
+        link_slug = slug(URI(link).path.split("/").reject(&:empty?).last)
+        !title_slug.empty? && (link_slug.include?(title_slug) || title_slug.include?(link_slug))
+      end
+
+      def slug(value)
+        value.to_s.unicode_normalize(:nfkd).gsub(/\p{Mn}/, "").downcase.gsub(/[^a-z0-9]+/, "-").sub(/\A-|-$\z/, "")
       end
 
       def programme(value)
