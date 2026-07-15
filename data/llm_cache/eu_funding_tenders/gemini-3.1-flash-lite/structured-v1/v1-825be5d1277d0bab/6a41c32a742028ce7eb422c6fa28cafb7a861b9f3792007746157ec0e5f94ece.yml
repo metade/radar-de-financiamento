@@ -1,0 +1,27 @@
+---
+result:
+  summary: O programa Horizonte Europa abre concurso para projetos focados em demonstrar
+    soluções eficazes para proteger e preservar o património cultural contra os impactos
+    das alterações climáticas. A oportunidade é elegível para municípios e autoridades
+    locais.
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: A oportunidade indica a necessidade de formação de consórcios ou parcerias,
+      devendo os detalhes ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-05
+input_digest: 1ae3b5f22c0ee89abe146adf25653da6cdb3dfaf47cc8bc9dc636156029596eb
+prompt_version: v1
+prompt_digest: 825be5d1277d0bab6607a4186275126b95f2ebbc0e531a21b0eb1936b85d9eb2
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
