@@ -10,6 +10,7 @@ module FundingRadar
       WORKBOOK_URL = "https://portugal2030.pt/wp-content/uploads/sites/3/2026/05/PlanoAnualAvisos_download_052026.xlsx".freeze
       PLAN_URL = "https://portugal2030.pt/plano-anual-de-avisos/".freeze
       FUNDING_SOURCE = "Portugal 2030".freeze
+      SOURCE_KEY = "portugal_2030".freeze
       NATIONWIDE_REGION = /\A\s*\z|nacional|todo o territ|portugal|extra-regio/i
 
       THEME_PATTERNS = {
@@ -70,6 +71,7 @@ module FundingRadar
           "deadline" => excel_date(data["Data Fim Prevista"]),
           "funding_amount" => euro_amount(data["Dotação Fundo"]),
           "funding_source" => FUNDING_SOURCE,
+          "source_key" => SOURCE_KEY,
           "official_link" => official_link(id, title),
           "eligible_applicants" => eligible_applicants(data["Tipo Ent. Beneficiária"]),
           "partnership_requirements" => data["Modalidade Apresentação Candidatura"].to_s.include?("Parceria") ? "A modalidade do aviso prevê parceria; confirmar os requisitos no aviso oficial." : nil,

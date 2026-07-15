@@ -11,6 +11,7 @@ module FundingRadar
       PROGRAMME_ID = 105
       OPEN_STATUS_ID = 7
       FUNDING_SOURCE = "Portugal 2030".freeze
+      SOURCE_KEY = "lisboa_2030".freeze
       PROGRAMME = "LISBOA2030".freeze
 
       THEME_PATTERNS = {
@@ -70,6 +71,7 @@ module FundingRadar
           "deadline" => date_value(calendar["dataFimAtual"] || calendar["dataFim"]),
           "funding_amount" => euro_amount(structure && structure["dotacao"]),
           "funding_source" => FUNDING_SOURCE,
+          "source_key" => SOURCE_KEY,
           "official_link" => official_link(code),
           "document_link" => document_link(record),
           "eligible_applicants" => eligible_applicants(text),

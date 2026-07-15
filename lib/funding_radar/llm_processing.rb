@@ -1,6 +1,7 @@
 require "digest"
 require "fileutils"
 require "json"
+require "stringio"
 require "yaml"
 
 module FundingRadar
@@ -44,7 +45,7 @@ module FundingRadar
       end
 
       def source_key(opportunity)
-        SOURCE_KEYS.fetch(opportunity.funding_source, normalize_key(opportunity.funding_source))
+        opportunity.source_key.to_s.empty? ? SOURCE_KEYS.fetch(opportunity.funding_source, normalize_key(opportunity.funding_source)) : opportunity.source_key
       end
 
       def enabled?(opportunity)
@@ -59,6 +60,7 @@ module FundingRadar
         {
           "instruction" => profile.fetch("instruction"),
           "max_characters" => profile.fetch("max_characters", 420),
+          "include_document" => profile.fetch("include_document", false),
           "prompt_version" => source.fetch("prompt_version", "v1")
         }
       end
@@ -119,6 +121,13 @@ module FundingRadar
       end
     end
 
+    class PdfTextExtractor
+      def extract(pdf)
+        require "pdf/reader"
+        PDF::Reader.new(StringIO.new(pdf)).pages.map(&:text).join("\n").gsub(/\s+/, " ").strip
+      end
+    end
+
     class StructuredSchema
       THEMES = %w[
         accessibility civic_participation climate community_development digital_public_services
@@ -149,12 +158,14 @@ module FundingRadar
     end
 
     class Processor
-      def initialize(configuration:, cache:, client:, schema_version: "structured-v1", env: ENV)
+      def initialize(configuration:, cache:, client:, schema_version: "structured-v1", env: ENV, document_fetcher: nil, document_extractor: nil)
         @configuration = configuration
         @cache = cache
         @client = client
         @schema_version = schema_version
         @env = env
+        @document_fetcher = document_fetcher || HttpClient.new
+        @document_extractor = document_extractor || PdfTextExtractor.new
       end
 
       def process(opportunity)
@@ -164,7 +175,7 @@ module FundingRadar
         end
 
         profile = @configuration.profile_for(opportunity)
-        input = input_for(opportunity)
+        input = input_for(opportunity, profile)
         cache_key = cache_key(opportunity, input, profile)
         namespace = cache_namespace(opportunity, profile)
         cached = @cache.fetch(cache_key, namespace: namespace)
@@ -195,8 +206,8 @@ module FundingRadar
 
       private
 
-      def input_for(opportunity)
-        {
+      def input_for(opportunity, profile)
+        input = {
           "title" => opportunity.title,
           "programme" => opportunity.programme,
           "source_summary" => opportunity.summary,
@@ -208,6 +219,19 @@ module FundingRadar
           "other_requirements" => opportunity.other_requirements,
           "official_link" => opportunity.official_link
         }
+        if profile.fetch("include_document", false) && opportunity.document_link.to_s != ""
+          input["document_text"] = document_text_for(opportunity)
+        end
+        input
+      end
+
+      def document_text_for(opportunity)
+        text = @document_extractor.extract(@document_fetcher.get(opportunity.document_link, headers: {"Accept" => "application/pdf"}))
+        text[0, document_character_limit]
+      end
+
+      def document_character_limit
+        Integer(@env.fetch("FUNDING_RADAR_LLM_DOCUMENT_MAX_CHARACTERS", "12000"))
       end
 
       def prompt_for(opportunity, input, profile)

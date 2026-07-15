@@ -20,6 +20,30 @@ class LlmProcessingTest < Minitest::Test
     end
   end
 
+  class FakeDocumentFetcher
+    attr_reader :urls
+
+    def initialize(body = "PDF bytes")
+      @body = body
+      @urls = []
+    end
+
+    def get(url, headers: {})
+      @urls << [url, headers]
+      @body
+    end
+  end
+
+  class FakeDocumentExtractor
+    def initialize(text)
+      @text = text
+    end
+
+    def extract(_body)
+      @text
+    end
+  end
+
   def test_disabled_source_does_not_call_provider
     Dir.mktmpdir do |dir|
       processor, client = build_processor(dir, enabled: false)
@@ -106,6 +130,27 @@ class LlmProcessingTest < Minitest::Test
     end
   end
 
+  def test_lisboa_profile_fetches_pdf_text_and_includes_it_in_prompt
+    Dir.mktmpdir do |dir|
+      client = FakeClient.new
+      fetcher = FakeDocumentFetcher.new
+      processor, = build_processor(
+        dir,
+        enabled: true,
+        client: client,
+        source_key: "lisboa_2030",
+        document_fetcher: fetcher,
+        document_extractor: FakeDocumentExtractor.new("Beneficiários: municípios. Parceria opcional.")
+      )
+
+      result = processor.process(lisboa_opportunity)
+
+      assert_equal "generated", result.status
+      assert_equal [[lisboa_opportunity.document_link, {"Accept" => "application/pdf"}]], fetcher.urls
+      assert_includes client.calls.first, "Beneficiários: municípios. Parceria opcional."
+    end
+  end
+
   private
 
   def opportunity
@@ -114,6 +159,7 @@ class LlmProcessingTest < Minitest::Test
       "title" => "Climate call",
       "programme" => "LIFE",
       "funding_source" => "EU Funding & Tenders Portal",
+      "source_key" => "eu_funding_tenders",
       "official_link" => "https://example.test/eu-1",
       "summary" => "Resumo de origem.",
       "eligible_applicants" => ["Municípios"],
@@ -122,19 +168,31 @@ class LlmProcessingTest < Minitest::Test
     )
   end
 
-  def build_processor(dir, enabled:, env: {"FUNDING_RADAR_LLM" => "enabled"}, client: nil, max_characters: 420)
+  def build_processor(dir, enabled:, env: {"FUNDING_RADAR_LLM" => "enabled"}, client: nil, max_characters: 420, source_key: "eu_funding_tenders", document_fetcher: nil, document_extractor: nil)
     config_path = File.join(dir, "config.yml")
     File.write(config_path, {
-      "profiles" => {"default" => {"instruction" => "Resume.", "max_characters" => max_characters}},
-      "sources" => {"eu_funding_tenders" => {"enabled" => enabled, "profile" => "default", "prompt_version" => "v1"}}
+      "profiles" => {"default" => {"instruction" => "Resume.", "max_characters" => max_characters, "include_document" => source_key == "lisboa_2030"}},
+      "sources" => {source_key => {"enabled" => enabled, "profile" => "default", "prompt_version" => "v1"}}
     }.to_yaml)
     client ||= FakeClient.new
     configuration = FundingRadar::LlmProcessing::Configuration.new(path: config_path, env: env)
     processor = FundingRadar::LlmProcessing::Processor.new(
       configuration: configuration,
       cache: FundingRadar::LlmProcessing::Cache.new(directory: dir),
-      client: client
+      client: client,
+      document_fetcher: document_fetcher,
+      document_extractor: document_extractor
     )
     [processor, client]
+  end
+
+  def lisboa_opportunity
+    opportunity.with(
+      id: "lisboa2030-2026-4",
+      programme: "LISBOA2030",
+      funding_source: "Portugal 2030",
+      source_key: "lisboa_2030",
+      document_link: "https://example.test/aviso.pdf"
+    )
   end
 end

@@ -34,6 +34,7 @@ class Lisboa2030SourceTest < Minitest::Test
     assert_equal "2026-06-01", opportunity.opening_date
     assert_equal "2026-07-31", opportunity.deadline
     assert_equal "€400,000", opportunity.funding_amount
+    assert_equal "lisboa_2030", opportunity.source_key
     assert_equal "https://lisboa.portugal2030.pt/avisos/#aviso-lisboa2030-2026-4", opportunity.official_link
     assert_equal "https://example.test/wp-json/avisos/download?container=siag-prod-container&path=avisos%2F2026%2F6%2Ftest.pdf", opportunity.document_link
     assert_equal 1, client.forms.size
