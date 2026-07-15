@@ -84,6 +84,7 @@ module FundingRadar
           "funding_amount" => euro_amount(card[:amount]),
           "funding_source" => FUNDING_SOURCE,
           "official_link" => preferred_link(card),
+          "document_link" => document_link(card),
           "eligible_applicants" => eligible_applicants(card[:applicants], card[:text]),
           "partnership_requirements" => partnership_requirements(card[:text]),
           "other_requirements" => [card[:status], support(card[:text])].compact.join(" · "),
@@ -133,6 +134,14 @@ module FundingRadar
       def preferred_link(card)
         link = card[:link]
         link = card[:partner_link] if link.to_s.match?(/\.pdf(?:\?|\z)/i)
+        absolute_link(link)
+      end
+
+      def document_link(card)
+        link = card[:link]
+        link = card[:partner_link] if link.to_s.empty? || !link.to_s.match?(/\.pdf(?:\?|\z)/i)
+        return "" unless link.to_s.match?(/\.pdf(?:\?|\z)/i)
+
         absolute_link(link)
       end
 

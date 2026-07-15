@@ -85,6 +85,7 @@ module FundingRadar
         "funding_amount" => opportunity.funding_amount,
         "funding_source" => opportunity.funding_source,
         "official_link" => opportunity.official_link,
+        "document_link" => opportunity.document_link,
         "eligible_applicants" => opportunity.eligible_applicants,
         "partnership_requirements" => opportunity.partnership_requirements,
         "other_requirements" => opportunity.other_requirements,
@@ -144,7 +145,7 @@ module FundingRadar
 
     def csv_headers
       %w[
-        id title programme opening_date deadline funding_amount funding_source official_link eligible_applicants
+        id title programme opening_date deadline funding_amount funding_source official_link document_link eligible_applicants
         partnership_requirements other_requirements summary themes relevance_score relevance_category
         relevance_explanation deadline_status
       ]

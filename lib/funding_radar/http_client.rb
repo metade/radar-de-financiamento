@@ -29,6 +29,15 @@ module FundingRadar
       cached_request("POST", url, headers) { request_with_retries(uri, request, headers) }
     end
 
+    def post_form(url, form:, headers: {})
+      uri = URI(url)
+      request = Net::HTTP::Post.new(uri)
+      request.body = URI.encode_www_form(form)
+      form_headers = headers.merge("Content-Type" => "application/x-www-form-urlencoded")
+      cache_url = "#{url}?#{URI.encode_www_form(form)}"
+      cached_request("POST", cache_url, form_headers) { request_with_retries(uri, request, form_headers) }
+    end
+
     private
 
     def cached_request(method, url, headers)

@@ -43,6 +43,7 @@ class EuropeanUrbanInitiativeSourceTest < Minitest::Test
     assert_equal "European Urban Initiative", opportunity.funding_source
     assert_equal ["Urban authorities"], opportunity.eligible_applicants
     assert_equal "https://portico.example/urban-panorama/european-urban-initiative", opportunity.official_link
+    assert_equal "https://portico.example/city-to-city-kit.pdf", opportunity.document_link
     assert_equal "€2,000,000", opportunity.funding_amount
     assert_includes opportunity.themes, "community_development"
   end

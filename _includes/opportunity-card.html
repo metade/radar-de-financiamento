@@ -17,6 +17,9 @@
           <span class="sr-only">(abre em novo separador)</span>
         </a>
       </h2>
+      {% if opportunity.document_link and opportunity.document_link != empty %}
+        <a class="mt-2 inline-block text-sm font-semibold text-civic-blue underline-offset-4 hover:underline focus:underline" href="{{ opportunity.document_link }}" target="_blank" rel="noopener noreferrer">PDF do aviso<span class="sr-only"> (abre em novo separador)</span> ↗</a>
+      {% endif %}
     </div>
     <div class="flex flex-wrap gap-2">
       <span class="border px-3 py-1 text-sm font-bold {{ category_class }}">{{ opportunity.relevance_category }}</span>
