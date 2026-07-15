@@ -1,0 +1,37 @@
+---
+result:
+  summary: O aviso Lisboa 2030 visa apoiar a eficiência energética em edifícios da
+    Administração Pública Local na região de Lisboa. O financiamento FEDER destina-se
+    a auditorias, planos de racionalização de consumos e investimentos na reabilitação
+    de edifícios, incentivando soluções verdes e circulares para reduzir a intensidade
+    energética e as emissões de gases com efeito de estufa.
+  themes:
+  - climate
+  - environment
+  - public_space
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e suas associações
+    - Entidades do setor empresarial local
+    - Entidades públicas ou associativas sem fins lucrativos via protocolo
+    - Projetos com custo total superior a 200.000 euros
+    - Operações enquadradas na ITI AML
+    - Maturidade física e financeira do investimento
+    - Cumprimento do princípio de não prejudicar significativamente o ambiente
+    confidence: high
+  partnership:
+    status: optional
+    details: Entidades públicas ou associativas sem fins lucrativos podem candidatar-se
+      mediante protocolo ou outras formas de cooperação com municípios, associações
+      de municípios ou entidades do setor empresarial local, desde que previsto na
+      ITI AML.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-19
+input_digest: ef318e07ba5bd2c9a4fe656001ed815efd781b5dfe886aba25a19841f7af6d23
+prompt_version: v1
+prompt_digest: f5b5e7e0bb0645fd7665bad6ee8619eb7ee053181e7ad686e1da0b658a02da3c
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,31 @@
+---
+result:
+  summary: O aviso Lisboa 2030 visa o reforço das redes e da capacidade institucional
+    no modelo de governação da Estratégia Regional de Especialização Inteligente (RIS3)
+    de Lisboa. Apoia ações de dinamização de redes colaborativas, concertação estratégica,
+    planeamento de investimentos e plataformas de inovação. Destina-se a entidades
+    do Conselho Regional de Inovação ou Grupos de Trabalho dos domínios da RIS3.
+  themes:
+  - digital_public_services
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades integrantes do Conselho Regional de Inovação ou Grupos de Trabalho
+      dos domínios de especialização da RIS3 Lisboa
+    - Operações com custo total superior a 200 mil euros
+    - Cumprimento do regime geral dos fundos do Portugal 2030
+    - Apresentação de plano de ação fundamentado e diagnóstico da realidade a intervir
+    confidence: high
+  partnership:
+    status: optional
+    details: As candidaturas podem ser apresentadas individualmente ou em regime de
+      copromoção.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2026-4
+input_digest: c49bc6d3845a6287a7d4fd543094cdb9a7d4314eb7f49d9d0d73dd3bbef5e8e0
+prompt_version: v1
+prompt_digest: f5b5e7e0bb0645fd7665bad6ee8619eb7ee053181e7ad686e1da0b658a02da3c
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

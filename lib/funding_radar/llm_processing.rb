@@ -260,7 +260,8 @@ module FundingRadar
       end
 
       def prompt_digest(profile)
-        Digest::SHA256.hexdigest(JSON.generate(profile))
+        prompt_profile = profile.reject { |key, _value| key.to_s == "include_document" }
+        Digest::SHA256.hexdigest(JSON.generate(prompt_profile))
       end
 
       def model

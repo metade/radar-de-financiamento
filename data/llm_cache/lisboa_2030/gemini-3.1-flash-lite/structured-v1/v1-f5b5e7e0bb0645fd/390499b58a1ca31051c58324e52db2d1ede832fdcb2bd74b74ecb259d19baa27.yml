@@ -1,0 +1,35 @@
+---
+result:
+  summary: O aviso Lisboa 2030 visa apoiar a regeneração e reabilitação urbana na
+    Área Metropolitana de Lisboa, promovendo a competitividade, a qualificação de
+    espaços públicos e a criação de equipamentos de inovação alinhados com a S3 Lisboa.
+    O programa disponibiliza 12 milhões de euros com taxa de cofinanciamento FEDER
+    de 40%, focando-se no desenvolvimento social, económico e ambiental integrado.
+  themes:
+  - community_development
+  - public_space
+  - inclusion
+  - climate
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou entidades previstas na ITI AML
+    - Enquadramento nos Planos de Ação da ITI AML
+    - Suporte em diagnóstico municipal aprovado
+    - Intervenções em zona urbana
+    - Demonstração de sustentabilidade e manutenção
+    - Respeito pelo princípio DNSH
+    - Conformidade com os requisitos de elegibilidade do regime geral Portugal 2030
+    confidence: high
+  partnership:
+    status: required
+    details: Obrigatório para entidades que não sejam municípios, sendo necessária
+      a celebração de protocolo ou outras formas de cooperação com o respetivo município.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-23
+input_digest: c2a1477b6e264dd92b9b66dff343487b3fd23e3102aed906073ceb19a0a023ca
+prompt_version: v1
+prompt_digest: f5b5e7e0bb0645fd7665bad6ee8619eb7ee053181e7ad686e1da0b658a02da3c
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

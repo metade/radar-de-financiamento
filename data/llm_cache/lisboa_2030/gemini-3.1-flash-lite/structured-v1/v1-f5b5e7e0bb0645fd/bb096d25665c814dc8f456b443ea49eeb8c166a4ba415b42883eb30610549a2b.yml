@@ -1,0 +1,37 @@
+---
+result:
+  summary: O aviso LISBOA2030-2023-12 apoia a criação e qualificação de infraestruturas
+    para o ensino pré-escolar, básico e secundário na região de Lisboa. O financiamento
+    FEDER, com taxa de 40%, destina-se a municípios e entidades da administração local
+    para intervir em zonas com falhas de cobertura ou sobreocupação, devendo os projetos
+    integrar-se nos planos das ITI da Área Metropolitana de Lisboa.
+  themes:
+  - inclusion
+  - accessibility
+  - community_development
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e entidades da administração local
+    - Projetos enquadrados nos Planos de Ação das ITI AML
+    - Existência de diagnóstico municipal de necessidades
+    - Maturidade comprovada por despacho de contratação pública
+    - Parecer da DGEstE para novas escolas
+    - Conformidade com normas de acessibilidade e sustentabilidade
+    - Não conclusão da operação antes da candidatura
+    - Demonstração de sustentabilidade financeira pós-investimento
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são estabelecidos requisitos específicos de parceria obrigatória
+      no aviso, embora a intervenção deva estar alinhada com os instrumentos territoriais
+      (ITI AML) e planos setoriais existentes.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2023-12
+input_digest: ca1d5a6ab51fe3422870be1d5a1842afc53ba76bbd16f0f2a2f68d89e5e156ec
+prompt_version: v1
+prompt_digest: f5b5e7e0bb0645fd7665bad6ee8619eb7ee053181e7ad686e1da0b658a02da3c
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

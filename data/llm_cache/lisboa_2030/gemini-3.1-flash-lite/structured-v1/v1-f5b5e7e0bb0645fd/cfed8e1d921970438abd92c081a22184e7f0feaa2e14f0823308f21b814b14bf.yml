@@ -1,0 +1,33 @@
+---
+result:
+  summary: O programa Lisboa 2030 apoia a preservação, requalificação e valorização
+    da estrutura ecológica metropolitana. O aviso foca-se na conservação da natureza,
+    biodiversidade e infraestruturas verdes na região NUTS II de Lisboa, visando a
+    melhoria da qualidade do ar, a amenização climática e o restauro ecológico, incluindo
+    ações de ecologização urbana e valorização do património natural.
+  themes:
+  - environment
+  - climate
+  - public_space
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios da região NUTS II de Lisboa
+    - Entidades públicas, associativas sem fins lucrativos ou privadas com competências
+      na área
+    - Cumprimento dos requisitos do regime geral dos fundos Portugal 2030
+    - Respeito pelas normas de contratação pública e legislação ambiental
+    confidence: high
+  partnership:
+    status: required
+    details: Entidades não municipais (públicas, associativas ou privadas) devem formalizar
+      a sua participação mediante protocolo ou formas de cooperação com os municípios.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2023-13
+input_digest: '02278b5b592e645f3fcfe987069abc1e187ea4e8bd8fe3602ec736f19110f49c'
+prompt_version: v1
+prompt_digest: f5b5e7e0bb0645fd7665bad6ee8619eb7ee053181e7ad686e1da0b658a02da3c
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
