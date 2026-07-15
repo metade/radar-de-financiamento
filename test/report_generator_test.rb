@@ -116,14 +116,36 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_limits_same_display_source_by_explicit_source_key
+    Dir.mktmpdir do |dir|
+      opportunities = [
+        opportunity("portugal", "Portugal 2030", "portugal_2030"),
+        opportunity("lisboa", "Portugal 2030", "lisboa_2030")
+      ]
+      source = Struct.new(:opportunities) { def fetch = opportunities }.new(opportunities)
+      generator = FundingRadar::ReportGenerator.new(
+        source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
+        duplicate_resolver: FundingRadar::DuplicateResolver.new,
+        scorer: FundingRadar::RelevanceScorer.new,
+        reports_dir: dir
+      )
+
+      path = generator.generate(today: Date.new(2026, 7, 11), tenders_per_source: 1)
+      document = YAML.safe_load_file(path, permitted_classes: [Date], aliases: false)
+
+      assert_equal %w[lisboa portugal], document.fetch("opportunities").map { |item| item.fetch("id") }.sort
+    end
+  end
+
   private
 
-  def opportunity(id, source)
+  def opportunity(id, source, source_key = nil)
     FundingRadar::Opportunity.from_hash(
       "id" => id,
       "title" => "Tender #{id}",
       "programme" => "Programme",
       "funding_source" => source,
+      "source_key" => source_key,
       "official_link" => "https://example.test/#{id}",
       "summary" => "Resumo #{id}.",
       "themes" => ["climate"]

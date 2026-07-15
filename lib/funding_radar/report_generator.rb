@@ -65,7 +65,8 @@ module FundingRadar
 
       counts = Hash.new(0)
       opportunities.select do |opportunity|
-        source = opportunity.funding_source.to_s
+        source = opportunity.source_key.to_s
+        source = opportunity.funding_source.to_s if source.empty?
         next false if counts[source] >= limit
 
         counts[source] += 1
