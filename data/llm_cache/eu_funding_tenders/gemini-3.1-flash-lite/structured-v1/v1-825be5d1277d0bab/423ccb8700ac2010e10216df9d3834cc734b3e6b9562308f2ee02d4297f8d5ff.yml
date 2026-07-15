@@ -1,0 +1,26 @@
+---
+result:
+  summary: Esta iniciativa do Horizon Europe visa assegurar a eficácia contínua das
+    áreas protegidas na conservação de habitats e espécies face à intensificação dos
+    fatores de perda de biodiversidade, disponibilizando um financiamento total de
+    13 milhões de euros.
+  themes:
+  - environment
+  - climate
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica a existência de requisitos de consórcio
+      ou parceria que devem ser verificados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl6-2026-01-biodiv-04
+input_digest: d5160393edf8561e28e150ed949f1f472500e83c46653101d5e942b77e3325bb
+prompt_version: v1
+prompt_digest: 825be5d1277d0bab6607a4186275126b95f2ebbc0e531a21b0eb1936b85d9eb2
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
