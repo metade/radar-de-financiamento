@@ -39,7 +39,7 @@ module FundingRadar
         end
         records.filter_map { |record| normalize_safely(record) }
       rescue StandardError => error
-        Debug.log "Lisboa2030Source failed: #{error.class}: #{error.message}"
+        Debug.failure "Lisboa2030Source failed: #{error.class}: #{error.message}"
         []
       end
 
@@ -48,7 +48,7 @@ module FundingRadar
       def normalize_safely(record)
         normalize(record)
       rescue StandardError => error
-        Debug.log "Lisboa2030Source skipped malformed record: #{error.class}: #{error.message}"
+        Debug.failure "Lisboa2030Source skipped malformed record: #{error.class}: #{error.message}"
         nil
       end
 

@@ -9,6 +9,7 @@ module FundingRadar
         name = source.class.name.to_s.split("::").last.to_s
         name = "anonymous source" if name.empty?
         opportunities = Debug.timed("source #{name}") { source.fetch }
+        Debug.failure "source #{name} returned no opportunities" if opportunities.empty?
         Debug.log "source #{name}: #{opportunities.size} opportunities"
         opportunities
       end
