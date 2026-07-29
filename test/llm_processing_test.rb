@@ -170,6 +170,13 @@ class LlmProcessingTest < Minitest::Test
     end
   end
 
+  def test_structured_schema_supports_date_fields
+    require "ruby_llm"
+    require "ruby_llm/schema"
+
+    assert FundingRadar::LlmProcessing::StructuredSchema.build
+  end
+
   private
 
   def opportunity

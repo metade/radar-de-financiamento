@@ -44,8 +44,8 @@ profiles:
       lista vazia. Os critérios de elegibilidade e os detalhes de parceria
       devem ser paráfrases prudentes do aviso, não decisões jurídicas. Não
       repitas URLs no resumo. Extrai as datas de início e fim das candidaturas
-      do PDF quando existirem; não confundas o prazo final de candidatura com
-      prazos de execução ou pagamento.
+      do PDF quando existirem; se não existirem, deixa a data vazia. Não
+      confundas o prazo final de candidatura com prazos de execução ou pagamento.
     max_characters: 420
     include_document: true
 

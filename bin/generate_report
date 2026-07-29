@@ -44,6 +44,9 @@ llm_processor = if processing_mode != "deterministic" && ENV.fetch("FUNDING_RADA
     client: FundingRadar::LlmProcessing::RubyLlmClient.new
   )
 end
+if processing_mode != "deterministic" && llm_processor.nil?
+  warn "[funding-radar] LLM processing is not active: set FUNDING_RADAR_LLM=enabled"
+end
 generator = FundingRadar::ReportGenerator.new(
   source_registry: registry,
   duplicate_resolver: FundingRadar::DuplicateResolver.new,
