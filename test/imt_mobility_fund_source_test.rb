@@ -14,13 +14,19 @@ class ImtMobilityFundSourceTest < Minitest::Test
     pdf_url = "https://imt.example/uploads/aviso-1.pdf"
     pages = {
       index_url => %(<h2><a href="#{year_url}">2026</a></h2>),
-      year_url => %(<h3><a href="#{notice_url}">Aviso n.º 1/2026 – Apoio à Mobilidade Sustentável</a></h3>),
+      year_url => <<~HTML,
+        <div class="notice">
+          <h3><a href="#{notice_url}">Aviso n.º 1/2026 – Apoio à Mobilidade Sustentável</a></h3>
+          <a href="#{pdf_url}">Aviso n.º 1/2026</a>
+          <a href="https://imt.example/forms/formulario.html">Formulário de Candidatura</a>
+        </div>
+      HTML
       notice_url => <<~HTML,
         <h1>Aviso n.º 1/2026 – Apoio à Mobilidade Sustentável</h1>
         <p>Prazo de submissão de candidaturas até 31/12/2026.</p>
         <p>Dotação financeira: 2.500.000 €.</p>
         <p>Beneficiários: municípios e autoridades de transporte.</p>
-        <a href="#{pdf_url}">Aviso PDF</a>
+        <a href="https://www.imt-ip.pt/wp-content/uploads/2025/03/Organogramas-IMT.pdf">Organogramas IMT</a>
       HTML
     }
 

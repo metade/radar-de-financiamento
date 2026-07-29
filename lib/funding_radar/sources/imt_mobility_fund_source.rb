@@ -79,7 +79,7 @@ module FundingRadar
           link = absolute_link(anchor && anchor["href"])
           next if link == @index_url || link.empty?
 
-          {title: title, link: link, year: year}
+          {title: title, link: link, year: year, document_link: notice_document_link(heading)}
         end.uniq { |card| card[:link] }
       end
 
@@ -102,7 +102,7 @@ module FundingRadar
           "funding_source" => FUNDING_SOURCE,
           "source_key" => "imt_mobility_fund",
           "official_link" => card[:link],
-          "document_link" => pdf_link(detail_html),
+          "document_link" => card[:document_link].to_s,
           "eligible_applicants" => eligible_applicants(text),
           "partnership_requirements" => partnership_requirements(text),
           "other_requirements" => other_requirements(text),
@@ -164,9 +164,20 @@ module FundingRadar
         THEME_PATTERNS.filter_map { |theme, pattern| theme if text.match?(pattern) }
       end
 
-      def pdf_link(html)
-        href = Nokogiri::HTML(utf8(html)).css("a[href]").find { |anchor| anchor["href"].match?(/\.pdf(?:\?|\z)/i) }&.[]("href")
-        absolute_link(href)
+      def notice_document_link(heading)
+        container = heading.parent
+        2.times do
+          anchors = container.css("a[href]")
+          link = anchors.find do |anchor|
+            label = plain_text(anchor.text)
+            label.match?(/\Aaviso\b/i) && anchor["href"].match?(/\.pdf(?:\?|\z)/i)
+          end
+          return absolute_link(link["href"]) if link
+
+          container = container.parent
+        end
+
+        ""
       end
 
       def absolute_link(link)
