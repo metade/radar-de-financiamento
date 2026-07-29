@@ -240,7 +240,14 @@ module FundingRadar
 
       def document_text_for(opportunity, profile)
         text = @document_extractor.extract(@document_fetcher.get(opportunity.document_link, headers: {"Accept" => "application/pdf"}))
-        text[0, document_character_limit(profile)]
+        limit = document_character_limit(profile)
+        return text if text.length <= limit
+
+        # Keep the beginning for identity/context, but also retain deadline
+        # sections that may occur well after the first page of a long notice.
+        context_limit = (limit * 0.7).to_i
+        deadline_sections = text.scan(/.{0,2500}(?:prazos?|apresenta[cç][aã]o de candidaturas?|rece[cç][aã]o de candidaturas?).{0,7500}/i)
+        [text[0, context_limit], *deadline_sections, text[-(limit - context_limit), limit - context_limit]].join(" ")[0, limit]
       end
 
       def document_character_limit(profile)
