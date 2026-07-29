@@ -1,0 +1,37 @@
+---
+result:
+  summary: O Aviso n.º 2/2026 do Fundo para a Mobilidade e Transportes apoia intervenções
+    para melhorar a mobilidade escolar ativa em Portugal continental (exceto Áreas
+    Metropolitanas de Lisboa e Porto). Financia infraestruturas ligeiras, acalmia
+    de tráfego, rotas seguras e programas que promovam a autonomia e segurança de
+    crianças e jovens nas deslocações para a escola.
+  opening_date: '2026-08-02'
+  deadline: '2026-08-31'
+  themes:
+  - mobility
+  - public_space
+  - community_development
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Juntas de Freguesia
+    - Comunidades intermunicipais
+    - Empresas Municipais
+    - Agrupamentos de Escolas e escolas públicas
+    - Território de Portugal continental (exceto Áreas Metropolitanas de Lisboa e
+      Porto)
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-2-2026-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: 58d3bdcc138eb738c0ac29b304bce976b2f920b0714d37a34ce62bcc62f21ea5
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

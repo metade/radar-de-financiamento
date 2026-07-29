@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa disponibiliza financiamento para impulsionar
+    a adoção de soluções inovadoras no contexto da redução de riscos de desastres.
+    O objetivo é apoiar projetos que integrem tecnologias ou práticas inovadoras,
+    com uma dotação total de 6 milhões de euros e um limite de 3 milhões por projeto.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade menciona requisitos de consórcio ou parceria,
+      devendo ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-drs-04
+input_digest: 001ef8f0e249054c478549306c77d1d9b0d441c383f98fb69f7b497a8ed6f22c
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa LIFE visa o reforço dos quadros nacionais para sistemas de aquecimento
+    e arrefecimento renováveis e eficientes em edifícios já existentes, promovendo
+    a transição energética através de soluções sustentáveis e energeticamente eficazes.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-renewhc
+input_digest: 9e54631eb5388a00df2cc70b3b0c61524c8315220f5c9793fd986ccad212d3c5
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

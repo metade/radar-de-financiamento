@@ -1,0 +1,27 @@
+---
+result:
+  summary: O programa LIFE financia iniciativas focadas em serviços integrados para
+    a transição energética em edifícios privados, através de modelos de "One-Stop-Shops".
+    O objetivo é apoiar soluções para a eficiência energética e sustentabilidade no
+    setor privado.
+  opening_date: '2026-04-21'
+  deadline: '2026-09-16'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: unclear
+    details: O texto sugere a existência de requisitos de consórcio ou parceria, recomendando
+      a verificação no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-oss
+input_digest: f49be4cc1ea6bb44f7db38ac477b94295cc4e016190b05dba30c747afa366b4b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

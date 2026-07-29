@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa financia soluções sustentáveis, inclusivas,
+    acessíveis e estéticas para o conforto térmico em edifícios. O objetivo é promover
+    a regeneração do ambiente construído através de abordagens inovadoras e eficientes,
+    garantindo a qualidade de vida e a eficiência energética.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - climate
+  - environment
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-regen-01
+input_digest: 6847f5cb74690f1fb4ebe69ae91891d04fa2a3801a3d09bce8a0b400cfc46914
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

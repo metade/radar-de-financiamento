@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa Erasmus+ financia Small-scale Partnerships no âmbito do desporto,
+    com o objetivo de apoiar organizações e entidades que promovam o desporto de base.
+    A iniciativa visa fomentar a colaboração em projetos de pequena escala.
+  opening_date: '2025-12-17'
+  deadline: ''
+  themes:
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto refere a existência de requisitos de consórcio ou parceria, devendo
+      estes ser verificados no aviso oficial da oportunidade.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-sscp
+input_digest: 7b22e1d11a5f996b49a937a6701d4fb163508b1218c7cc7dd5961b1dfec89e9d
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

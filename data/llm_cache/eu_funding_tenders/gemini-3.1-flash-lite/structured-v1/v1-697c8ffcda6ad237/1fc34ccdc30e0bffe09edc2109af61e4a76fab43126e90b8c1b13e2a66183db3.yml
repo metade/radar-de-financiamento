@@ -1,0 +1,29 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa foca-se na resolução da problemática
+    dos sem-abrigo através de estratégias habitacionais integradas, alinhadas com
+    os princípios da Nova Bauhaus Europeia.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - inclusion
+  - community_development
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade refere a existência de requisitos de consórcio
+      ou parceria, sendo necessária a verificação no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-participation-01
+input_digest: a3deaaec9f836203542e6501b7e372acac87ff1304c562e6929234e62587c14e
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

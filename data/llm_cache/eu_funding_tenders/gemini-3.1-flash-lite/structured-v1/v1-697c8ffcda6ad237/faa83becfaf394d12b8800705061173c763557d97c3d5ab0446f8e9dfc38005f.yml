@@ -1,0 +1,29 @@
+---
+result:
+  summary: Este aviso do programa LIFE visa apoiar a cooperação entre comunidades
+    de energia. A iniciativa, com uma dotação total de 7 milhões de euros, destina-se
+    a entidades públicas e autoridades locais ou municípios interessados em promover
+    este setor.
+  opening_date: '2026-04-21'
+  deadline: '2026-09-16'
+  themes:
+  - climate
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso indica a existência de requisitos de consórcio ou parceria, devendo
+      estes ser confirmados no documento oficial da oportunidade.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-enercom
+input_digest: 23af394ed9abb55c7b72206cbdc80443204cd8d8ffbca43397c64d2370b93ad8
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

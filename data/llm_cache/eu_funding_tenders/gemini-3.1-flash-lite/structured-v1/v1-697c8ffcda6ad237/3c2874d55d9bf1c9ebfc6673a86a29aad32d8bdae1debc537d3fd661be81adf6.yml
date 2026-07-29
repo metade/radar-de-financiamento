@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa LIFE disponibiliza financiamento focado na implementação efetiva
+    de legislação fundamental no domínio da energia sustentável. A oportunidade visa
+    apoiar projetos que contribuam para os objetivos europeus de transição energética.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-policy
+input_digest: f5bdcb4683b7d9957212858c183db9151d0c4b94f884c7c9d2273dcf11d2b3eb
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

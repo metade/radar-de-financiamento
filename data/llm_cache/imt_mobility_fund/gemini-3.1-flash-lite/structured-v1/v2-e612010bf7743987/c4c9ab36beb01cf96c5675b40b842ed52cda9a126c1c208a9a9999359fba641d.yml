@@ -1,0 +1,39 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes apoia a implementação de medidas
+    de mobilidade escolar ativa e sustentável para crianças e jovens em Portugal continental,
+    excluindo áreas metropolitanas. O aviso visa financiar intervenções em infraestruturas
+    e ações de promoção de percursos seguros, incentivando modos ativos, a segurança
+    rodoviária e a redução de tráfego motorizado escolar.
+  opening_date: '2025-04-24'
+  deadline: '2025-07-31'
+  themes:
+  - mobility
+  - public_space
+  - environment
+  - inclusion
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Juntas de Freguesia
+    - Comunidades intermunicipais
+    - Empresas Municipais
+    - Agrupamentos de Escolas e Escolas não Agrupadas públicas
+    - Território nacional do Continente (exceto áreas metropolitanas de Lisboa e Porto
+      e regiões autónomas)
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são mencionados requisitos formais de parceria entre entidades no
+      aviso.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-3-2025-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: 454ceccbe9aa5f9b472880396a6671fb104bdc442472e496ae6a7245c259afff
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

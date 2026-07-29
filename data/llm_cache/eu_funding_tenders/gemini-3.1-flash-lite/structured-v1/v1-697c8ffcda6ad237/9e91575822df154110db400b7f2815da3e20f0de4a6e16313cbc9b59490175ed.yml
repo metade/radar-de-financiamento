@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este aviso do programa Horizonte Europa foca-se na prevenção e mitigação
+    da utilização indevida da biologia sintética para fins de bioterrorismo. O financiamento
+    total disponível é de 3 milhões de euros, com um limite de 3 milhões de euros
+    por projeto.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, devendo
+      ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-fct-06
+input_digest: a34ea8fc3087f9a801dcb9817591cd5bf8bc66403ba53b7d2d00eb4724c71e5b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

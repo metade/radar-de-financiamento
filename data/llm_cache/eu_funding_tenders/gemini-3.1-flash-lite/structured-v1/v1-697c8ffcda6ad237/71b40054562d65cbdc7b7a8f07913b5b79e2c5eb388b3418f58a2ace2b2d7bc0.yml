@@ -1,0 +1,25 @@
+---
+result:
+  summary: Este convite à apresentação de propostas no âmbito do programa Horizonte
+    Europa visa abordar estruturalmente a problemática dos sem-abrigo através da coordenação
+    de infraestruturas sociais e serviços ao nível dos bairros.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - inclusion
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-business-01
+input_digest: 26904f2dcbdab476b457a2d975b2e6665a53075dbea2e11fe923d231fe062ae7
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

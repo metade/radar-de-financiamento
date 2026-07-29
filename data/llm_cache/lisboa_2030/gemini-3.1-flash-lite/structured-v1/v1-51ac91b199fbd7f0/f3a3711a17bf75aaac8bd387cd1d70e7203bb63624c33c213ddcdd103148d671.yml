@@ -1,0 +1,38 @@
+---
+result:
+  summary: O programa Lisboa 2030 apoia ações de proteção civil e gestão de riscos
+    para aumentar a resiliência a eventos climáticos extremos em contexto urbano.
+    O aviso financia equipamentos de combate a incêndios, sistemas de prevenção e
+    monitorização, visando mitigar vulnerabilidades territoriais na região NUTS II
+    de Lisboa, no âmbito da ITI AML.
+  opening_date: '2024-03-06'
+  deadline: '2025-12-31'
+  themes:
+  - climate
+  - environment
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e suas associações
+    - Entidades do setor empresarial local
+    - Serviços Municipais ou Municipalizados
+    - Entidades de natureza pública ou associativa sem fins lucrativos com protocolo
+      ou cooperação prevista na ITI AML
+    - Operações na região NUTS II Lisboa
+    - Conformidade com requisitos do Decreto-Lei n.º 20-A/2023
+    - Grau de maturidade comprovado por despacho de abertura de contratação pública
+    confidence: high
+  partnership:
+    status: optional
+    details: Entidades de natureza pública ou associativa sem fins lucrativos devem
+      estabelecer protocolos ou outras formas de cooperação com municípios, serviços
+      municipalizados ou empresas locais, conforme previsto na ITI AML.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-21
+input_digest: 3427b2dd5ced86c897e9bccebf89669c30859bef20dd940e1681068a0ad89d72
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

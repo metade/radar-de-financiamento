@@ -1,0 +1,24 @@
+---
+result:
+  summary: 'O prémio #BeActive EU Sport Awards na categoria de Inclusão, inserido
+    no programa Erasmus+, visa distinguir projetos e iniciativas que promovam a inclusão
+    social através do desporto.'
+  opening_date: '2026-06-30'
+  deadline: '2026-09-17'
+  themes:
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-inclusion
+input_digest: daa46c467e47699bfcc8444201e77e2951f68d803b6c0d1e07b6f6b47cca13d1
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

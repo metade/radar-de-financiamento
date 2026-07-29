@@ -1,0 +1,26 @@
+---
+result:
+  summary: Esta iniciativa do programa Horizonte Europa foca-se na compreensão da
+    dinâmica dos mercados de capitais para promover o aumento do investimento em projetos
+    da Nova Bauhaus Europeia em bairros locais.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - community_development
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-business-02
+input_digest: b3895ca422ca506182bc073ce8b9dba94801452685dd56873c2b0ac1a307ade4
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

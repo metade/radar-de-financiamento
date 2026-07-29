@@ -1,0 +1,24 @@
+---
+result:
+  summary: Este convite do programa LIFE destina-se a apoiar a transição para energias
+    limpas no setor industrial e empresarial europeu.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-industry
+input_digest: 9a690c3a97ad4127a3a976d1d2a1c67b545d17f93437062070f4641cf03bc98b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

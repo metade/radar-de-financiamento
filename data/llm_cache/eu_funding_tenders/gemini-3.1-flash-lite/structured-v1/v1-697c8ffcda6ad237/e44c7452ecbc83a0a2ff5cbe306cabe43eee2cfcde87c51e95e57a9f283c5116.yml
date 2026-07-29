@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa LIFE financia iniciativas focadas na escalabilidade de soluções
+    de energia limpa e inteligente para promover a acessibilidade económica em cidades
+    da União Europeia. O objetivo é apoiar municípios e autoridades locais na implementação
+    de tecnologias sustentáveis para reduzir custos energéticos.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-empower
+input_digest: 11341f86bb943f41fd210a18aff1da1ccdde71092937557163244f97d2f21874
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

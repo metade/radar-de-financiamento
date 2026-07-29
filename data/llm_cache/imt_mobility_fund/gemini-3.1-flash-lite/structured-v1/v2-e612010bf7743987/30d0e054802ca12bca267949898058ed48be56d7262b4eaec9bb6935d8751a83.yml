@@ -1,0 +1,32 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes disponibiliza apoio financeiro
+    para a aquisição e instalação de tacógrafos digitais de 2ª geração em viaturas
+    de empresas de transporte público de passageiros que possuam licença comunitária
+    para operação internacional. O incentivo visa cumprir requisitos legais de modernização
+    tecnológica, sendo elegíveis despesas ocorridas entre 2024 e outubro de 2025.
+  opening_date: '2025-10-02'
+  deadline: '2025-10-31'
+  themes:
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Empresas do setor de transporte público de passageiros
+    - Possuir licença comunitária para operação internacional
+    - Situação tributária regularizada
+    - Situação contributiva regularizada perante a Segurança Social
+    - Aquisição e instalação de tacógrafos digitais de 2ª geração realizada entre
+      01-01-2024 e 31-10-2025
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-4-2025-apoio-a-aquisicao-de-tacografos-digitais-2-g
+input_digest: 6f1d8acd35bc5788251b2e75d53b34021a379e043eb55e739d1ea37d8d71bf28
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,25 @@
+---
+result:
+  summary: 'O programa Erasmus+ apresenta os #BeActive-EU-SPORT-AWARDS focados na
+    atividade física. Esta iniciativa visa premiar projetos e iniciativas que promovam
+    estilos de vida saudáveis e a participação desportiva, contribuindo para os objetivos
+    da Semana Europeia do Desporto.'
+  opening_date: '2026-06-30'
+  deadline: '2026-09-17'
+  themes:
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-physical-activity
+input_digest: 31313c06bf0bd3079d925dfd4bc044d63612c041a20cc1bcad50aa7dc19b619d
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,35 @@
+---
+result:
+  summary: O Aviso n.º 1/2025 do Fundo para a Mobilidade e Transportes apoia a descarbonização
+    e digitalização do setor do táxi, financiando a aquisição de veículos 100% elétricos,
+    equipamentos de carregamento, taxímetros, impressoras e terminais de pagamento
+    automático. O apoio destina-se a empresas titulares de alvará para a atividade
+    de transporte em táxi.
+  opening_date: '2025-11-19'
+  deadline: '2025-10-31'
+  themes:
+  - climate
+  - digital_public_services
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades titulares de alvará para o exercício da atividade de transporte em
+      táxi
+    - Situação tributária regularizada perante a Autoridade Tributária
+    - Situação contributiva regularizada perante a Segurança Social
+    - Licença municipal para a atividade de táxi válida
+    - Ações enquadradas nas tipologias de descarbonização ou digitalização definidas
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são mencionados requisitos de parceria no aviso, tratando-se de apoios
+      individuais a empresas do setor.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-6-2024-aviso-a-implementacao-do-projeto-1bilhete-pt
+input_digest: 75c99c811cfe7425c6c30e0b8950b4513b9289b844c3f6d921fb3a31f78d53e4
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

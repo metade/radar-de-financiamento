@@ -1,0 +1,29 @@
+---
+result:
+  summary: O programa Horizonte Europa financia abordagens inovadoras para a reutilização
+    de espaços vagos, obsoletos ou subutilizados. O objetivo é fomentar a regeneração
+    urbana e a adaptação destas áreas para novas funções, contando com um orçamento
+    total de 9 milhões de euros, prevendo-se uma dotação de até 4,5 milhões de euros
+    por projeto aprovado.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - public_space
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-business-03
+input_digest: dbe3f4c766a2a5b67eeda58d6b93bcdecf89603db9afe93ab7aa15f24e277e42
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

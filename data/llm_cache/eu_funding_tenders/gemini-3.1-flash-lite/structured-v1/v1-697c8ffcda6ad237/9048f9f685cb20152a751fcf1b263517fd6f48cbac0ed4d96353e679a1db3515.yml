@@ -1,0 +1,24 @@
+---
+result:
+  summary: O programa Horizonte Europa financia o desenvolvimento de modelos de Gémeo
+    Humano Virtual (VHT) aplicados à investigação oncológica. O objetivo é promover
+    soluções inovadoras para o cancro, com um orçamento total de 35 milhões de euros,
+    prevendo-se uma atribuição de até 9 milhões de euros por projeto aprovado.
+  opening_date: '2026-02-10'
+  deadline: '2026-09-15'
+  themes: []
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-01
+input_digest: 443377d3eede0358ab1cd5298abe78c0f9ef338897bc5f6475e6e06cc7c216b7
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

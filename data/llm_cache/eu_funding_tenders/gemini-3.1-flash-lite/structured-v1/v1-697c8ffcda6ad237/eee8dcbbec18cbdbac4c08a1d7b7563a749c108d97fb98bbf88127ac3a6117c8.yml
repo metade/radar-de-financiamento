@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa financia abordagens inovadoras para o desenho
+    espacial de bairros, com um orçamento total de 10 milhões de euros e um limite
+    de 5 milhões por projeto. A iniciativa é dirigida a municípios e autoridades locais.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - public_space
+  - community_development
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, devendo
+      ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-participation-02
+input_digest: f2be87bf7b265bfd493a64cce192ca707316fda20170acd53dcca3a2e1dbe27b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

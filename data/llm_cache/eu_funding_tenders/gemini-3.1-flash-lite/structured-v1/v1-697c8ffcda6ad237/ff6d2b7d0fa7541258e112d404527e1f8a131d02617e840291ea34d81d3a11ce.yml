@@ -1,0 +1,31 @@
+---
+result:
+  summary: Este aviso do programa LIFE visa apoiar a elaboração de planos locais de
+    aquecimento e arrefecimento integrados, compreensivos e exequíveis. A iniciativa
+    pretende fomentar a transição energética a nível local, financiando estratégias
+    que permitam uma gestão mais eficiente da energia térmica em contextos municipais.
+  opening_date: '2026-04-21'
+  deadline: '2026-09-16'
+  themes:
+  - climate
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade aponta para a existência de requisitos de consórcio
+      ou parceria, devendo estes ser verificados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-heatcoolplan
+input_digest: 3a14529bac9323e71b78cd28bb60c9c073fa902fb363b3407fa22488c0f21ae3
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

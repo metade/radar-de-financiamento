@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa LIFE apresenta a oportunidade Crowding in private finance, focada
+    na mobilização de financiamento privado. A informação disponível sobre este aviso
+    é limitada, não especificando os critérios de elegibilidade ou os requisitos de
+    parceria necessários para a candidatura.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-privafin
+input_digest: 4741e66a8d698bb7548a7f305aff725944ff9669300e68e6e44892c4282aed4d
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa disponibiliza financiamento para o desenvolvimento
+    de ferramentas e processos destinados a apoiar testes de esforço em infraestruturas
+    críticas. O aviso visa entidades públicas e integra os esforços de proteção e
+    resiliência deste tipo de infraestruturas, com um orçamento total de 9,67 milhões
+    de euros.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade menciona a existência de requisitos de consórcio
+      ou parceria, devendo estes ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-infra-01
+input_digest: f1840935c9470fb294f9123200bdeda03a0ad1cbaf30b7f9e40a6166ff81901c
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

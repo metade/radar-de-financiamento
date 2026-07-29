@@ -1,0 +1,35 @@
+---
+result:
+  summary: O aviso Lisboa 2030 visa apoiar a regeneração urbana e a competitividade
+    na Área Metropolitana de Lisboa. As ações incluem a qualificação de espaços públicos,
+    reabilitação de edifícios, criação de equipamentos culturais ou de inovação e
+    regeneração de espaços obsoletos para novas atividades económicas, em alinhamento
+    com a estratégia regional S3 Lisboa.
+  opening_date: '2024-03-06'
+  deadline: '2025-12-31'
+  themes:
+  - public_space
+  - community_development
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios da Área Metropolitana de Lisboa
+    - Outras entidades previstas na ITI AML mediante protocolo ou cooperação com municípios
+    - Cumprimento do regime geral de aplicação dos fundos europeus do Portugal 2030
+    - Grau de maturidade física e financeira dos investimentos
+    - Projetos não concluídos à data da candidatura
+    - Não ter salários em atraso
+    confidence: high
+  partnership:
+    status: optional
+    details: As entidades elegíveis incluem municípios ou outras entidades previstas
+      na ITI AML que estabeleçam protocolos ou formas de cooperação com os municípios.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-23
+input_digest: af4335f3268e731aae429438ddd21d071f2c15799b1ebe4768afab33f584ba61
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

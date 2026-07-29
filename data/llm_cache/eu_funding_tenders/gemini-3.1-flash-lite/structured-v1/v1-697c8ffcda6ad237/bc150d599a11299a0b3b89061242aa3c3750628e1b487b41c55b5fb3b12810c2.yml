@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa abre candidaturas para projetos focados em
+    estreitar a relação entre a gestão de riscos de catástrofes e a adaptação às alterações
+    climáticas. Esta iniciativa visa apoiar municípios e autoridades locais no desenvolvimento
+    de estratégias de resiliência e resposta a fenómenos climáticos extremos.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-04
+input_digest: f50a4e1690d9caefcfced81d7cfb78cbb701459c7d6fcadf0b882cd716af4bb1
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

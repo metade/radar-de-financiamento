@@ -1,0 +1,38 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes apoia a descarbonização do setor
+    do táxi, financiando a aquisição de veículos 100% elétricos (categoria M1), o
+    abate de viaturas antigas e a instalação de equipamentos de carregamento. O aviso
+    é dirigido a titulares de alvará para transporte em táxi no território nacional,
+    sendo a dotação limitada e a seleção feita por ordem de submissão.
+  opening_date: '2026-08-02'
+  deadline: '2026-10-30'
+  themes:
+  - climate
+  - mobility
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades habilitadas com alvará para o exercício da atividade de transporte
+      em táxi
+    - Situação tributária e contributiva regularizada perante a Autoridade Tributária
+      e Segurança Social
+    - Aquisição de veículos 100% elétricos novos (categoria M1)
+    - Obrigatoriedade de abate de viatura antiga associada à aquisição de veículo
+      elétrico
+    - Obrigatoriedade de instalação de equipamento de carregamento associada à aquisição
+      de veículo elétrico
+    - Manutenção do veículo afetado à atividade de táxi durante 5 anos
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-3-2026-apoio-a-descarbonizacao-do-setor-do-taxi
+input_digest: 9d0301e6a55627b97af4c0317c9cfb0e9b114419b93c3bcf904f0fa794839a4a
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

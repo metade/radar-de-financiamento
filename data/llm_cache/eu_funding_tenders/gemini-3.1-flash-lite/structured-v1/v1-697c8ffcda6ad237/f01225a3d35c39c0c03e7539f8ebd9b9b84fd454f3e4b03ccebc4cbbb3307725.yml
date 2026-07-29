@@ -1,0 +1,24 @@
+---
+result:
+  summary: O programa Horizonte Europa visa financiar projetos focados na melhoria
+    da qualidade de vida de pacientes oncológicos seniores. Esta oportunidade, inserida
+    na Missão Cancro, dispõe de um orçamento global de 25 milhões de euros.
+  opening_date: '2026-02-10'
+  deadline: '2026-09-15'
+  themes:
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-07
+input_digest: e25adf22b27f384e43d5553569539d3bce33915317357daca5028db454021b1e
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,35 @@
+---
+result:
+  summary: O aviso Lisboa 2030 apoia a criação ou qualificação de equipamentos escolares
+    (pré-escolar, básico e secundário) na região NUTS II Lisboa. O objetivo é combater
+    falhas de cobertura e sobreocupação através de investimentos em infraestruturas
+    educativas, financiados por FEDER com uma taxa máxima de 40%. As candidaturas
+    são analisadas mensalmente até ao final do período definido no aviso.
+  opening_date: '2023-12-21'
+  deadline: '2025-12-31'
+  themes:
+  - community_development
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Entidades da Administração Local
+    - Operações que visem a criação ou qualificação de equipamentos escolares
+    - Projetos em territórios com falha de cobertura ou sobreocupação
+    - Maturidade física e financeira comprovada
+    - Disponibilidade de licenciamentos e parecer da Direção-Geral da Educação
+    - Demonstração de sustentabilidade financeira pós-investimento
+    - Regularidade perante a legislação de fundos europeus
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2023-12
+input_digest: eb7ef4b921eb1d7e477d3e440271d627334c4740aed7cedbbb07b9dffb083c4f
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

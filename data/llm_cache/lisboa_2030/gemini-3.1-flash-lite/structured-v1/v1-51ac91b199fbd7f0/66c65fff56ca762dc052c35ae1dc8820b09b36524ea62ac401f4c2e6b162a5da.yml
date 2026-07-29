@@ -1,0 +1,37 @@
+---
+result:
+  summary: O aviso LISBOA2030-2024-22 apoia projetos de mobilidade urbana multimodal
+    sustentável na região de Lisboa. O objetivo é reduzir a dependência do transporte
+    individual, promover a descarbonização e melhorar a qualidade do ar através de
+    soluções de transporte público, mobilidade ativa, sistemas de gestão de tráfego
+    e logística urbana, focando-se em tecnologias inovadoras e intermodalidade.
+  opening_date: '2024-02-15'
+  deadline: '2025-12-31'
+  themes:
+  - mobility
+  - climate
+  - environment
+  - public_space
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e suas associações
+    - Entidades do setor empresarial local
+    - Entidades de natureza pública ou associativa sem fins lucrativos
+    - Entidades com protocolo ou cooperação com municípios
+    - Operações enquadradas na ITI AML
+    confidence: high
+  partnership:
+    status: optional
+    details: Parcerias através de protocolos ou outras formas de cooperação são exigidas
+      apenas para entidades de natureza pública ou associativa sem fins lucrativos
+      que pretendam candidatar-se.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-22
+input_digest: 3172988cdbbd1eb30ebdd0bd216d63ba7d4c77516268ad998bd2cf2f2a351ec0
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

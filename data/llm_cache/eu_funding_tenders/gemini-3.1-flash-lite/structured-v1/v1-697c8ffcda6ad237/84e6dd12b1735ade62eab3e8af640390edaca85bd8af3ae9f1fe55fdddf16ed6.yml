@@ -1,0 +1,27 @@
+---
+result:
+  summary: O convite do Horizonte Europa visa o desenvolvimento de abordagens inovadoras
+    para aumentar a consciencialização sobre riscos e melhorar a preparação para catástrofes.
+    O projeto conta com um orçamento total de seis milhões de euros.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso indica requisitos de consórcio ou parceria, devendo ser verificada
+      a especificidade no documento oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-drs-01
+input_digest: b2105dfa856648528bcce2d580c8653c415c75d5fe7536c8a28bc10de8c44522
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

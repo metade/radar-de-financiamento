@@ -1,0 +1,25 @@
+---
+result:
+  summary: O convite visa promover a investigação sobre o microbioma para a previsão
+    precoce de cancros antes do aparecimento da doença, integrando o programa Horizonte
+    Europa. O financiamento total é de 15 milhões de euros, prevendo-se apoios individuais
+    até ao mesmo montante por projeto.
+  opening_date: '2026-02-10'
+  deadline: '2026-09-15'
+  themes: []
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto refere a existência de requisitos de consórcio ou parceria, devendo
+      ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-02
+input_digest: 845aa8538bbaafceced28dd1e27e6485fcb313aa9f5a4d86850603f725b9f621
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

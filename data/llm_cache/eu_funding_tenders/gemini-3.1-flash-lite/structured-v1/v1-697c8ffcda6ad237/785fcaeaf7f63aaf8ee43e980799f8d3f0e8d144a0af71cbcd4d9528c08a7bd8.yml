@@ -1,0 +1,24 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos destinados a melhorar a saúde
+    mental de jovens sobreviventes de cancro, no âmbito do Centro Digital Europeu
+    do Doente com Cancro. A iniciativa procura soluções digitais e de apoio especializado.
+  opening_date: '2026-02-10'
+  deadline: '2026-09-15'
+  themes:
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-05
+input_digest: 23421e010a3ffb05629b62a1601db12e6d7b5653d97bd43afa42f8b3527d7d29
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

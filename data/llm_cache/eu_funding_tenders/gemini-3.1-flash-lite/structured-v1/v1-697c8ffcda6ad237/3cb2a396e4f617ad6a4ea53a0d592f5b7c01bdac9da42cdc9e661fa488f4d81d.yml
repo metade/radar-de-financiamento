@@ -1,0 +1,23 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos de investigação destinados
+    a melhorar a prestação de cuidados paliativos, tornando-os mais precoces e precisos.
+    O objetivo é apoiar soluções inovadoras no contexto do combate ao cancro.
+  opening_date: '2026-02-10'
+  deadline: '2026-09-15'
+  themes: []
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-02-cancer-04
+input_digest: 86faa8066f6bd95529156cbacced17114e34d52cc5b160babc90796528f962bd
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

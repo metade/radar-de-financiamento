@@ -1,0 +1,30 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa visa compreender as vivências
+    dos habitantes nos seus bairros para promover a saúde e o bem-estar. A iniciativa
+    dirige-se a municípios e autoridades locais para o desenvolvimento de soluções
+    integradas.
+  opening_date: '2026-05-05'
+  deadline: '2026-12-01'
+  themes:
+  - community_development
+  - inclusion
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade aponta para a existência de requisitos de consórcio
+      ou parceria, devendo ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2026-01-participation-03
+input_digest: 4d465d9b5e53aa3c0f945bbe2de380d243a8e7803ed66602510502ea7df14aac
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

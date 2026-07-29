@@ -1,0 +1,25 @@
+---
+result:
+  summary: O projeto visa o desenvolvimento de um ecossistema e capacidades de nova
+    geração para um Sistema Europeu de Comunicação Crítica seguro no âmbito da segurança
+    civil, integrado no programa Horizonte Europa.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto da oportunidade refere a existência de requisitos de consórcio
+      ou parceria, sendo necessária a verificação direta no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-ssri-04
+input_digest: 4383eb52a82ea51187b9b4d860e5c3d3cc49124fcb06a7a22f294634daa98004
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

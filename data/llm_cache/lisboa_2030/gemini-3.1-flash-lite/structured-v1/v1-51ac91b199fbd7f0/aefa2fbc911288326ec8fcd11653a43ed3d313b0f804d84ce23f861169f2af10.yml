@@ -1,0 +1,35 @@
+---
+result:
+  summary: O aviso Lisboa 2030 visa aumentar a capacidade adaptativa às alterações
+    climáticas e reduzir a vulnerabilidade a riscos extremos e à subida das águas
+    na região NUTS II de Lisboa. Privilegiam-se soluções baseadas na natureza, abrangendo
+    planos de adaptação, sistemas de alerta, monitorização e ações materiais de arrefecimento
+    urbano ou gestão hídrica.
+  opening_date: '2024-03-05'
+  deadline: '2025-12-31'
+  themes:
+  - climate
+  - environment
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e suas associações
+    - Entidades do setor empresarial local
+    - Serviços Municipais ou Municipalizados
+    - Entidades públicas ou associativas sem fins lucrativos mediante protocolo com
+      municípios
+    confidence: high
+  partnership:
+    status: optional
+    details: Obrigatório apenas para entidades de natureza pública ou associativa
+      sem fins lucrativos, que devem estabelecer protocolos ou outras formas de cooperação
+      com municípios, serviços municipalizados ou empresas locais.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-20
+input_digest: 11420dd6f1677bd4a8a15083733403ab6a5ff150676c4393767f51bdddada35b
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

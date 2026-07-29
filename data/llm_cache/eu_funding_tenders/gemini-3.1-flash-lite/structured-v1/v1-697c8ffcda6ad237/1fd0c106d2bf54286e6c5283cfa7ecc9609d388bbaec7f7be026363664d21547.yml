@@ -1,0 +1,27 @@
+---
+result:
+  summary: 'O prémio #BeActive-EU-SPORT-AWARDS-Peace, integrado no programa Erasmus+,
+    visa reconhecer iniciativas que promovam a paz através do desporto. Com uma dotação
+    total de 25.000 euros, o concurso premeia projetos que utilizem atividades desportivas
+    como ferramenta de coesão e promoção de valores de paz na União Europeia.'
+  opening_date: '2026-06-30'
+  deadline: '2026-09-17'
+  themes:
+  - community_development
+  - inclusion
+  - equality
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-eu-awards-peace
+input_digest: 1b183ac5ea281e43816e302c927f7d518bcb7540b853c74b7970090c1ee42509
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

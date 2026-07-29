@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa visa melhorar a segurança dos
+    cidadãos contra o terrorismo e a violência perpetrada por autores individuais
+    em espaços confinados, com um foco particular em escolas.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica a existência de requisitos de consórcio
+      ou parceria, sendo necessária a verificação no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-fct-05
+input_digest: 00c8addc8cabcb65338a7a3b68a21d7c9e233ffaafedde80edb1ceab8830ccee
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

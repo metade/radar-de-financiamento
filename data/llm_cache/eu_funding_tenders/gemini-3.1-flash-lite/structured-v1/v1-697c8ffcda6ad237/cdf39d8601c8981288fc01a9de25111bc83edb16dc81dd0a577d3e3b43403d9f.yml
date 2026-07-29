@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa Erasmus+ apoia eventos desportivos europeus sem fins lucrativos.
+    O objetivo é promover a prática desportiva, a atividade física e o voluntariado
+    no desporto, fomentando a inclusão social e os valores europeus através de competições.
+  opening_date: '2025-12-17'
+  deadline: ''
+  themes:
+  - inclusion
+  - volunteering
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-erasmus-sport-2026-sncese
+input_digest: 39beb75de78974e6a0835df5ec9a771e13c8efb5c44f9f1267ac7edd4a1f8a7d
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este aviso do programa Horizonte Europa financia abordagens de prevenção
+    do crime, tanto online como offline, focadas na relação entre dependências e atividade
+    criminosa. O objetivo é desenvolver estratégias eficazes para mitigar este fenómeno.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - civic_participation
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, sendo
+      necessária a confirmação no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-fct-04
+input_digest: 8ba8a3a30232fd779ef676da025070687e840b2c8667f79c690306851ed9c1f9
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

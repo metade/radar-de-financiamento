@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa foca-se na prevenção e combate
+    à utilização indevida de tecnologias emergentes para fins criminosos, abordando
+    questões relacionadas com o acesso legal a dados.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade menciona a necessidade de constituir um consórcio
+      ou parceria.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-fct-02
+input_digest: a232de2ab33b09cbd7766d72975d2983149a5d610e6611f8f4b5359dbff0a249
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,25 @@
+---
+result:
+  summary: O convite à apresentação de propostas BUILD UP Skills, integrado no programa
+    LIFE, foca-se na criação de plataformas nacionais para a promoção de competências
+    em eficiência energética, visando apoiar a transição para energias limpas.
+  opening_date: '2026-04-20'
+  deadline: ''
+  themes:
+  - climate
+  - community_development
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-life-2026-cet-buildskills
+input_digest: 07c4b047b2f601c2615de9a35c7b45bb12c55a0ac1df4c564dbd5c4d3c94339c
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

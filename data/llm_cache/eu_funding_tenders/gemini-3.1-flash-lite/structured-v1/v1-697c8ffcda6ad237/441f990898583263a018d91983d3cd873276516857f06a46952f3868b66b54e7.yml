@@ -1,0 +1,23 @@
+---
+result:
+  summary: Oportunidade inserida no programa Horizonte Europa focada em contratação
+    pública de inovação para o setor da segurança.
+  opening_date: '2026-05-07'
+  deadline: ''
+  themes:
+  - digital_public_services
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: low
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-ssri-03
+input_digest: 868b0149be215856282729a870ec35fb34f5a155a9847d355c03f5797d5325a6
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

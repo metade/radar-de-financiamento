@@ -1,0 +1,29 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos focados na revitalização
+    de bairros adjacentes a corredores ferroviários e rodoviários existentes, visando
+    a renovação urbana e a melhoria da qualidade de vida nestas zonas específicas.
+  opening_date: '2027-05-05'
+  deadline: '2027-12-01'
+  themes:
+  - public_space
+  - community_development
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2027-01-regen-03
+input_digest: fc3b81c739ceb4da3e94733f8a93740391bcf41ce7cff9b79ed05d864add38d0
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
