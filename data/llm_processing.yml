@@ -59,6 +59,10 @@ sources:
     enabled: false
     profile: default
     prompt_version: v1
+  imt_mobility_fund:
+    enabled: true
+    profile: default
+    prompt_version: v1
   fixtures:
     enabled: false
     profile: default
