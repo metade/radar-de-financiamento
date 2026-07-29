@@ -82,7 +82,9 @@ module FundingRadar
         "title" => opportunity.title,
         "programme" => opportunity.programme,
         "opening_date" => opportunity.opening_date,
+        "opening_date_source" => @date_sources&.dig(opportunity.id, :opening_date),
         "deadline" => opportunity.deadline,
+        "deadline_source" => @date_sources&.dig(opportunity.id, :deadline),
         "funding_amount" => opportunity.funding_amount,
         "funding_source" => opportunity.funding_source,
         "official_link" => opportunity.official_link,
@@ -105,9 +107,14 @@ module FundingRadar
       return scored_pairs if @processing_mode == "deterministic" || !@llm_processor
 
       @processing_results = {}
+      @date_sources = {}
       scored_pairs.map do |opportunity, result|
         processed = @llm_processor.process(opportunity)
         @processing_results[opportunity.id] = processed
+        @date_sources[opportunity.id] = {
+          opening_date: opportunity.opening_date ? "fonte" : (processed.opening_date ? "LLM" : nil),
+          deadline: opportunity.deadline ? "fonte" : (processed.deadline ? "LLM" : nil)
+        }
         processed_opportunity = opportunity.with(
           summary: processed.summary,
           opening_date: opportunity.opening_date || processed.opening_date,

@@ -71,11 +71,11 @@
 
   <dl class="mt-5 grid gap-4 md:grid-cols-3">
     <div>
-      <dt class="text-sm font-bold text-slate-600">Abertura</dt>
+      <dt class="text-sm font-bold text-slate-600">Abertura{% if opportunity.opening_date_source %} <span class="font-normal">({{ opportunity.opening_date_source }})</span>{% endif %}</dt>
       <dd class="mt-1 text-sm text-ink">{% if opportunity.opening_date %}{{ opportunity.opening_date | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
     </div>
     <div>
-      <dt class="text-sm font-bold text-slate-600">Prazo</dt>
+      <dt class="text-sm font-bold text-slate-600">Prazo{% if opportunity.deadline_source %} <span class="font-normal">({{ opportunity.deadline_source }})</span>{% endif %}</dt>
       <dd class="mt-1 text-sm text-ink">{% if opportunity.deadline %}{{ opportunity.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
     </div>
     <div>
