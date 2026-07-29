@@ -27,6 +27,8 @@ module FundingRadar
         return if attributes.empty?
 
         {
+          "opening_date" => opening_date,
+          "deadline" => deadline,
           "themes" => themes,
           "eligibility" => attributes.fetch("eligibility"),
           "partnership" => attributes.fetch("partnership")
@@ -69,6 +71,7 @@ module FundingRadar
           "instruction" => profile.fetch("instruction"),
           "max_characters" => profile.fetch("max_characters", 420),
           "include_document" => profile.fetch("include_document", false),
+          "document_max_characters" => profile["document_max_characters"],
           "prompt_version" => source.fetch("prompt_version", "v1")
         }
       end
@@ -230,18 +233,18 @@ module FundingRadar
           "official_link" => opportunity.official_link
         }
         if profile.fetch("include_document", false) && opportunity.document_link.to_s != ""
-          input["document_text"] = document_text_for(opportunity)
+          input["document_text"] = document_text_for(opportunity, profile)
         end
         input
       end
 
-      def document_text_for(opportunity)
+      def document_text_for(opportunity, profile)
         text = @document_extractor.extract(@document_fetcher.get(opportunity.document_link, headers: {"Accept" => "application/pdf"}))
-        text[0, document_character_limit]
+        text[0, document_character_limit(profile)]
       end
 
-      def document_character_limit
-        Integer(@env.fetch("FUNDING_RADAR_LLM_DOCUMENT_MAX_CHARACTERS", "12000"))
+      def document_character_limit(profile)
+        Integer(profile["document_max_characters"] || @env.fetch("FUNDING_RADAR_LLM_DOCUMENT_MAX_CHARACTERS", "12000"))
       end
 
       def prompt_for(opportunity, input, profile)

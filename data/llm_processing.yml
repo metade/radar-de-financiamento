@@ -48,6 +48,7 @@ profiles:
       confundas o prazo final de candidatura com prazos de execução ou pagamento.
     max_characters: 420
     include_document: true
+    document_max_characters: 40000
 
 sources:
   eu_funding_tenders:
