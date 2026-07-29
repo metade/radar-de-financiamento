@@ -46,15 +46,7 @@
   {% if report.comparison and opportunity.llm_analysis %}
     <div class="mt-5 border-l-4 border-civic-blue bg-soft-sky p-4">
       <p class="text-sm font-bold text-civic-blue">Interpretação LLM</p>
-      <dl class="mt-2 grid gap-3 md:grid-cols-5">
-        <div>
-          <dt class="text-sm font-bold text-slate-600">Abertura no PDF</dt>
-          <dd class="mt-1 text-sm text-ink">{% if opportunity.llm_analysis.opening_date %}{{ opportunity.llm_analysis.opening_date | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
-        </div>
-        <div>
-          <dt class="text-sm font-bold text-slate-600">Prazo no PDF</dt>
-          <dd class="mt-1 text-sm text-ink">{% if opportunity.llm_analysis.deadline %}{{ opportunity.llm_analysis.deadline | date: "%d/%m/%Y" }}{% else %}Por confirmar{% endif %}</dd>
-        </div>
+      <dl class="mt-2 grid gap-3 md:grid-cols-3">
         <div>
           <dt class="text-sm font-bold text-slate-600">Temas sugeridos</dt>
           <dd class="mt-1 text-sm text-ink">{% for theme in opportunity.llm_analysis.themes %}{% assign theme_label = site.data.theme_labels[theme].label | default: theme %}{{ theme_label }}{% unless forloop.last %}, {% endunless %}{% endfor %}</dd>
