@@ -16,8 +16,7 @@
       <summary class="flex cursor-pointer items-center gap-3 px-5 py-4 text-lg font-bold text-ink"><span>Filtros de oportunidades</span><span class="text-sm font-normal text-slate-600" id="filter-count" aria-live="polite"></span><button class="ml-auto px-1 text-sm font-semibold text-civic-blue underline underline-offset-4 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40" id="clear-filters" type="button" disabled>Limpar tudo</button></summary>
       <form id="opportunity-filters" class="border-t border-line p-5" aria-label="Filtrar oportunidades">
       {% assign portal_sources = report.opportunities | map: "funding_source" %}
-      {% assign programme_sources = report.opportunities | map: "programme" %}
-      {% assign funding_sources = portal_sources | concat: programme_sources | uniq | sort %}
+      {% assign funding_sources = portal_sources | uniq | sort %}
       <fieldset class="mb-5">
         <legend class="text-sm font-bold text-slate-700">Relevância</legend>
         <div class="mt-2 grid gap-3 sm:grid-cols-3">
@@ -43,7 +42,7 @@
           <div><label class="block text-sm font-bold text-slate-700" for="deadline-to">Prazo até</label><input class="filter-date mt-1 w-full max-w-[15rem] border border-line px-3 py-2 text-sm" id="deadline-to" type="date"></div>
         </div>
         <div><label class="block text-sm font-bold text-slate-700" for="theme-filter">Temas</label><wa-select class="mt-1 block" id="theme-filter" aria-label="Temas" hint="Pode selecionar vários temas." size="small" multiple with-clear max-options-visible="2">{% for theme in site.data.theme_labels %}<wa-option value="{{ theme[1].query }}">{{ theme[1].label }}</wa-option>{% endfor %}</wa-select></div>
-        <div><label class="block text-sm font-bold text-slate-700" for="source-filter">Fontes / programas</label><wa-select class="mt-1 block" id="source-filter" aria-label="Fontes / programas" hint="Pode selecionar várias fontes ou programas." size="small" multiple with-clear max-options-visible="2">{% for source in funding_sources %}<wa-option value="{{ source | escape }}">{{ source }}</wa-option>{% endfor %}</wa-select></div>
+        <div><label class="block text-sm font-bold text-slate-700" for="source-filter">Fontes</label><wa-select class="mt-1 block" id="source-filter" aria-label="Fontes" hint="Pode selecionar várias fontes." size="small" multiple with-clear max-options-visible="2">{% for source in funding_sources %}<wa-option value="{{ source | escape }}">{{ source }}</wa-option>{% endfor %}</wa-select></div>
       </div>
       <label class="mt-5 flex items-center gap-2 text-sm font-semibold text-slate-700"><input id="include-expired" type="checkbox" class="h-4 w-4 accent-civic-blue"> Incluir oportunidades expiradas</label>
       </form>

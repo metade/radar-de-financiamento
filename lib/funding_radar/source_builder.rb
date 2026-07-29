@@ -13,7 +13,8 @@ module FundingRadar
         Sources::Lisboa2030Source.new(http_client: http_client),
         Sources::InterregSudoeSource.new(http_client: http_client),
         Sources::EuropeanUrbanInitiativeSource.new(http_client: http_client),
-        Sources::TurismoDePortugalSource.new(http_client: http_client)
+        Sources::TurismoDePortugalSource.new(http_client: http_client),
+        Sources::ImtMobilityFundSource.new(http_client: http_client)
       ]
 
       if env.fetch("INCLUDE_FIXTURES", "false") == "true"

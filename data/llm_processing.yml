@@ -33,6 +33,22 @@ profiles:
       do aviso, não decisões jurídicas. Não repitas URLs no resumo.
     max_characters: 420
     include_document: true
+  imt_mobility_fund_document:
+    instruction: >-
+      Analisa a oportunidade do Fundo para a Mobilidade e Transportes para
+      autarquias portuguesas usando também o texto extraído do aviso PDF.
+      Responde exclusivamente com o objeto estruturado pedido. Escreve o
+      resumo em português de Portugal. Usa apenas os dados fornecidos; não
+      inventes critérios, beneficiários, prazos, valores ou requisitos. Se a
+      informação não permitir concluir, usa "unclear" ou "not_stated" e uma
+      lista vazia. Os critérios de elegibilidade e os detalhes de parceria
+      devem ser paráfrases prudentes do aviso, não decisões jurídicas. Não
+      repitas URLs no resumo. Extrai as datas de início e fim das candidaturas
+      do PDF quando existirem; se não existirem, deixa a data vazia. Não
+      confundas o prazo final de candidatura com prazos de execução ou pagamento.
+    max_characters: 420
+    include_document: true
+    document_max_characters: 40000
 
 sources:
   eu_funding_tenders:
@@ -59,6 +75,10 @@ sources:
     enabled: false
     profile: default
     prompt_version: v1
+  imt_mobility_fund:
+    enabled: true
+    profile: imt_mobility_fund_document
+    prompt_version: v2
   fixtures:
     enabled: false
     profile: default

@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require_relative "../lib/funding_radar"
+
+ENV["FUNDING_RADAR_DEBUG"] = "true" unless ENV.key?("FUNDING_RADAR_DEBUG")
+
+options = {limit: 10}
+OptionParser.new do |parser|
+  parser.banner = "Usage: bin/check_imt_mobility_fund_source [options]"
+  parser.on("-l", "--limit N", Integer, "Number of opportunities to show") { |value| options[:limit] = value }
+end.parse!
+
+client = FundingRadar::HttpClient.new
+source = FundingRadar::Sources::ImtMobilityFundSource.new(http_client: client)
+opportunities = source.fetch
+
+puts "IMT Fundo para a Mobilidade e Transportes opportunities: #{opportunities.size}"
+warn "No opportunities found. The diagnostic messages above show request or parsing failures." if opportunities.empty?
+opportunities.first(options[:limit]).each do |opportunity|
+  amount = opportunity.funding_amount.empty? ? "Montante por confirmar" : opportunity.funding_amount
+  dates = [opportunity.opening_date || "Por confirmar", opportunity.deadline || "Por confirmar"].join(" -> ")
+  puts "- #{opportunity.id}: #{opportunity.title}"
+  puts "  #{dates} | #{amount}"
+  puts "  applicants: #{opportunity.eligible_applicants.join(', ')}"
+  puts "  link: #{opportunity.official_link}"
+end
