@@ -43,7 +43,9 @@ profiles:
       informação não permitir concluir, usa "unclear" ou "not_stated" e uma
       lista vazia. Os critérios de elegibilidade e os detalhes de parceria
       devem ser paráfrases prudentes do aviso, não decisões jurídicas. Não
-      repitas URLs no resumo.
+      repitas URLs no resumo. Extrai as datas de início e fim das candidaturas
+      do PDF quando existirem; não confundas o prazo final de candidatura com
+      prazos de execução ou pagamento.
     max_characters: 420
     include_document: true
 
@@ -75,7 +77,7 @@ sources:
   imt_mobility_fund:
     enabled: true
     profile: imt_mobility_fund_document
-    prompt_version: v1
+    prompt_version: v2
   fixtures:
     enabled: false
     profile: default

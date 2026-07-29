@@ -151,6 +151,25 @@ class LlmProcessingTest < Minitest::Test
     end
   end
 
+  def test_exposes_dates_returned_by_the_llm
+    Dir.mktmpdir do |dir|
+      client = FakeClient.new(attributes: {
+        "summary" => "Resumo.",
+        "opening_date" => "2026-08-05",
+        "deadline" => "2026-08-28",
+        "themes" => [],
+        "eligibility" => {"status" => "unclear", "criteria" => [], "confidence" => "low"},
+        "partnership" => {"status" => "not_stated", "details" => "", "confidence" => "low"}
+      })
+      processor, = build_processor(dir, enabled: true, client: client)
+
+      result = processor.process(opportunity)
+
+      assert_equal "2026-08-05", result.opening_date
+      assert_equal "2026-08-28", result.deadline
+    end
+  end
+
   private
 
   def opportunity

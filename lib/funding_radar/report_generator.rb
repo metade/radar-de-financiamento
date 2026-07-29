@@ -110,6 +110,8 @@ module FundingRadar
         @processing_results[opportunity.id] = processed
         processed_opportunity = opportunity.with(
           summary: processed.summary,
+          opening_date: opportunity.opening_date || processed.opening_date,
+          deadline: opportunity.deadline || processed.deadline,
           themes: @processing_mode == "source_config" ? processed.themes : opportunity.themes
         )
         [processed_opportunity, result]
