@@ -1,0 +1,27 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos centrados em abordagens multirrisco
+    e nos seus impactos cumulativos ou em cascata. A iniciativa visa fortalecer a
+    resiliência e a gestão de riscos, com um orçamento global de 8 milhões de euros.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto indica a existência de requisitos de consórcio ou parceria, devendo
+      ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-drs-02
+input_digest: d352a38d3f909ddc15f9f0e95b15d0d6d85928a420fdd34429bdaad8cb06493e
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

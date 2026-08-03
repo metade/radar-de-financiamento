@@ -1,0 +1,35 @@
+---
+result:
+  summary: O aviso Lisboa 2030 apoia a eficiência energética e a redução de emissões
+    em edifícios da administração local na região de Lisboa. O financiamento destina-se
+    a auditorias, planos de racionalização e reabilitação de edifícios públicos com
+    soluções de sustentabilidade, como telhados verdes e materiais circulares, promovendo
+    um parque edificado de baixo carbono.
+  opening_date: '2024-03-05'
+  deadline: '2025-12-31'
+  themes:
+  - climate
+  - environment
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e associações de municípios
+    - Entidades do setor empresarial local
+    - Entidades públicas ou associativas sem fins lucrativos mediante protocolo
+    - Conformidade com os artigos 14.º e 15.º do Decreto-Lei n.º 20-A/2023
+    - Cumprimento da declaração de ausência de salários em atraso
+    confidence: high
+  partnership:
+    status: optional
+    details: Necessária para entidades sem fins lucrativos ou outras entidades públicas/associativas,
+      que devem colaborar com municípios mediante protocolo ou outras formas de cooperação
+      previstas na ITI AML.
+    confidence: high
+source_key: lisboa_2030
+opportunity_id: lisboa2030-2024-19
+input_digest: 74f8cff44c93530f1082633273e9d2b44ae03026f5a24f52603021c63883d681
+prompt_version: v1
+prompt_digest: 51ac91b199fbd7f0e09fefc192f579c1b2d319332c70da19ad66e44b71213293
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

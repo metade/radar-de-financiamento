@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa Horizonte Europa financia o desenvolvimento de ferramentas,
+    processos, equipamentos e tecnologias inovadoras destinados a operações de busca
+    e salvamento em cenários de desastres e emergências que envolvam condições perigosas.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica a existência de requisitos de consórcio
+      ou parceria, sendo necessária a verificação detalhada no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-drs-03
+input_digest: 89c532a20ac016aff2bfa4b75a0311374bd934d1e6877cbce3ce6be4aa3808c0
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

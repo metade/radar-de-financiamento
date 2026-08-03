@@ -1,0 +1,25 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos destinados a melhorar a resiliência
+    climática das vias navegáveis interiores, das suas áreas circundantes e das infraestruturas
+    hídricas relacionadas. O montante total disponível é de 12 milhões de euros.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-06
+input_digest: 3c3c7b27be1d96d8532e40d0c5f08cdcbf910d15e17718d0d866f9b875b21cf8
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
