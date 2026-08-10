@@ -9,6 +9,10 @@ module FundingRadar
       TOPIC_INDEX_URL = "https://ec.europa.eu/info/funding-tenders/opportunities/data/topic-list.html".freeze
       PORTAL_TOPIC_PATH = "/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/".freeze
       DATA_TOPIC_PATH = "/info/funding-tenders/opportunities/data/topicDetails/".freeze
+      TOPIC_TYPES = %w[1 2 8].freeze
+      OPEN_STATUSES = %w[31094501 31094502].freeze
+      INVENTORY_PAGE_SIZE = 100
+      MAX_INVENTORY_PAGES = 100
       PROGRAMME_PREFIXES = {
         "AMIF" => "AMIF",
         "CEF" => "Connecting Europe Facility",
@@ -67,17 +71,22 @@ module FundingRadar
       end
 
       def fetch
-        seed_results = search_terms.flat_map { |term| fetch_term(term) }
-        exact_topic_results = extract_topic_ids(seed_results).flat_map { |topic_id| fetch_term(topic_id) }
+        inventory_results = @topic_ids.nil? ? discover_topic_results : []
+        seed_results = @topic_ids.nil? ? inventory_results : search_terms.flat_map { |term| fetch_term(term) }
+        exact_topic_results = @topic_ids.nil? ? [] : extract_topic_ids(seed_results).flat_map { |topic_id| fetch_term(topic_id) }
         topic_candidates = seed_results + exact_topic_results
-        enrichment_results = enrichment_terms_for(topic_candidates).flat_map { |term| fetch_term(term) }
+        enrichment_results = @topic_ids.nil? ? [] : enrichment_terms_for(topic_candidates).flat_map { |term| fetch_term(term) }
 
-        best_topic_results(topic_candidates + enrichment_results)
+        normalized = best_topic_results(topic_candidates + enrichment_results)
           .compact
           .select { |result| !@single_topic || @topic_ids.include?(topic_id_for(result)) }
           .reject { |result| closed?(result.fetch("metadata", {})) }
           .map { |result| normalize(result) }
           .compact
+
+        return normalized if inventory_results.empty?
+
+        normalized.select { |opportunity| radar_relevant?(opportunity) }
       end
 
       def self.discoverable_topic_id?(topic_id, current_year: Date.today.year)
@@ -94,6 +103,7 @@ module FundingRadar
           "CREA-CULT",
           "DIGITAL",
           "ERASMUS-SPORT",
+          "HORIZON-CL2",
           "HORIZON-CL3",
           "HORIZON-CL6",
           "HORIZON-MISS",
@@ -124,6 +134,43 @@ module FundingRadar
       rescue StandardError => error
         Debug.log "EU Funding & Tenders topic discovery failed: #{error.class}: #{error.message}; using default search terms"
         []
+      end
+
+      def discover_topic_results
+        return [] unless @http_client.respond_to?(:post_multipart)
+
+        results = []
+        (1..MAX_INVENTORY_PAGES).each do |page_number|
+          page = fetch_inventory_page(page_number)
+          results.concat(page)
+          break if page.size < INVENTORY_PAGE_SIZE
+        end
+        results
+      rescue StandardError => error
+        Debug.log "EU Funding & Tenders structured topic discovery failed: #{error.class}: #{error.message}; using legacy discovery"
+        []
+      end
+
+      def fetch_inventory_page(page_number)
+        query = {
+          "bool" => {
+            "must" => [
+              {"terms" => {"type" => TOPIC_TYPES}},
+              {"terms" => {"status" => OPEN_STATUSES}},
+              {"term" => {"programmePeriod" => "2021 - 2027"}}
+            ]
+          }
+        }
+        url = "#{@endpoint}?apiKey=SEDIA&text=*&pageSize=#{INVENTORY_PAGE_SIZE}&pageNumber=#{page_number}&language=en"
+        JSON.parse(@http_client.post_multipart(
+          url,
+          files: {
+            "query" => ["query.json", JSON.generate(query), "application/json"],
+            "languages" => ["languages.json", JSON.generate(["en"]), "application/json"],
+            "sort" => ["sort.json", JSON.generate({"field" => "startDate", "order" => "DESC"}), "application/json"]
+          },
+          headers: {"Accept" => "application/json"}
+        )).fetch("results", [])
       end
 
       def discoverable_topic_id?(topic_id)
@@ -452,6 +499,10 @@ module FundingRadar
         THEME_PATTERNS.each_with_object([]) do |(theme, patterns), themes|
           themes << theme if patterns.any? { |pattern| text.match?(pattern) }
         end
+      end
+
+      def radar_relevant?(opportunity)
+        opportunity.themes.any? || opportunity.eligible_applicants.any?
       end
 
       def searchable_text(result, metadata)

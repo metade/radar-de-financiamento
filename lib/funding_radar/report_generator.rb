@@ -7,6 +7,10 @@ require "yaml"
 module FundingRadar
   class ReportGenerator
     DISCLAIMER = "A elegibilidade deve ser sempre confirmada nos avisos e documentação oficial de cada programa.".freeze
+    EU_FUNDING_SOURCE = "EU Funding & Tenders Portal".freeze
+    MINIMUM_EU_RELEVANCE_SCORE = 50
+    DEFAULT_LLM_MIN_RELEVANCE_SCORE = 75
+    DEFAULT_LLM_MAX_OPPORTUNITIES = 50
 
     def initialize(source_registry:, duplicate_resolver:, scorer:, reports_dir:, filename: nil, llm_processor: nil, processing_mode: "deterministic")
       @source_registry = source_registry
@@ -27,12 +31,17 @@ module FundingRadar
       opportunities = @duplicate_resolver.resolve(opportunities)
       Debug.status "resolved duplicates: #{before_duplicates} -> #{opportunities.size} opportunities"
       scored_pairs = opportunities.map { |opportunity| [opportunity, @scorer.score(opportunity, today: today)] }
+      before_relevance = scored_pairs.size
+      scored_pairs.reject! do |opportunity, result|
+        opportunity.funding_source == EU_FUNDING_SOURCE && result.score < MINIMUM_EU_RELEVANCE_SCORE
+      end
+      Debug.status "filtered low-relevance EU opportunities: #{before_relevance} -> #{scored_pairs.size}" if before_relevance != scored_pairs.size
       scored_pairs.sort_by! { |opportunity, result| [-result.score, opportunity.deadline.to_s, opportunity.title] }
 
       deterministic = scored_pairs.map { |opportunity, result| serialize(opportunity, result, today) }
       processed = process(scored_pairs)
       scored = processed.map do |opportunity, result|
-        serialize(opportunity, result, today, llm_result: @processing_results&.fetch(opportunity.id))
+        serialize(opportunity, result, today, llm_result: @processing_results&.fetch(opportunity.id, nil))
       end
       if comparison_mode?
         scored.each_with_index { |item, index| item["deterministic_summary"] = deterministic[index].fetch("summary") }
@@ -108,7 +117,16 @@ module FundingRadar
 
       @processing_results = {}
       @date_sources = {}
+      min_score = ENV.fetch("REPORT_LLM_MIN_RELEVANCE_SCORE", DEFAULT_LLM_MIN_RELEVANCE_SCORE.to_s).to_i
+      max_opportunities = ENV.fetch("REPORT_LLM_MAX_OPPORTUNITIES", DEFAULT_LLM_MAX_OPPORTUNITIES.to_s).to_i
+      llm_ids = scored_pairs
+        .select { |_opportunity, result| result.score >= min_score }
+        .first(max_opportunities)
+        .map { |opportunity, _result| opportunity.id }
+      Debug.status "LLM processing limited to #{llm_ids.size} opportunities (score >= #{min_score}, max #{max_opportunities})"
       scored_pairs.map do |opportunity, result|
+        next [opportunity, result] unless llm_ids.include?(opportunity.id)
+
         processed = @llm_processor.process(opportunity)
         @processing_results[opportunity.id] = processed
         @date_sources[opportunity.id] = {

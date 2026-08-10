@@ -1,5 +1,7 @@
 require "net/http"
 require "uri"
+require "json"
+require "digest"
 require "active_support/core_ext/object/blank"
 
 module FundingRadar
@@ -34,8 +36,31 @@ module FundingRadar
       request = Net::HTTP::Post.new(uri)
       request.body = URI.encode_www_form(form)
       form_headers = headers.merge("Content-Type" => "application/x-www-form-urlencoded")
-      cache_url = "#{url}?#{URI.encode_www_form(form)}"
+      separator = url.include?("?") ? "&" : "?"
+      cache_url = "#{url}#{separator}#{URI.encode_www_form(form)}"
       cached_request("POST", cache_url, form_headers) { request_with_retries(uri, request, form_headers) }
+    end
+
+    def post_multipart(url, files:, headers: {})
+      uri = URI(url)
+      cache_fingerprint = Digest::SHA256.hexdigest(JSON.generate(files))
+      boundary = "----FundingRadar#{cache_fingerprint[0, 24]}"
+      body = files.map do |name, file|
+        filename, content, content_type = file
+        [
+          "--#{boundary}",
+          "Content-Disposition: form-data; name=\"#{name}\"; filename=\"#{filename}\"",
+          "Content-Type: #{content_type}",
+          "",
+          content
+        ].join("\r\n")
+      end.join("\r\n") + "\r\n--#{boundary}--\r\n"
+      request = Net::HTTP::Post.new(uri)
+      request.body = body
+      multipart_headers = headers.merge("Content-Type" => "multipart/form-data; boundary=#{boundary}")
+      separator = url.include?("?") ? "&" : "?"
+      cache_url = "#{url}#{separator}multipart=#{cache_fingerprint}"
+      cached_request("POST", cache_url, multipart_headers) { request_with_retries(uri, request, multipart_headers) }
     end
 
     private

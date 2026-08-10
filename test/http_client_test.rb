@@ -35,6 +35,19 @@ class HttpClientTest < Minitest::Test
     assert_equal 2, requests
   end
 
+  def test_caches_identical_multipart_requests
+    Dir.mktmpdir do |directory|
+      requests = 0
+      client = FundingRadar::HttpClient.new(cache_path: directory, requester: response_for("cached body", -> { requests += 1 }))
+      files = {"query" => ["query.json", '{"bool":{}}', "application/json"]}
+
+      client.post_multipart("https://example.test/search?text=*", files: files)
+      client.post_multipart("https://example.test/search?text=*", files: files)
+
+      assert_equal 1, requests
+    end
+  end
+
   private
 
   def response_for(body, counter)
