@@ -1,0 +1,35 @@
+---
+result:
+  summary: O Fundo para o Serviço Público de Transportes apoia a modernização de paragens
+    de transporte público, focando-se na aquisição e instalação de abrigos, melhoria
+    de interfaces, uniformização de sinalização e produção de informação ao público.
+    O objetivo é promover a mobilidade inclusiva e descarbonizada através de intervenções
+    estruturantes, visando a melhoria do serviço prestado aos cidadãos em Portugal.
+  opening_date: '2025-09-08'
+  deadline: '2025-06-30'
+  themes:
+  - mobility
+  - public_space
+  - inclusion
+  - community_development
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios portugueses
+    - Comunidades intermunicipais
+    - Operadores de transporte público responsáveis pelas infraestruturas
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são exigidos requisitos de parceria, sendo a candidatura submetida
+      individualmente por cada entidade elegível.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-https-www-imt-ip-pt-wp-content-uploads-2025-06-aviso-n-o-2-20
+input_digest: 4a08f31932c5852823e50fd2fc2886948a13c0f9d696c335e75fc7b63f509518
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

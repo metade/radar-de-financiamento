@@ -1,0 +1,37 @@
+---
+result:
+  summary: O Aviso n.º 1/2026 do Fundo para a Mobilidade e Transportes apoia projetos
+    piloto de logística urbana, visando a eficiência, descarbonização e digitalização
+    das entregas de último quilómetro. Destina-se a municípios, áreas metropolitanas
+    e comunidades intermunicipais (exceto Lisboa e Porto). As ações devem focar-se
+    em modelos de distribuição, espaço público, tecnologias digitais e veículos de
+    baixas emissões.
+  opening_date: '2026-08-02'
+  deadline: '2026-08-28'
+  themes:
+  - mobility
+  - environment
+  - digital_public_services
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios, conjuntos de municípios, áreas metropolitanas ou comunidades intermunicipais
+    - Território nacional (excluindo Lisboa e Porto)
+    - Situação tributária e contributiva regularizada
+    - Ações alinhadas com o Caderno Técnico de Logística Urbana e PMUS
+    - Capacidade de apresentar memória descritiva, custos e indicadores de monitorização
+    confidence: high
+  partnership:
+    status: optional
+    details: Podem candidatar-se conjuntos de municípios, áreas metropolitanas ou
+      comunidades intermunicipais, mas a parceria entre entidades não é descrita como
+      um requisito obrigatório para candidaturas individuais.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-1-2026-apoio-ao-desenvolvimento-de-projetos-piloto-
+input_digest: 78ed569586ba143bf127c03c104ca8804acec09059d09ccbbb54f819098d0162
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

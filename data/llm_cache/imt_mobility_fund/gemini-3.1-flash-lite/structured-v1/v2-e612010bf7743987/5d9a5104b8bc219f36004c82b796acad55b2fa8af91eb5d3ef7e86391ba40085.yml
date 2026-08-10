@@ -1,0 +1,36 @@
+---
+result:
+  summary: O aviso apoia a aquisição de contadores automáticos de modos ativos (peões
+    e bicicletas) para recolha de dados de mobilidade. Destina-se a municípios, juntas
+    de freguesia, comunidades intermunicipais, empresas municipais e entidades regionais
+    de turismo de todo o território nacional, exceto as áreas metropolitanas de Lisboa
+    e do Porto.
+  opening_date: '2025-09-04'
+  deadline: '2025-10-31'
+  themes:
+  - mobility
+  - digital_public_services
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Juntas de Freguesia
+    - Comunidades intermunicipais
+    - Empresas Municipais
+    - Entidades Regionais de Turismo
+    - Situação tributária regularizada
+    - Situação contributiva perante a Segurança Social regularizada
+    - Localização fora das Áreas Metropolitanas de Lisboa e Porto
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-5-2025-apoio-a-aquisicao-de-contadores-automaticos-
+input_digest: dafacf8494e9f886faf7099b2a7e2f5dca6f5f8ad78c26160e7a2b75dacd0825
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

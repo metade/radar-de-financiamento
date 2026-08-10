@@ -1,0 +1,35 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes disponibiliza apoio financeiro
+    de 1,35 milhões de euros para a descarbonização e digitalização do setor do táxi.
+    O programa incentiva a aquisição de veículos elétricos novos, o abate de veículos
+    antigos e a compra de equipamentos de carregamento, além da digitalização através
+    de taxímetros, impressoras e terminais de pagamento automático para táxis.
+  opening_date: '2025-11-19'
+  deadline: '2025-10-31'
+  themes:
+  - climate
+  - digital_public_services
+  - environment
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades habilitadas com alvará para exercício da atividade de transporte em
+      táxi
+    - Situação tributária regularizada perante a Autoridade Tributária
+    - Situação contributiva regularizada perante a Segurança Social
+    - Ações enquadradas nas tipologias de descarbonização ou digitalização definidas
+    - Veículos ligeiros de passageiros novos (categoria M1) 100% elétricos
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-6-2024-aviso-a-implementacao-do-projeto-1bilhete-pt
+input_digest: c32e49503499d393c7929a478e573ab2a690ef2e48e678d7017df607cb780dca
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

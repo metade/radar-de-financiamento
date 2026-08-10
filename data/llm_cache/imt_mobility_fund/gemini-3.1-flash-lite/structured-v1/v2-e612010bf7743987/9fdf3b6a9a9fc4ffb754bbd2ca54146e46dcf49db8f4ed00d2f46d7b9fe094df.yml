@@ -1,0 +1,36 @@
+---
+result:
+  summary: O Aviso n.º 3/2025 do Fundo para o Serviço Público de Transportes apoia
+    a implementação de medidas de mobilidade escolar ativa e segura (infraestruturas
+    ligeiras ou ações de sensibilização) para municípios, juntas de freguesia, comunidades
+    intermunicipais, empresas municipais e agrupamentos de escolas, excluindo as Áreas
+    Metropolitanas de Lisboa e Porto.
+  opening_date: '2025-04-24'
+  deadline: '2025-07-31'
+  themes:
+  - mobility
+  - public_space
+  - community_development
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e Juntas de Freguesia
+    - Comunidades intermunicipais
+    - Empresas municipais
+    - Agrupamentos de escolas e escolas públicas
+    - Território nacional excluindo Áreas Metropolitanas de Lisboa e Porto
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são indicados requisitos de parceria entre diferentes entidades no
+      aviso.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-3-2025-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: 11edeaba3931b2fd7d50e47fe93aa1c39bd721813ab96effb21582f2c25d120c
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este tópico do programa Horizonte Europa foca-se na fiabilidade dos métodos
+    de avaliação da idade no contexto da gestão de fronteiras e segurança. O financiamento
+    visa apoiar projetos que analisem e validem abordagens técnicas e metodológicas
+    para este fim específico.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - inclusion
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: required
+    details: O texto da oportunidade faz referência a requisitos de consórcio ou parceria,
+      devendo estes ser verificados no aviso oficial do concurso.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-bm-03
+input_digest: 70436aafd38d15cb031beb49e7171dce0f5814d9f543147f3d8013c540dc10b4
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
