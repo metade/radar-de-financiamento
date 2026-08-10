@@ -1,0 +1,24 @@
+---
+result:
+  summary: O convite à apresentação de propostas 'Demand-led innovation in security',
+    integrado no programa Horizonte Europa, foca-se no desenvolvimento de soluções
+    inovadoras no setor da segurança através de uma abordagem orientada pela procura.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Não foram especificadas informações sobre requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-ssri-02
+input_digest: 8a097ef62b16274788ec5fcf5027dc1ed90c3a36a028aea2ad1449b7523607d8
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
