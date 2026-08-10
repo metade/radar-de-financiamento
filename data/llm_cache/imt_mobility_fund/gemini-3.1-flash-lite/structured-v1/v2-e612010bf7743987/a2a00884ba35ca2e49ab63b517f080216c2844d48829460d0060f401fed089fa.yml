@@ -1,0 +1,33 @@
+---
+result:
+  summary: O aviso apoia a descarbonização e digitalização do setor do táxi, financiando
+    a aquisição de veículos 100% elétricos e equipamentos de carregamento, além de
+    taxímetros, impressoras integradas e TPA. Destina-se a titulares de alvará para
+    a atividade de transporte em táxi no território continental. As candidaturas são
+    submetidas no portal do IMT até 31 de outubro de 2025 ou até esgotar a dotação.
+  opening_date: '2025-11-19'
+  deadline: '2025-10-31'
+  themes:
+  - climate
+  - digital_public_services
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Titulares de alvará para a atividade de transporte em táxi
+    - Situação tributária e contributiva regularizada
+    - Possuir licença municipal para a atividade de táxi
+    - Veículos elétricos devem ser novos (categoria M1)
+    - Despesas devem ser realizadas após 1 de janeiro de 2025
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-6-2024-aviso-a-implementacao-do-projeto-1bilhete-pt
+input_digest: b3b5c3889391e8e37cbaa1db9f1da031e6b792439212a9bf22501b91f5551a3a
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
