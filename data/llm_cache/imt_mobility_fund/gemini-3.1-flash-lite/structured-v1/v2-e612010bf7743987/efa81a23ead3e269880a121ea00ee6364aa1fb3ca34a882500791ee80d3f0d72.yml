@@ -1,0 +1,37 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes abre candidaturas para projetos
+    piloto de logística urbana, visando a eficiência, descarbonização e mobilidade
+    sustentável. O apoio destina-se a municípios, comunidades intermunicipais e áreas
+    metropolitanas, excluindo Lisboa e Porto. A dotação é de 1 milhão de euros, com
+    uma taxa de comparticipação de 80% e limites definidos por tipologia de ação.
+  opening_date: '2026-08-02'
+  deadline: '2026-08-28'
+  themes:
+  - climate
+  - mobility
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Conjuntos de municípios
+    - Áreas metropolitanas
+    - Comunidades intermunicipais
+    - Território nacional (exceto Lisboa e Porto)
+    - Situação tributária regularizada
+    - Situação contributiva regularizada
+    confidence: high
+  partnership:
+    status: optional
+    details: O aviso prevê candidaturas conjuntas (conjuntos de municípios), mas não
+      estabelece a obrigatoriedade de parcerias com entidades externas como requisito
+      geral.
+    confidence: medium
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-1-2026-apoio-ao-desenvolvimento-de-projetos-piloto-
+input_digest: f7397c19d87aca136837b85b958247a894f19e54a94ce8a3ea91f6d8f4621fe0
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

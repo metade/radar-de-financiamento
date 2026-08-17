@@ -1,0 +1,32 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes apoia a digitalização e normalização
+    de dados de transporte público. O programa visa melhorar a interoperabilidade,
+    informação aos passageiros e planeamento através de formatos como NeTEx, SIRI
+    e GTFS. A medida destina-se a municípios, comunidades intermunicipais e operadores
+    no continente, exceto áreas metropolitanas de Lisboa e do Porto.
+  opening_date: '2026-08-17'
+  deadline: '2026-09-11'
+  themes:
+  - digital_public_services
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios (autoridades de transporte)
+    - Comunidades Intermunicipais
+    - Operadores de transporte público coletivo de passageiros
+    - Projetos em Portugal Continental (excluindo AM Lisboa e AM Porto)
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são exigidos requisitos específicos de parceria no texto do aviso.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-no-5-2026-apoio-a-digitalizacao-e-normalizacao-de-dados
+input_digest: 1f4d4f1dc5a0566924c52a18a4c9a985329d248bdacb7fe609754462af877223
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

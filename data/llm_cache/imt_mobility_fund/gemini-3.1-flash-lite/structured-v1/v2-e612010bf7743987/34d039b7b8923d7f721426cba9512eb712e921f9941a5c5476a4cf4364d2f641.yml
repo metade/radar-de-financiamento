@@ -1,0 +1,32 @@
+---
+result:
+  summary: O Aviso n.º 3/2026 do Instituto da Mobilidade e dos Transportes visa a
+    descarbonização do setor do táxi, financiando a aquisição de veículos 100% elétricos,
+    o abate de veículos antigos e a instalação de equipamentos de carregamento. O
+    apoio é destinado a entidades detentoras de alvará para transporte em táxi no
+    território nacional continental.
+  opening_date: '2026-08-02'
+  deadline: '2026-10-30'
+  themes:
+  - climate
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades habilitadas com alvará para o exercício da atividade de transporte
+      em táxi
+    - Situação tributária e contributiva regularizada
+    - Veículos elétricos de categoria M1 homologados pelo IMT
+    - Veículos a abater com licença para táxi nos últimos 3 anos
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-3-2026-apoio-a-descarbonizacao-do-setor-do-taxi
+input_digest: 1601fab8006d084192bd6ff5f9c03d5efc80b80d812c3fbe2360d130e8a24e1c
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

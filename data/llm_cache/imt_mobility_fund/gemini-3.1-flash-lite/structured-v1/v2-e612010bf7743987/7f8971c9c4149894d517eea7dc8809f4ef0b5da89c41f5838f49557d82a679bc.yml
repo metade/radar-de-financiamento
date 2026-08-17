@@ -1,0 +1,34 @@
+---
+result:
+  summary: O Aviso n.º 2/2025 do Fundo para a Mobilidade e Transportes apoia a modernização
+    de paragens de transporte público. As ações elegíveis incluem a aquisição de abrigos,
+    melhoria de interfaces, uniformização de sinalização e desenvolvimento de informação
+    ao público. A dotação é de 1,5 milhões de euros, com taxas de comparticipação
+    de 75% para municípios e comunidades intermunicipais e 50% para operadores.
+  opening_date: '2025-09-08'
+  deadline: '2025-06-30'
+  themes:
+  - accessibility
+  - mobility
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Comunidades intermunicipais
+    - Operadores de transporte público responsáveis pelas infraestruturas
+    - Situação tributária e contributiva regularizada
+    - Localização das ações no território de intervenção dos beneficiários
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são indicados requisitos de parceria entre diferentes entidades para
+      a submissão de candidaturas.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-https-www-imt-ip-pt-wp-content-uploads-2025-06-aviso-n-o-2-20
+input_digest: 1e7105a1472b5bdc13755d822681305c35a34484f93197faa8cfcd8e33e739e3
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

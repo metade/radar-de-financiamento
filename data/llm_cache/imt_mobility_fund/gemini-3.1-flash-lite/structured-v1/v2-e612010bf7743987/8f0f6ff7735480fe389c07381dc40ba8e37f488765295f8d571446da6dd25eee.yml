@@ -1,0 +1,35 @@
+---
+result:
+  summary: Este apoio do Fundo para a Mobilidade e Transportes visa financiar a recuperação
+    e instalação de infraestruturas de transportes afetadas pela tempestade Kristin,
+    incluindo abrigos, sistemas de informação e sinalização. O concurso destina-se
+    a Municípios, Comunidades Intermunicipais e Autoridades de Transporte, excluindo
+    áreas metropolitanas e regiões autónomas, com dotação de 3 milhões de euros.
+  opening_date: '2026-08-15'
+  deadline: '2026-09-11'
+  themes:
+  - mobility
+  - public_space
+  - accessibility
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios, Comunidades Intermunicipais e Autoridades de Transporte
+    - Exclusão de Autoridades Metropolitanas de Lisboa e Porto
+    - Exclusão de Regiões Autónomas dos Açores e Madeira
+    - Situação tributária e contributiva regularizada
+    - Ações enquadradas na reposição e reparação de infraestruturas de mobilidade
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são indicados requisitos de parceria entre entidades; a candidatura
+      é submetida individualmente por cada beneficiário.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-no-4-2026-apoio-a-recuperacao-e-instalacao-de-infraestr
+input_digest: bfa614f415add84b8b80749f00ca3b084a6625dff89c58d79914766a36151364
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

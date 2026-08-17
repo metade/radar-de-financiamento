@@ -1,0 +1,30 @@
+---
+result:
+  summary: O Aviso n.º 4/2025 do Fundo para a Mobilidade e Transportes destina-se
+    a apoiar empresas de transporte público de passageiros com licença comunitária
+    para operação internacional na aquisição e instalação de tacógrafos digitais de
+    2.ª geração. O incentivo comparticipa 50% das despesas elegíveis, até 500€ por
+    equipamento e 2000€ por beneficiário, conforme a ordem de submissão do formulário.
+  opening_date: '2025-09-30'
+  deadline: '2025-10-31'
+  themes:
+  - mobility
+  eligibility:
+    status: not_eligible
+    criteria:
+    - Empresas do setor de transporte público de passageiros
+    - Titulares de licença comunitária para operação internacional
+    - Situação tributária regularizada
+    - Situação contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-4-2025-apoio-a-aquisicao-de-tacografos-digitais-2-g
+input_digest: baea6c310126ae01004e8a35390a757bad4469f35f55d46823efab6624366327
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

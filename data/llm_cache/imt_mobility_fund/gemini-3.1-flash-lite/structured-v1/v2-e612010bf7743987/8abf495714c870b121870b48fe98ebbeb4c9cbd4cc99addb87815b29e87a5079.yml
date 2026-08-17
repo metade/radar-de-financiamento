@@ -1,0 +1,37 @@
+---
+result:
+  summary: O aviso visa apoiar projetos de melhoria da mobilidade escolar ativa em
+    Portugal continental, excluindo áreas metropolitanas. O objetivo é promover deslocações
+    a pé, de bicicleta ou transporte público, através de pequenas intervenções em
+    infraestruturas e ações de sensibilização. A dotação global é de 100 000 euros,
+    com uma taxa de comparticipação de 85% sobre as despesas elegíveis.
+  opening_date: '2026-08-04'
+  deadline: '2026-08-31'
+  themes:
+  - mobility
+  - public_space
+  - community_development
+  - inclusion
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Juntas de Freguesia
+    - Comunidades intermunicipais e associações de municípios
+    - Empresas Municipais
+    - Agrupamentos de Escolas e Escolas não Agrupadas (Públicas)
+    - Território do Continente (excluindo AM Lisboa e AM Porto)
+    - Regularidade perante a Autoridade Tributária e Segurança Social
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-2-2026-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: 1056ba5d554804ed6a568752e2773c3d9c416b6d7ffc91304f8885f94b020b3e
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

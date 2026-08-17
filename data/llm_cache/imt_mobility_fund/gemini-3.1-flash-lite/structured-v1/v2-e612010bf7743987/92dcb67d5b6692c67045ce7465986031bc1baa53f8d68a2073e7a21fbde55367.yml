@@ -1,0 +1,32 @@
+---
+result:
+  summary: O Aviso n.º 5/2025 do Fundo para o Serviço Público de Transportes apoia
+    a aquisição de contadores automáticos de modos ativos de transporte (peões, bicicletas
+    e dispositivos de mobilidade pessoal). Destina-se a municípios, juntas de freguesia,
+    comunidades intermunicipais, empresas municipais e entidades regionais de turismo
+    fora das Áreas Metropolitanas de Lisboa e Porto.
+  opening_date: '2025-09-04'
+  deadline: '2025-10-31'
+  themes:
+  - mobility
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios, juntas de freguesia, comunidades intermunicipais, empresas municipais
+      e entidades regionais de turismo
+    - Âmbito geográfico nacional, exceto Áreas Metropolitanas de Lisboa e Porto
+    - Situação tributária e contributiva regularizada
+    - Conformidade com o Código dos Contratos Públicos
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-5-2025-apoio-a-aquisicao-de-contadores-automaticos-
+input_digest: f06e7f9a933f7b5cd02e681bad77de7bdc92c92838b50db5eb34fcd611d54ff3
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
