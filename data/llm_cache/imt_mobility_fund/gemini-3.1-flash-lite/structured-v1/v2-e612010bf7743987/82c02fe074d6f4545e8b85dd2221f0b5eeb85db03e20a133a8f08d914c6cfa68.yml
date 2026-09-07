@@ -1,0 +1,35 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes disponibiliza apoio para a digitalização
+    e normalização de dados de transporte público. O aviso destina-se a municípios
+    (autoridades de transporte), comunidades intermunicipais e operadores de transporte
+    público no território do Continente, excluindo as Áreas Metropolitanas de Lisboa
+    e do Porto, visando melhorar a interoperabilidade e a informação ao passageiro.
+  opening_date: '2026-08-17'
+  deadline: '2026-09-11'
+  themes:
+  - digital_public_services
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios atuando como autoridades de transporte
+    - Comunidades Intermunicipais
+    - Operadores de transporte público coletivo de passageiros
+    - Projetos desenvolvidos no território de Portugal Continental (excluindo AM Lisboa
+      e AM Porto)
+    - Situação tributária e contributiva regularizada
+    - Conformidade com o Código dos Contratos Públicos
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são especificados requisitos de parceria entre diferentes entidades,
+      sendo o financiamento atribuído a beneficiários individuais.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-no-5-2026-apoio-a-digitalizacao-e-normalizacao-de-dados
+input_digest: d9b9e97f321801efccccc23e0c6e559dbdee17b136c75b089caa495b5a495d77
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa financia ações de adaptação climática local,
+    promovendo a combinação de investimento público e privado. Esta iniciativa destina-se
+    a apoiar municípios e autoridades locais no desenvolvimento de soluções de resiliência.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade menciona requisitos de consórcio ou parceria
+      que devem ser verificados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-07
+input_digest: 61274ef3d63b9e1d685290fd0328f6f791fd80ce7c4f04b448c357f632265dfd
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

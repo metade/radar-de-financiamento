@@ -1,0 +1,37 @@
+---
+result:
+  summary: O Aviso n.º 2/2026 apoia projetos de mobilidade escolar em Portugal continental,
+    excluindo áreas metropolitanas de Lisboa e Porto e regiões autónomas. Financia
+    infraestruturas ligeiras, acalmia de tráfego e programas de promoção de autonomia
+    para crianças e jovens. A dotação é de 100 000 euros, com comparticipação de 85%
+    até 70 000 euros por beneficiário.
+  opening_date: '2026-08-02'
+  deadline: '2026-08-31'
+  themes:
+  - mobility
+  - public_space
+  - community_development
+  - inclusion
+  - climate
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Juntas de Freguesia
+    - Comunidades intermunicipais e conjuntos de Municípios
+    - Empresas Municipais
+    - Agrupamentos de Escolas e Escolas não Agrupadas (Públicas)
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: optional
+    details: Não são exigidas parcerias obrigatórias, contudo, o aviso admite candidaturas
+      de conjuntos de municípios.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-2-2026-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: 9e1e262113b2d3654caeabe3be7e8f2a214b69e69ec00b813ff30bd95b45725f
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

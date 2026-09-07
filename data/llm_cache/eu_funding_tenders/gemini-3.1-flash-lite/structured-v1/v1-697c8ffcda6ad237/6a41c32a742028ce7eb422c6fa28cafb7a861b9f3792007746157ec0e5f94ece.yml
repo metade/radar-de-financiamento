@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos destinados a demonstrar soluções
+    inovadoras para a proteção e preservação do património cultural face aos impactos
+    das alterações climáticas.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade faz referência a requisitos de consórcio ou parceria,
+      devendo ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-05
+input_digest: 1ae3b5f22c0ee89abe146adf25653da6cdb3dfaf47cc8bc9dc636156029596eb
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

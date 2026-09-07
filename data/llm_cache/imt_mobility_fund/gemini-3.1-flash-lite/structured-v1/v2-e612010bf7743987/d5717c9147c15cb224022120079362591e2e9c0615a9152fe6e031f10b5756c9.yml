@@ -1,0 +1,34 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes abre candidaturas para apoiar a
+    descarbonização e digitalização do setor do táxi em Portugal Continental. O apoio
+    foca-se na aquisição de veículos 100% elétricos, abate de veículos antigos e equipamentos
+    de carregamento, bem como na digitalização através de taxímetros, impressoras
+    e terminais de pagamento automático para empresas licenciadas.
+  opening_date: '2025-11-19'
+  deadline: '2025-10-31'
+  themes:
+  - climate
+  - digital_public_services
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades habilitadas com alvará para o exercício da atividade de transporte
+      em táxi
+    - Situação tributária regularizada perante a administração fiscal
+    - Situação contributiva regularizada perante a segurança social
+    - Ações enquadradas nas tipologias de descarbonização ou digitalização definidas
+    - Território nacional do Continente
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-6-2024-aviso-a-implementacao-do-projeto-1bilhete-pt
+input_digest: c53fd09e136be2e119035b57cdf5e791df6c3bfd930cebd329ae1974f88db59d
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

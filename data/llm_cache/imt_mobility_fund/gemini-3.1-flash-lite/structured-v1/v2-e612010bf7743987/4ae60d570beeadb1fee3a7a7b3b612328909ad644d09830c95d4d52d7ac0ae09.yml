@@ -1,0 +1,35 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes apoia a recuperação e instalação
+    de infraestruturas de transportes públicos em municípios, comunidades intermunicipais
+    e autoridades de transporte afetadas pela tempestade Kristin. O financiamento
+    visa a reparação de abrigos, sistemas de informação e sinalização, garantindo
+    a acessibilidade e segurança, através de uma subvenção não reembolsável de 100%
+    das despesas elegíveis.
+  opening_date: '2026-08-15'
+  deadline: '2026-09-11'
+  themes:
+  - mobility
+  - public_space
+  - accessibility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Comunidades Intermunicipais
+    - Autoridades de Transporte
+    - Situação tributária regularizada
+    - Situação contributiva perante a segurança social regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não são mencionados requisitos de parceria formal entre entidades para
+      a submissão de candidaturas.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-no-4-2026-apoio-a-recuperacao-e-instalacao-de-infraestr
+input_digest: 8cd6a5d3ba86ee6a8538f903766918bf497ab8349698a56c478e749787fd1214
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos dedicados à prevenção e investigação
+    de pessoas desaparecidas. A oportunidade destina-se a entidades públicas e dispõe
+    de um orçamento total de 5 milhões de euros para a execução das iniciativas.
+  opening_date: '2026-05-06'
+  deadline: '2026-11-05'
+  themes:
+  - civic_participation
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, devendo
+      estes ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-fct-03
+input_digest: 9d882ac009a86005a3e450137823dfa93ad2574593cb197dbc8a6e2526346d42
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

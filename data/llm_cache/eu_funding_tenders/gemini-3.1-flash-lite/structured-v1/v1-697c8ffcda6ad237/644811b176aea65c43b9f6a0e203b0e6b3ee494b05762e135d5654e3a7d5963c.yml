@@ -1,0 +1,23 @@
+---
+result:
+  summary: O programa Horizonte Europa disponibiliza esta oportunidade focada na inovação
+    orientada pela procura no setor da segurança. Os detalhes sobre objetivos específicos,
+    entidades elegíveis e requisitos de parceria não foram fornecidos.
+  opening_date: '2026-05-07'
+  deadline: ''
+  themes: []
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não foi fornecida informação sobre requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-ssri-02
+input_digest: 29a03a38455b1bab548b1729f9d9260d17c82f36c58f47fbeec737c38cb0bd74
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
