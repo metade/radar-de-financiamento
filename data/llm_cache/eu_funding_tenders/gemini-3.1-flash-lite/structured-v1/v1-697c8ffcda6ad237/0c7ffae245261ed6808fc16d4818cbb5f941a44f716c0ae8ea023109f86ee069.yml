@@ -1,0 +1,25 @@
+---
+result:
+  summary: O convite à apresentação de propostas do Horizonte Europa visa abordar
+    os desafios de segurança associados à transição ecológica em áreas urbanas e periurbanas.
+  opening_date: '2026-05-07'
+  deadline: ''
+  themes:
+  - climate
+  - environment
+  - public_space
+  eligibility:
+    status: unclear
+    criteria: []
+    confidence: low
+  partnership:
+    status: not_stated
+    details: Não existe informação disponível sobre requisitos de parceria.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl3-2026-01-infra-02
+input_digest: 8655bb6597f4e9f16372024503a20780f1b7042f0f0f0c905f4d8b3e7e19694b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,37 @@
+---
+result:
+  summary: O Fundo para a Mobilidade e Transportes apoia projetos de mobilidade escolar
+    ativa e sustentável para municípios, freguesias, comunidades intermunicipais,
+    empresas municipais e estabelecimentos de ensino públicos (excluindo Áreas Metropolitanas
+    de Lisboa e Porto). O financiamento visa infraestruturas ligeiras e ações de promoção
+    da autonomia, com uma dotação total de 400 000 euros e taxas de até 85%.
+  opening_date: '2025-04-24'
+  deadline: '2025-07-31'
+  themes:
+  - mobility
+  - public_space
+  - community_development
+  - inclusion
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios e Juntas de Freguesia
+    - Comunidades intermunicipais
+    - Empresas Municipais
+    - Agrupamentos de Escolas e escolas públicas (pré-escolar ao secundário)
+    - Território do Continente (excluindo Áreas Metropolitanas de Lisboa e Porto)
+    - Situação tributária e contributiva regularizada
+    confidence: high
+  partnership:
+    status: not_stated
+    details: O aviso não especifica requisitos formais de parceria entre entidades
+      para a submissão de candidaturas.
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-3-2025-apoio-a-implementacao-de-medidas-de-melhoria
+input_digest: cb912d61028b2abe0948b8acfcc8a81c8d67c2d72c32239becc5122b360b29e5
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,31 @@
+---
+result:
+  summary: O Fundo para o Serviço Público de Transportes apoia a aquisição e instalação
+    de tacógrafos digitais de 2ª geração em veículos de empresas de transporte público
+    de passageiros com licença comunitária para operação internacional. O incentivo
+    comparticipa 50% das despesas elegíveis, até 500€ por equipamento e 2 000€ por
+    beneficiário, para montantes elegíveis desde 1 de janeiro de 2024 até 31 de outubro
+    de 2025.
+  opening_date: '2025-10-02'
+  deadline: '2025-10-31'
+  themes:
+  - mobility
+  eligibility:
+    status: not_eligible
+    criteria:
+    - Empresas do setor de transporte público de passageiros
+    - Titulares de licença comunitária para operação internacional
+    - Situação tributária e contributiva regularizada
+    - Não se aplica a autarquias portuguesas
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: imt_mobility_fund
+opportunity_id: imt-mobility-https-www-imt-ip-pt-concurso-aviso-n-o-4-2025-apoio-a-aquisicao-de-tacografos-digitais-2-g
+input_digest: 4916a7b70e9ab86582fbd5fb89c4937bd83778237ca42ad39b659bb0c83851fb
+prompt_version: v2
+prompt_digest: e612010bf7743987bd6cefade1ae9a29c176624b702029be19916e02a3a2402e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
