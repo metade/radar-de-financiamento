@@ -68,6 +68,9 @@ jobs:
       - name: Build CSS
         run: npm run build:css
 
+      - name: Build JavaScript
+        run: npm run build:js
+
       - name: Build Jekyll site
         run: bundle exec jekyll build
 

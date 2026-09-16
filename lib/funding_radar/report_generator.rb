@@ -58,8 +58,9 @@ module FundingRadar
       FileUtils.mkdir_p(@reports_dir)
       filename = @filename || "#{report.week_id}.md"
       path = File.join(@reports_dir, filename)
-      File.write(path, render(report))
-      File.write(csv_path_for(filename), render_csv(report))
+      report = preserve_generated_at(report, path)
+      write_if_changed(path, render(report))
+      write_if_changed(csv_path_for(filename), render_csv(report))
       Debug.status "wrote #{path} and #{csv_path_for(filename)}"
       path
     end
@@ -169,6 +170,30 @@ module FundingRadar
           csv << csv_headers.map { |header| csv_value(opportunity.fetch(header)) }
         end
       end
+    end
+
+    def preserve_generated_at(report, path)
+      return report unless File.file?(path)
+
+      existing = YAML.safe_load_file(path, permitted_classes: [Date], aliases: false)
+      return report unless existing.is_a?(Hash) && existing["generated_at"]
+
+      current = YAML.safe_load(render(report), permitted_classes: [Date], aliases: false)
+      existing_content = existing.dup
+      current_content = current.dup
+      existing_content.delete("generated_at")
+      current_content.delete("generated_at")
+      return report unless existing_content == current_content
+
+      report.with(generated_at: existing.fetch("generated_at"))
+    rescue Psych::Exception, ArgumentError
+      report
+    end
+
+    def write_if_changed(path, content)
+      return if File.file?(path) && File.read(path) == content
+
+      File.write(path, content)
     end
 
     def csv_headers

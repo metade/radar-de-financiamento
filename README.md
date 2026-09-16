@@ -103,7 +103,7 @@ FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bun
 
 Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful results are cached in the committed `data/llm_cache/` directory, namespaced by source, model, schema, and prompt fingerprint, and are invalidated when the source content or processing configuration changes.
 
-Lisboa 2030 is configured separately from the central Portugal 2030 workbook. When LLM processing is enabled, its linked aviso PDF is downloaded, converted to text, and supplied to the model for eligibility and partnership interpretation. Limit document input with `FUNDING_RADAR_LLM_DOCUMENT_MAX_CHARACTERS` (default: `12000`). PDF extraction failures fall back to the deterministic opportunity data.
+Lisboa 2030 opportunities are covered by the central Portugal 2030 workbook. When LLM processing is enabled, the Portugal 2030 workflow processes the available opportunity data; a separate Lisboa adapter remains available only if the regional portal later publishes detail missing from the central plan.
 
 The structured LLM analysis currently enabled for EU Funding & Tenders returns a summary, canonical themes, an eligibility interpretation with status/criteria/confidence, and a partnership interpretation with status/details/confidence. These remain evaluation fields; deterministic dates, budgets, identity, and relevance scoring remain authoritative.
 

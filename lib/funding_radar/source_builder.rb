@@ -10,7 +10,6 @@ module FundingRadar
       sources = [
         Sources::EuFundingTendersSource.new(http_client: http_client),
         Sources::Portugal2030Source.new(http_client: http_client),
-        Sources::Lisboa2030Source.new(http_client: http_client),
         Sources::InterregSudoeSource.new(http_client: http_client),
         Sources::EuropeanUrbanInitiativeSource.new(http_client: http_client),
         Sources::TurismoDePortugalSource.new(http_client: http_client),
