@@ -51,7 +51,7 @@ The API keeps historical opportunities as individual records when they remain in
 
 `/api/v1/` is a public interface. Additive changes are preferred within v1; breaking changes should be published under `/api/v2/` rather than silently changing v1 semantics.
 
-For AI consumption guidance, see [`/ia/`](/ia/) and [`/llms.txt`](/llms.txt).
+For AI consumption guidance, see [`/ai/`](/ai/), the canonical [`SKILL.md`](/ai/SKILL.md), and [`/llms.txt`](/llms.txt).
 
 Run tests:
 

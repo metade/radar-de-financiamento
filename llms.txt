@@ -2,6 +2,8 @@
 
 Funding Radar é um catálogo estático semanal de oportunidades de financiamento público com interesse potencial para autarquias portuguesas.
 
+- AI usage instructions: https://radar-de-financiamento.decidimosarroios.pt/ai/
+- Canonical skill: https://radar-de-financiamento.decidimosarroios.pt/ai/SKILL.md
 - Frescura e versão: /api/v1/meta.json
 - Descoberta compacta: /api/v1/catalog.json
 - Registo detalhado: /api/v1/opportunities/{id}.json
