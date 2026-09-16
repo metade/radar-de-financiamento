@@ -27,46 +27,12 @@ OptionParser.new do |parser|
 end.parse!
 
 client = FundingRadar::HttpClient.new
-index_body = client.get(FundingRadar::Sources::EuFundingTendersSource::TOPIC_INDEX_URL, headers: {"Accept" => "text/html"})
-
-all_ids = index_body.scan(%r{/topic-details/([^"<>]+)}i)
-  .flatten
-  .map { |id| CGI.unescapeHTML(id).upcase }
-  .uniq
-
-if options[:show_stats]
-  years = all_ids.each_with_object(Hash.new(0)) do |id, counts|
-    id.scan(/20\d{2}/).each { |year| counts[year] += 1 }
-  end
-  prefixes = all_ids.each_with_object(Hash.new(0)) do |id, counts|
-    prefix = id.split("-").first
-    counts[prefix] += 1 if prefix
-  end
-
-  puts "Topic index IDs: #{all_ids.size}"
-  puts "Years:"
-  years.sort_by { |year, _count| year }.last(12).each { |year, count| puts "  #{year}: #{count}" }
-  puts "Known programme prefixes:"
-  FundingRadar::Sources::EuFundingTendersSource::PROGRAMME_PREFIXES.keys.each do |prefix|
-    puts "  #{prefix}: #{prefixes.fetch(prefix, 0)}"
-  end
-  puts
-end
-
-ids = if options[:topic_ids].empty?
-  all_ids
-    .select { |id| FundingRadar::Sources::EuFundingTendersSource.discoverable_topic_id?(id, current_year: options[:current_year]) }
-    .first(options[:limit])
+ids = options[:topic_ids]
+if ids.empty?
+  puts "Using the structured Funding & Tenders inventory API."
 else
-  options[:topic_ids]
-end
-
-puts "Topic-index candidate IDs: #{ids.size}"
-ids.each { |id| puts "  #{id}" }
-if ids.empty? && options[:topic_ids].empty?
-  puts "No usable current-year topic IDs were found in the topic index."
-  puts "Falling back to structured default search terms:"
-  FundingRadar::Sources::EuFundingTendersSource.default_terms(current_year: options[:current_year]).each { |term| puts "  #{term}" }
+  puts "Explicit topic IDs: #{ids.size}"
+  ids.each { |id| puts "  #{id}" }
 end
 
 if options[:show_raw]
@@ -88,9 +54,12 @@ if options[:show_raw]
   end
 end
 
+topic_ids = ids.empty? ? nil : ids
+
 source = FundingRadar::Sources::EuFundingTendersSource.new(
   http_client: client,
-  topic_ids: ids,
+  # nil selects automatic structured discovery; an array restricts the query.
+  topic_ids: topic_ids,
   page_size: options[:page_size],
   current_year: options[:current_year],
   single_topic: options[:single_topic]

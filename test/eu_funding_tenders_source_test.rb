@@ -5,7 +5,8 @@ class EuFundingTendersSourceTest < Minitest::Test
     source = FundingRadar::Sources::EuFundingTendersSource.new(
       http_client: FakeHttpClient.new(search_payload, topic_index_body: topic_index_html),
       page_size: 10,
-      current_year: 2023
+      current_year: 2023,
+      topic_ids: ["AMIF-2023-TF2-AG-CALL-02-LOCAL"]
     )
 
     opportunities = source.fetch
@@ -156,19 +157,28 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_empty opportunity.partnership_requirements
   end
 
-  def test_discovers_current_year_topic_ids_from_official_topic_index
-    client = FakeHttpClient.new(search_payload, topic_index_body: topic_index_html)
-    source = FundingRadar::Sources::EuFundingTendersSource.new(
-      http_client: client,
-      current_year: 2026,
-      max_topic_ids: 2
+  def test_discovers_topics_from_structured_paginated_inventory
+    client = StructuredInventoryHttpClient.new(
+      [
+        {"url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL2-2026-01-TRANSFO-07", "summary" => "Climate and local authorities", "metadata" => {"identifier" => ["HORIZON-CL2-2026-01-TRANSFO-07"], "title" => ["Fostering competences for the green transition"], "status" => ["31094502"], "language" => ["en"]}},
+        {"url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL3-2026-01-SECURITY-01", "summary" => "Digital public services", "metadata" => {"identifier" => ["HORIZON-CL3-2026-01-SECURITY-01"], "title" => ["Security topic"], "status" => ["31094502"], "language" => ["en"]}}
+      ]
     )
+    source = FundingRadar::Sources::EuFundingTendersSource.new(http_client: client, current_year: 2026)
 
-    source.fetch
+    opportunities = source.fetch
 
-    assert_equal 2, client.requested_urls.size
-    assert_includes client.requested_urls.first, "HORIZON-MISS-2026-CLIMA-01-01"
-    assert_includes client.requested_urls.last, "LIFE-2026-SAP-CLIMA"
+    assert_equal ["eu-ft-horizon-cl2-2026-01-transfo-07", "eu-ft-horizon-cl3-2026-01-security-01"], opportunities.map(&:id)
+    assert_equal 1, client.inventory_requests.size
+    assert_includes client.inventory_requests.first[:files].fetch("query").fetch(1), '"programmePeriod":"2021 - 2027"'
+    assert_includes client.inventory_requests.first[:files].fetch("query").fetch(1), '"type":["1","2","8"]'
+  end
+
+  def test_default_terms_include_horizon_cl2
+    terms = FundingRadar::Sources::EuFundingTendersSource.default_terms(current_year: 2026)
+
+    assert_includes terms, "HORIZON-CL2-2026"
+    assert_includes terms, "HORIZON-CL2-2027"
   end
 
   def test_ignores_non_topic_results
@@ -217,6 +227,20 @@ class EuFundingTendersSourceTest < Minitest::Test
     def post_json(url, headers: {})
       @requested_urls << url
       @body
+    end
+  end
+
+  class StructuredInventoryHttpClient
+    attr_reader :inventory_requests
+
+    def initialize(results)
+      @results = results
+      @inventory_requests = []
+    end
+
+    def post_multipart(url, files:, headers: {})
+      @inventory_requests << {url: url, files: files, headers: headers}
+      {"results" => @results}.to_json
     end
   end
 

@@ -137,6 +137,25 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_filters_low_relevance_eu_opportunities
+    Dir.mktmpdir do |dir|
+      source = Struct.new(:opportunities) { def fetch = opportunities }.new([
+        opportunity("eu-low", "EU Funding & Tenders Portal")
+      ])
+      generator = FundingRadar::ReportGenerator.new(
+        source_registry: FundingRadar::SourceRegistry.new(sources: [source]),
+        duplicate_resolver: FundingRadar::DuplicateResolver.new,
+        scorer: FundingRadar::RelevanceScorer.new,
+        reports_dir: dir
+      )
+
+      path = generator.generate(today: Date.new(2026, 7, 11))
+      document = YAML.safe_load_file(path, permitted_classes: [Date], aliases: false)
+
+      assert_empty document.fetch("opportunities")
+    end
+  end
+
   private
 
   def opportunity(id, source, source_key = nil)

@@ -1,0 +1,28 @@
+---
+result:
+  summary: Esta iniciativa do programa Horizonte Europa visa apoiar a criação de centros
+    nacionais de adaptação climática, promovendo a governação multinível através da
+    cooperação entre autoridades nacionais, regionais e locais.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - community_development
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, devendo
+      estes ser confirmados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-01
+input_digest: 0cc4c0a44a7f02c03ab01ecfdcb0189d1297f516d5b9146fc51fe6e209f76bc5
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
