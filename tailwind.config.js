@@ -3,8 +3,7 @@ module.exports = {
     "./*.{html,md}",
     "./_includes/**/*.{html,md}",
     "./_layouts/**/*.{html,md}",
-    "./_reports/**/*.{html,md}",
-    "./_plugins/**/*.{rb,html}"
+    "./_reports/**/*.{html,md}"
   ],
   theme: {
     extend: {
