@@ -12,6 +12,7 @@ collections:
     permalink: /relatorios/:name/
 
 exclude:
+  - ai/
   - assets/css/input.css
   - Gemfile
   - Gemfile.lock
