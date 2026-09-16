@@ -193,6 +193,10 @@ module FundingRadar
             "document_url" => item["document_link"]
           })
         }
+        # `compact` intentionally removes empty optional arrays. Geography is
+        # different: its schema requires `areas` even when the scope is
+        # explicitly unknown.
+        record["facts"]["geography"] = normalized_geography(item["geography"])
         record["source_reference_id"] = item["id"].to_s unless api_id == item["id"].to_s
         record["_report_generated_at"] = report_generated_at
         record
@@ -201,7 +205,7 @@ module FundingRadar
       def catalog_record(record)
         facts = record.fetch("facts")
         analysis = record.fetch("analysis")
-        compact({
+        entry = compact({
           "id" => record.fetch("id"),
           "title" => record.fetch("title"),
           "programme" => record.fetch("programme"),
@@ -216,6 +220,17 @@ module FundingRadar
           "detail_url" => "#{PREFIX}/opportunities/#{record.fetch("id")}.json",
           "source_url" => record.dig("links", "source_url")
         })
+        entry["geography"] = normalized_geography(facts["geography"])
+        entry
+      end
+
+      def normalized_geography(value)
+        return {"scope" => "unknown", "areas" => []} unless value.is_a?(Hash)
+
+        scope = value["scope"].to_s
+        scope = "unknown" unless %w[local regional national transnational eu unknown].include?(scope)
+        areas = Array(value["areas"]).map(&:to_s).reject(&:empty?).uniq
+        {"scope" => scope, "areas" => areas}
       end
 
       def status_for(deadline)

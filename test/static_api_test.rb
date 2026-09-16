@@ -29,6 +29,7 @@ class StaticApiTest < Minitest::Test
         assert_equal entry.fetch("id"), detail.fetch("id")
         assert_match(/\A[a-z0-9][a-z0-9._~-]*\z/, detail.fetch("id"))
         assert_equal "https://official.example/open", detail.dig("links", "source_url")
+        assert_equal({"scope" => "unknown", "areas" => []}, detail.dig("facts", "geography"))
         refute_includes JSON.generate(detail), "debug"
         refute_includes JSON.generate(detail), "_report_generated_at"
         assert detail.fetch("facts").is_a?(Hash)
