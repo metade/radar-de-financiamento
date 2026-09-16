@@ -15,6 +15,8 @@ class StaticApiTest < Minitest::Test
       assert_equal 1, meta.fetch("catalog_count")
       assert_equal ["open-id"], catalog.map { |entry| entry.fetch("id") }
       assert_equal "https://official.example/open", catalog.first.fetch("source_url")
+      assert_equal "known", catalog.first.fetch("applicant_eligibility_status")
+      assert_equal "known", JSON.parse(File.read(File.join(dir, "api/v1/opportunities/open-id.json"))).dig("facts", "applicant_eligibility_status")
       refute catalog.first.key?("relevance_score")
       refute catalog.first.key?("_report_generated_at")
       assert_operator JSON.generate(catalog).bytesize, :<, 1_000
@@ -27,6 +29,7 @@ class StaticApiTest < Minitest::Test
         assert_equal entry.fetch("id"), detail.fetch("id")
         assert_match(/\A[a-z0-9][a-z0-9._~-]*\z/, detail.fetch("id"))
         assert_equal "https://official.example/open", detail.dig("links", "source_url")
+        assert_equal({"scope" => "unknown", "areas" => []}, detail.dig("facts", "geography"))
         refute_includes JSON.generate(detail), "debug"
         refute_includes JSON.generate(detail), "_report_generated_at"
         assert detail.fetch("facts").is_a?(Hash)
@@ -65,7 +68,8 @@ class StaticApiTest < Minitest::Test
     assert_equal %w[id title programme status facts analysis provenance links], schema.fetch("required")
     assert_equal %w[open closed unknown], schema.dig("properties", "status", "enum")
     assert_equal "date", schema.dig("$defs", "facts", "properties", "deadline", "format")
-    assert_equal "date-time", schema.dig("$defs", "provenance", "properties", "report_generated_at", "format")
+      assert_equal "date-time", schema.dig("$defs", "provenance", "properties", "report_generated_at", "format")
+      assert_equal %w[known unknown], schema.dig("$defs", "facts", "properties", "applicant_eligibility_status", "enum")
   end
 
   private

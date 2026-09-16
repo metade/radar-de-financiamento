@@ -88,9 +88,11 @@ module FundingRadar
                 "deadline" => {"type" => ["string", "null"], "format" => "date"},
                 "funding_amount" => {"type" => "string"},
                 "eligible_applicants" => {"type" => "array", "items" => {"type" => "string"}},
+                "applicant_eligibility_status" => {"type" => "string", "enum" => %w[known unknown]},
                 "partnership_requirements" => {"type" => "string"},
                 "other_requirements" => {"type" => "string"},
-                "themes" => {"type" => "array", "items" => {"type" => "string"}}
+                "themes" => {"type" => "array", "items" => {"type" => "string"}},
+                "geography" => {"$ref" => "#/$defs/geography"}
               },
               "additionalProperties" => false
             },
@@ -104,6 +106,11 @@ module FundingRadar
                 "relevance_explanation" => {"type" => "string"},
                 "llm_analysis" => {"type" => "object"}
               },
+              "additionalProperties" => false
+            },
+            "geography" => {
+              "type" => "object", "required" => %w[scope areas],
+              "properties" => {"scope" => {"type" => "string", "enum" => %w[local regional national transnational eu unknown]}, "areas" => {"type" => "array", "items" => {"type" => "string"}}},
               "additionalProperties" => false
             },
             "provenance" => {
@@ -161,9 +168,11 @@ module FundingRadar
             "deadline" => item["deadline"],
             "funding_amount" => item["funding_amount"],
             "eligible_applicants" => item["eligible_applicants"],
+            "applicant_eligibility_status" => item["applicant_eligibility_status"] || (Array(item["eligible_applicants"]).empty? ? "unknown" : "known"),
             "partnership_requirements" => item["partnership_requirements"],
             "other_requirements" => item["other_requirements"],
-            "themes" => item["themes"]
+            "themes" => item["themes"],
+            "geography" => item["geography"] || {"scope" => "unknown", "areas" => []}
           }),
           "analysis" => compact({
             "summary" => item["summary"],
@@ -184,6 +193,10 @@ module FundingRadar
             "document_url" => item["document_link"]
           })
         }
+        # `compact` intentionally removes empty optional arrays. Geography is
+        # different: its schema requires `areas` even when the scope is
+        # explicitly unknown.
+        record["facts"]["geography"] = normalized_geography(item["geography"])
         record["source_reference_id"] = item["id"].to_s unless api_id == item["id"].to_s
         record["_report_generated_at"] = report_generated_at
         record
@@ -192,7 +205,7 @@ module FundingRadar
       def catalog_record(record)
         facts = record.fetch("facts")
         analysis = record.fetch("analysis")
-        compact({
+        entry = compact({
           "id" => record.fetch("id"),
           "title" => record.fetch("title"),
           "programme" => record.fetch("programme"),
@@ -200,11 +213,24 @@ module FundingRadar
           "deadline" => facts["deadline"],
           "status" => record.fetch("status"),
           "applicants" => facts["eligible_applicants"],
+          "applicant_eligibility_status" => facts["applicant_eligibility_status"],
           "themes" => facts["themes"],
+          "geography" => facts["geography"],
           "summary" => analysis["summary"],
           "detail_url" => "#{PREFIX}/opportunities/#{record.fetch("id")}.json",
           "source_url" => record.dig("links", "source_url")
         })
+        entry["geography"] = normalized_geography(facts["geography"])
+        entry
+      end
+
+      def normalized_geography(value)
+        return {"scope" => "unknown", "areas" => []} unless value.is_a?(Hash)
+
+        scope = value["scope"].to_s
+        scope = "unknown" unless %w[local regional national transnational eu unknown].include?(scope)
+        areas = Array(value["areas"]).map(&:to_s).reject(&:empty?).uniq
+        {"scope" => scope, "areas" => areas}
       end
 
       def status_for(deadline)

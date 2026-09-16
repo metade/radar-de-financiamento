@@ -100,16 +100,22 @@ module FundingRadar
         "official_link" => opportunity.official_link,
         "document_link" => opportunity.document_link,
         "eligible_applicants" => opportunity.eligible_applicants,
+        "applicant_eligibility_status" => opportunity.applicant_eligibility_status,
         "partnership_requirements" => opportunity.partnership_requirements,
         "other_requirements" => opportunity.other_requirements,
-        "summary" => opportunity.summary,
+        "summary" => DataQuality.summary(opportunity.summary, title: opportunity.title) ||
+          "Resumo limitado; consultar a documentação oficial da oportunidade.",
         "themes" => opportunity.themes,
+        "geography" => opportunity.geography,
         "relevance_score" => result.score,
         "relevance_category" => result.category,
         "relevance_explanation" => result.explanation,
         "deadline_status" => deadline_status(opportunity, today)
       }
       item["llm_analysis"] = llm_result.analysis if llm_result&.analysis
+      DataQuality.warnings(item["summary"], title: item["title"], themes: item["themes"]).each do |warning|
+        Debug.log "data quality #{item['id']}: #{warning}"
+      end
       item
     end
 
@@ -138,7 +144,7 @@ module FundingRadar
           summary: processed.summary,
           opening_date: opportunity.opening_date || processed.opening_date,
           deadline: opportunity.deadline || processed.deadline,
-          themes: @processing_mode == "source_config" ? processed.themes : opportunity.themes
+          themes: processed.themes
         )
         [processed_opportunity, result]
       end
@@ -199,7 +205,7 @@ module FundingRadar
     def csv_headers
       %w[
         id title programme opening_date deadline funding_amount funding_source official_link document_link eligible_applicants
-        partnership_requirements other_requirements summary themes relevance_score relevance_category
+        applicant_eligibility_status partnership_requirements other_requirements summary themes geography relevance_score relevance_category
         relevance_explanation deadline_status
       ]
     end

@@ -77,7 +77,8 @@ module FundingRadar
           "partnership_requirements" => data["Modalidade Apresentação Candidatura"].to_s.include?("Parceria") ? "A modalidade do aviso prevê parceria; confirmar os requisitos no aviso oficial." : nil,
           "other_requirements" => [data["Fundo"], data["NUTS II"]].reject(&:empty?).join(" · "),
           "summary" => summary(data),
-          "themes" => themes_for(text)
+          "themes" => themes_for(text),
+          "geography" => geography_for(data["NUTS II"])
         )
       end
 
@@ -147,6 +148,14 @@ module FundingRadar
 
       def themes_for(text)
         THEME_PATTERNS.filter_map { |theme, pattern| theme if text.match?(pattern) }
+      end
+
+      def geography_for(value)
+        text = value.to_s
+        return {"scope" => "regional", "areas" => ["Área Metropolitana de Lisboa"]} if text.match?(/AML|Lisboa/i)
+        return {"scope" => "national", "areas" => ["Portugal"]} if text.match?(NATIONWIDE_REGION)
+
+        {"scope" => "unknown", "areas" => []}
       end
 
       def excel_date(value)
