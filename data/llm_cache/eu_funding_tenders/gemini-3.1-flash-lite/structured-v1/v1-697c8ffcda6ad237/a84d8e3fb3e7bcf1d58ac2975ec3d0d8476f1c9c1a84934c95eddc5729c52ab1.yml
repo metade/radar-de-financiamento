@@ -1,0 +1,28 @@
+---
+result:
+  summary: Este convite do programa Horizonte Europa foca-se em acelerar a transformação
+    para cidades com impacto neutro no clima, uma economia de emissões líquidas nulas
+    e autonomia estratégica, através de compras públicas pré-comerciais (PCP).
+  opening_date: '2027-02-09'
+  deadline: '2027-10-07'
+  themes:
+  - climate
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O documento refere a existência de requisitos de consórcio ou parceria,
+      devendo estes ser verificados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-04-cit-05
+input_digest: d4a7a6e76e99f60a6a0768be9c932707b498ac401e13690293e44fafe4d7e141
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

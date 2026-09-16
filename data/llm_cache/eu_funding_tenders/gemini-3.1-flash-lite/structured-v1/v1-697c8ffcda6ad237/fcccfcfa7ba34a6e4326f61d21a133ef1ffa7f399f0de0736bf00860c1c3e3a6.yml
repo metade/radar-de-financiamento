@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa CERV lança o concurso Town Twinning 2026, com uma dotação orçamental
+    total de 6 milhões de euros, destinado a promover o intercâmbio e a cooperação
+    entre municípios e autoridades locais.
+  opening_date: '2026-05-06'
+  deadline: '2026-09-23'
+  themes:
+  - community_development
+  - civic_participation
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-cerv-2026-citizens-town-tt
+input_digest: e284c05e4fa75069d0a11a90e7b892fa81cc269366a550ceadc4ede2649fd246
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

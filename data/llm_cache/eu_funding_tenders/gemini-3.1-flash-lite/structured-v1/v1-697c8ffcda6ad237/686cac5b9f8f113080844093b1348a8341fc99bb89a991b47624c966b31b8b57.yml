@@ -1,0 +1,29 @@
+---
+result:
+  summary: Esta iniciativa do Horizonte Europa foca-se na redução da impermeabilização
+    do solo através de design urbano e territorial sustentável, integrando os princípios
+    da Nova Bauhaus Europeia. O financiamento visa apoiar projetos que promovam soluções
+    sustentáveis ao nível local.
+  opening_date: '2027-05-05'
+  deadline: '2027-09-15'
+  themes:
+  - environment
+  - public_space
+  - climate
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2027-02-neb-soil-01
+input_digest: db81c06c7ce64001f97e98c99c6b35ef8a966f3fb78c6f2549b44f148f91cbff
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

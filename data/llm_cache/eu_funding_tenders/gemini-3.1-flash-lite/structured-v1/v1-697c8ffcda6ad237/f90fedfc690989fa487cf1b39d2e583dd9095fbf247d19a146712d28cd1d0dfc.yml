@@ -1,0 +1,30 @@
+---
+result:
+  summary: O programa Horizonte Europa financia projetos sobre o potencial transformador
+    da cogovernação na transição ecológica de bairros. A iniciativa visa apoiar municípios
+    e autoridades locais no desenvolvimento de estratégias de governança urbana sustentável.
+  opening_date: '2027-05-05'
+  deadline: '2027-12-01'
+  themes:
+  - climate
+  - community_development
+  - environment
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: A oportunidade menciona requisitos de consórcio ou parceria que devem
+      ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2027-01-participation-01
+input_digest: fec0043fe1139fd2b7bd714c5dc45f628da55256a6c362cb4b8343c63e55b838
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

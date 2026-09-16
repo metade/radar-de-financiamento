@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa financia laboratórios vivos focados em mudança
+    transformadora através da integração de conhecimento e governação inclusiva. A
+    iniciativa apoia projetos até 7 milhões de euros, visando autoridades locais.
+  opening_date: '2027-04-20'
+  deadline: '2027-09-22'
+  themes:
+  - inclusion
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O programa indica requisitos de consórcio ou parceria, devendo os detalhes
+      ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl6-2027-01-biodiv-06
+input_digest: 3ccf7e2fd9259d1e6c0d37ebf8b9aa3a8f438551a953c33b54bad74dc7b12381
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

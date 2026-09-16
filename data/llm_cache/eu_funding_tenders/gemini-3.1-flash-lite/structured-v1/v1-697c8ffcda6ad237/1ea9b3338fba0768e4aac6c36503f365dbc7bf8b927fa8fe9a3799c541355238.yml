@@ -1,0 +1,27 @@
+---
+result:
+  summary: Esta oportunidade do programa Horizonte Europa visa apoiar a implementação
+    do Pacto da UE sobre Migração e Asilo, concentrando-se na inclusão, integração
+    e saúde. O financiamento total é de 12 milhões de euros, com um limite de 4 milhões
+    por projeto.
+  opening_date: '2026-05-12'
+  deadline: '2026-09-23'
+  themes:
+  - inclusion
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade menciona a existência de requisitos de consórcio
+      ou parceria, devendo estes ser verificados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl2-2026-01-transfo-08
+input_digest: ff3dca2b986fa593b621f7e6e9d7d557ce6c67ce17286848bdcb7f8b12f9d9c0
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

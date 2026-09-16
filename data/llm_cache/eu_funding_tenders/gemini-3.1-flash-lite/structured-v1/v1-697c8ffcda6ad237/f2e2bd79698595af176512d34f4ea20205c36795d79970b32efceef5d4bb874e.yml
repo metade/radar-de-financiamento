@@ -1,0 +1,29 @@
+---
+result:
+  summary: Este aviso do programa Horizonte Europa visa aumentar a resiliência das
+    zonas costeiras e ribeirinhas face às alterações climáticas, abrangendo cidades
+    localizadas junto à água e ilhas.
+  opening_date: '2027-02-09'
+  deadline: '2027-09-21'
+  themes:
+  - climate
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica a existência de requisitos de consórcio
+      ou parceria, devendo ser confirmados no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-03-ocean-01
+input_digest: 88830dea83691d5b91364c7708ff7f8c99fc69106cbdc097f753166d11824f97
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Horizonte Europa abre concurso para a Iniciativa de Cidades
+    e Regiões Circulares, visando fortalecer a indústria urbana para apoiar o Clean
+    Industrial Deal. O financiamento total é de 18 milhões de euros, com um limite
+    de 6 milhões de euros por projeto.
+  opening_date: '2027-02-04'
+  deadline: '2027-04-08'
+  themes:
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl6-2027-01-circbio-02-two-stage
+input_digest: ba002ea97257b637a5340ec0f96e3455a1b8daa199c3d11a21210014961b427b
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

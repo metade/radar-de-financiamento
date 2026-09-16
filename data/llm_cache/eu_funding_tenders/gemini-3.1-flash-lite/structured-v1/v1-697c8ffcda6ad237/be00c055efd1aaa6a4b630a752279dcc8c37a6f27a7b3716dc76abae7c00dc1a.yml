@@ -1,0 +1,29 @@
+---
+result:
+  summary: O programa Horizonte Europa financia laboratórios vivos para a melhoria
+    da saúde do solo nas regiões biogeográficas Continental, Mar Negro, Panónica e
+    Estepe. A iniciativa visa promover práticas de gestão sustentável do solo através
+    de investigação e inovação colaborativa nestas zonas específicas.
+  opening_date: '2027-02-04'
+  deadline: '2027-04-08'
+  themes:
+  - environment
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade aponta para a existência de requisitos de consórcio
+      ou parceria, devendo estes ser verificados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-05-soil-01-two-stage
+input_digest: ffcace4e41888a1cf00c7c44ed97ee7df80d66ca53606ca2ef6e49fd03747a8a
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

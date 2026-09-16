@@ -1,0 +1,28 @@
+---
+result:
+  summary: O programa Hydrogen cities, inserido no Horizonte Europa, disponibiliza
+    financiamento para municípios e autoridades locais com o objetivo de promover
+    a adoção de soluções de hidrogénio em contexto urbano.
+  opening_date: '2027-02-09'
+  deadline: '2027-10-07'
+  themes:
+  - climate
+  - environment
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade refere a existência de requisitos de consórcio
+      ou parceria, sendo necessária a verificação no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-04-cit-02
+input_digest: b991d2cb30ebd75b1984297d09911b3818f82005bce57da3d680035bc8588723
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,29 @@
+---
+result:
+  summary: O convite do programa Horizon Europe foca-se no restauro de ecossistemas
+    urbanos, integrando redes de transporte e o ambiente edificado. O objetivo é promover
+    a natureza nas cidades através de soluções que aumentem a resiliência e a qualidade
+    ambiental urbana.
+  opening_date: '2027-02-09'
+  deadline: '2027-09-22'
+  themes:
+  - environment
+  - mobility
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria; confirmar
+      no aviso oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-07-clima-cit-neb-01
+input_digest: 1b550b383d5eb22bcac6c21326dcebbee8175a8b32dc0848185fb65d91049c17
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

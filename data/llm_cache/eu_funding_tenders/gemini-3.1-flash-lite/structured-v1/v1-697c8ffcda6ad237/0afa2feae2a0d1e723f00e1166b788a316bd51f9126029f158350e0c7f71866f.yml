@@ -1,0 +1,26 @@
+---
+result:
+  summary: O programa Horizonte Europa abre candidaturas para apoiar iniciativas de
+    inovação abertas e centradas no utilizador que visem a melhoria da saúde dos solos
+    na Ucrânia. A oportunidade destina-se a financiar projetos que contribuam para
+    este objetivo específico através de abordagens participativas.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-05-soil-03
+input_digest: a540770bf088579cbd936b8ac0d5a1138f8368b6825e39e23791b50356827248
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
