@@ -56,7 +56,7 @@ class RelevanceScorerTest < Minitest::Test
 
     result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
 
-    assert_equal 70, result.score
+    assert_equal 80, result.score
     assert_match "aceita autarquias", result.explanation
   end
 
@@ -75,7 +75,44 @@ class RelevanceScorerTest < Minitest::Test
 
     result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
 
-    assert_equal 67, result.score
+    assert_equal 68, result.score
     assert_match "Lisboa", result.explanation
+  end
+
+  def test_does_not_make_a_thematically_similar_research_topic_highly_relevant
+    opportunity = FundingRadar::Opportunity.from_hash(
+      "id" => "research",
+      "title" => "Generative AI for smarter automated transport",
+      "programme" => "Horizon Europe",
+      "deadline" => "2026-09-30",
+      "funding_source" => "EU Funding & Tenders Portal",
+      "official_link" => "https://example.test/research",
+      "summary" => "Research and innovation for AI, climate and mobility.",
+      "themes" => ["climate", "environment", "mobility", "digital_public_services"]
+    )
+
+    result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
+
+    assert_operator result.score, :<, 75
+    assert_equal "Prioridade baixa", result.category
+  end
+
+  def test_recognizes_local_policy_impact_without_claiming_eligibility
+    opportunity = FundingRadar::Opportunity.from_hash(
+      "id" => "green-transition",
+      "title" => "Fostering competences for the green transition",
+      "programme" => "Horizon Europe",
+      "deadline" => "2026-09-23",
+      "funding_source" => "EU Funding & Tenders Portal",
+      "official_link" => "https://example.test/green-transition",
+      "summary" => "Support for policy-makers, communities and education providers in the green transition.",
+      "themes" => ["climate", "environment", "equality", "inclusion"]
+    )
+
+    result = FundingRadar::RelevanceScorer.new.score(opportunity, today: Date.new(2026, 7, 11))
+
+    assert_equal 73, result.score
+    assert_equal "A investigar", result.category
+    assert_match "políticas públicas", result.explanation
   end
 end
