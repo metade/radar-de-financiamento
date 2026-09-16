@@ -1,0 +1,10 @@
+# Funding Radar
+
+Funding Radar é um catálogo estático semanal de oportunidades de financiamento público com interesse potencial para autarquias portuguesas.
+
+- Frescura e versão: /api/v1/meta.json
+- Descoberta compacta: /api/v1/catalog.json
+- Registo detalhado: /api/v1/opportunities/{id}.json
+- Estrutura: /api/v1/schema.json
+
+Use o catálogo para encontrar candidatos e consulte os registos detalhados. A documentação oficial ligada em cada registo é a autoridade; a análise do Funding Radar é orientação.
