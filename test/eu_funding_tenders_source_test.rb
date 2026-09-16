@@ -157,6 +157,18 @@ class EuFundingTendersSourceTest < Minitest::Test
     assert_empty opportunity.partnership_requirements
   end
 
+  def test_ranks_theme_evidence_instead_of_using_pattern_order
+    result = {
+      "summary" => "A call about transport systems and sustainable mobility.",
+      "content" => "",
+      "metadata" => {"identifier" => ["HORIZON-CL6-2026-01-MOBILITY-01"], "title" => ["Transport systems"]},
+      "url" => "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL6-2026-01-MOBILITY-01"
+    }
+    source = FundingRadar::Sources::EuFundingTendersSource.new(http_client: FakeHttpClient.new({"results" => [result]}.to_json), topic_ids: ["HORIZON-CL6-2026-01-MOBILITY-01"], current_year: 2026)
+
+    assert_includes source.fetch.first.themes, "mobility"
+  end
+
   def test_discovers_topics_from_structured_paginated_inventory
     client = StructuredInventoryHttpClient.new(
       [

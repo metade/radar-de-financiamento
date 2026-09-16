@@ -101,7 +101,8 @@ module FundingRadar
           "partnership_requirements" => "Parceria transnacional com pelo menos um beneficiário de Portugal, Espanha e França; confirmar os requisitos no aviso oficial.",
           "other_requirements" => "Financiamento FEDER até 75%; candidatura em parceria transnacional.",
           "summary" => summary(text),
-          "themes" => themes_for(text)
+          "themes" => themes_for(text),
+          "geography" => {"scope" => "transnational", "areas" => ["Portugal", "Espanha", "França"]}
         )
       end
 

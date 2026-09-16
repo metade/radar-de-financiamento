@@ -1,4 +1,6 @@
 require_relative "funding_radar/opportunity"
+require_relative "funding_radar/data_quality"
+require_relative "funding_radar/theme_classifier"
 require_relative "funding_radar/debug"
 require "active_support"
 require "active_support/cache"

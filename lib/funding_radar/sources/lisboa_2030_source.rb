@@ -78,7 +78,8 @@ module FundingRadar
           "partnership_requirements" => text.match?(/parceria|consórcio/i) ? "Confirmar os requisitos de parceria no aviso oficial." : nil,
           "other_requirements" => code,
           "summary" => "Aviso Lisboa 2030: #{title}. Consultar o aviso oficial para confirmar condições, documentação e candidatura.",
-          "themes" => themes_for(text)
+          "themes" => themes_for(text),
+          "geography" => {"scope" => "regional", "areas" => ["Área Metropolitana de Lisboa"]}
         )
       end
 

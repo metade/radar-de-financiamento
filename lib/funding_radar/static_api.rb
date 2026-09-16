@@ -88,9 +88,11 @@ module FundingRadar
                 "deadline" => {"type" => ["string", "null"], "format" => "date"},
                 "funding_amount" => {"type" => "string"},
                 "eligible_applicants" => {"type" => "array", "items" => {"type" => "string"}},
+                "applicant_eligibility_status" => {"type" => "string", "enum" => %w[known unknown]},
                 "partnership_requirements" => {"type" => "string"},
                 "other_requirements" => {"type" => "string"},
-                "themes" => {"type" => "array", "items" => {"type" => "string"}}
+                "themes" => {"type" => "array", "items" => {"type" => "string"}},
+                "geography" => {"$ref" => "#/$defs/geography"}
               },
               "additionalProperties" => false
             },
@@ -104,6 +106,11 @@ module FundingRadar
                 "relevance_explanation" => {"type" => "string"},
                 "llm_analysis" => {"type" => "object"}
               },
+              "additionalProperties" => false
+            },
+            "geography" => {
+              "type" => "object", "required" => %w[scope areas],
+              "properties" => {"scope" => {"type" => "string", "enum" => %w[local regional national transnational eu unknown]}, "areas" => {"type" => "array", "items" => {"type" => "string"}}},
               "additionalProperties" => false
             },
             "provenance" => {
@@ -161,9 +168,11 @@ module FundingRadar
             "deadline" => item["deadline"],
             "funding_amount" => item["funding_amount"],
             "eligible_applicants" => item["eligible_applicants"],
+            "applicant_eligibility_status" => item["applicant_eligibility_status"] || (Array(item["eligible_applicants"]).empty? ? "unknown" : "known"),
             "partnership_requirements" => item["partnership_requirements"],
             "other_requirements" => item["other_requirements"],
-            "themes" => item["themes"]
+            "themes" => item["themes"],
+            "geography" => item["geography"] || {"scope" => "unknown", "areas" => []}
           }),
           "analysis" => compact({
             "summary" => item["summary"],
@@ -200,7 +209,9 @@ module FundingRadar
           "deadline" => facts["deadline"],
           "status" => record.fetch("status"),
           "applicants" => facts["eligible_applicants"],
+          "applicant_eligibility_status" => facts["applicant_eligibility_status"],
           "themes" => facts["themes"],
+          "geography" => facts["geography"],
           "summary" => analysis["summary"],
           "detail_url" => "#{PREFIX}/opportunities/#{record.fetch("id")}.json",
           "source_url" => record.dig("links", "source_url")

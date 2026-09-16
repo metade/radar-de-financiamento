@@ -16,7 +16,8 @@ module FundingRadar
     :partnership_requirements,
     :other_requirements,
     :summary,
-    :themes
+    :themes,
+    :geography
   ) do
     def self.from_hash(hash)
       data = hash.transform_keys(&:to_sym)
@@ -36,9 +37,25 @@ module FundingRadar
         partnership_requirements: data[:partnership_requirements].to_s,
         other_requirements: data[:other_requirements].to_s,
         summary: data.fetch(:summary),
-        themes: Array(data[:themes]).map(&:to_s)
+        themes: Array(data[:themes]).map(&:to_s).uniq,
+        geography: normalize_geography(data[:geography])
       )
     end
+
+    def applicant_eligibility_status
+      eligible_applicants.empty? ? "unknown" : "known"
+    end
+
+    def self.normalize_geography(value)
+      return {"scope" => "unknown", "areas" => []} unless value.is_a?(Hash)
+
+      scope = value[:scope] || value["scope"]
+      areas = value[:areas] || value["areas"]
+      return {"scope" => "unknown", "areas" => []} unless %w[local regional national transnational eu unknown].include?(scope.to_s)
+
+      {"scope" => scope.to_s, "areas" => Array(areas).map(&:to_s).reject(&:empty?).uniq}
+    end
+    private_class_method :normalize_geography
 
     def duplicate_key
       return official_link.to_s.strip.downcase unless official_link.to_s.strip.empty?

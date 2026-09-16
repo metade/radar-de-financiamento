@@ -31,14 +31,14 @@ module FundingRadar
       THEME_PATTERNS = {
         "accessibility" => [/\baccessibility\b/, /\baccessible\b/, /\bdisabilit(?:y|ies)\b/],
         "civic_participation" => [/\bcitizen participation\b/, /\bpublic participation\b/, /\bdemocrac(?:y|ies)\b/, /\bdemocratic\b/],
-        "climate" => [/\bclimate\b/, /\badaptation\b/, /\bresilience\b/],
-        "community_development" => [/\blocal authorities\b/, /\blocal communities\b/, /\bmunicipal(?:ities)?\b/, /\bcities\b/, /\bregional development\b/, /\bneighbou?rhoods?\b/],
-        "digital_public_services" => [/\bdigital public services\b/, /\bpublic services\b/, /\binteroperability\b/, /\be-government\b/, /\bsmart cit(?:y|ies)\b/],
-        "environment" => [/\benvironment(?:al)?\b/, /\bbiodiversity\b/, /\bnature\b/, /\bpollution\b/],
+        "climate" => [/\bclimate change\b/, /\bclimate adaptation\b/, /\bclimate mitigation\b/, /\bdecarboni[sz]ation\b/, /\bgreen transition\b/, /\brenewable energy\b/],
+        "community_development" => [/\blocal authorities\b/, /\blocal communities\b/, /\bmunicipal(?:ities)?\b/, /\bregional development\b/, /\bcommunity development\b/],
+        "digital_public_services" => [/\bdigital public services\b/, /\binteroperability\b/, /\be-government\b/, /\bsmart cit(?:y|ies)\b/],
+        "environment" => [/\benvironment(?:al)? protection\b/, /\bbiodiversity\b/, /\bnature restoration\b/, /\bpollution\b/, /\bcircular economy\b/],
         "equality" => [/\bequality\b/, /\bfundamental rights\b/, /\bnon-discrimination\b/],
         "inclusion" => [/\binclusion\b/, /\bsocial inclusion\b/, /\bintegration\b/],
-        "mobility" => [/\bmobility\b/, /\btransport\b/, /\burban mobility\b/],
-        "public_space" => [/\bpublic spaces?\b/, /\burban\b/, /\bneighbou?rhoods?\b/],
+        "mobility" => [/\burban mobility\b/, /\bsustainable mobility\b/, /\btransport(?:ation)? systems?\b/],
+        "public_space" => [/\bpublic spaces?\b/, /\bpublic realm\b/, /\bneighbou?rhood regeneration\b/],
         "volunteering" => [/\bvolunteer(?:ing)?\b/]
       }.freeze
       LOCAL_AUTHORITY_PATTERNS = [
@@ -488,16 +488,27 @@ module FundingRadar
       end
 
       def summary_for(result)
-        summary = clean(first_present(result["summary"], result["content"]))
-        return summary unless summary.empty?
+        summary = DataQuality.summary(first_present(result["summary"], result["content"]), title: title_for(result))
+        return summary unless summary.to_s.empty?
 
-        "Oportunidade publicada no portal EU Funding & Tenders. Consultar a página oficial para confirmar âmbito, elegibilidade e documentação."
+        "Aviso #{title_for(result)} publicado no portal EU Funding & Tenders. Consultar a página oficial para confirmar âmbito, elegibilidade e documentação."
       end
 
       def themes_for(result, metadata)
-        text = searchable_text(result, metadata)
-        THEME_PATTERNS.each_with_object([]) do |(theme, patterns), themes|
-          themes << theme if patterns.any? { |pattern| text.match?(pattern) }
+        # Metadata contains status, navigation and other portal fields. It is
+        # useful for discovery, but too noisy for subject classification.
+        ThemeClassifier.select(
+          THEME_PATTERNS,
+          title: title_for(result),
+          summary: result["summary"],
+          description: result["content"],
+          subjects: explicit_subjects(metadata)
+        )
+      end
+
+      def explicit_subjects(metadata)
+        %w[esIN_keyword keywords keyword tags subjects subject].flat_map do |key|
+          Array(metadata[key])
         end
       end
 

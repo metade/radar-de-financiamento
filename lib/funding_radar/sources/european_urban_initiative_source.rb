@@ -159,7 +159,8 @@ module FundingRadar
       end
 
       def summary(text)
-        text.sub(/\A.*?\b(?:Open|Upcoming|Closed)\b\s*/i, "").split(/\s+(?:Support|Funding support|Find out more)\s*:/i).first.to_s.strip
+        candidate = text.sub(/\A.*?\b(?:Open|Upcoming|Closed)\b\s*/i, "").split(/\s+(?:Support|Funding support|Find out more)\s*:/i).first.to_s.strip
+        DataQuality.summary(candidate, title: candidate.split(/\s{2,}/).first.to_s) || "Resumo limitado; consultar a página oficial da oportunidade."
       end
 
       def themes_for(text)

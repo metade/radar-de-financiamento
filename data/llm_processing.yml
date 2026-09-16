@@ -54,15 +54,15 @@ sources:
   eu_funding_tenders:
     enabled: true
     profile: eu_structured
-    prompt_version: v1
+    prompt_version: v2
   lisboa_2030:
     enabled: true
     profile: lisboa_2030_document
-    prompt_version: v1
+    prompt_version: v2
   portugal_2030:
     enabled: false
     profile: default
-    prompt_version: v1
+    prompt_version: v2
   interreg_sudoe:
     enabled: false
     profile: default
