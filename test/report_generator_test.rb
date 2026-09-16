@@ -62,6 +62,22 @@ class ReportGeneratorTest < Minitest::Test
     end
   end
 
+  def test_preserves_timestamp_when_report_content_is_unchanged
+    Dir.mktmpdir do |dir|
+      generator = build_generator(dir)
+      first_time = Time.new(2026, 7, 11, 10, 0, 0, "+01:00")
+      second_time = Time.new(2026, 7, 11, 11, 0, 0, "+01:00")
+
+      Time.stub(:now, first_time) { generator.generate(today: Date.new(2026, 7, 11)) }
+      first_document = YAML.safe_load_file(File.join(dir, "2026-W28.md"), aliases: false)
+
+      Time.stub(:now, second_time) { generator.generate(today: Date.new(2026, 7, 11)) }
+      second_document = YAML.safe_load_file(File.join(dir, "2026-W28.md"), aliases: false)
+
+      assert_equal first_document.fetch("generated_at"), second_document.fetch("generated_at")
+    end
+  end
+
   def test_both_mode_embeds_both_summaries_in_the_report
     Dir.mktmpdir do |dir|
       processor = Class.new do
