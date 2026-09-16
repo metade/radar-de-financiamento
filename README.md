@@ -23,6 +23,16 @@ Build CSS and the static site:
 
 ```sh
 npm run build:css
+npm run build:js
+bundle exec jekyll build
+```
+
+For a complete build from fresh source data, generate the report first:
+
+```sh
+bundle exec ruby bin/generate_report
+npm run build:css
+npm run build:js
 bundle exec jekyll build
 ```
 
