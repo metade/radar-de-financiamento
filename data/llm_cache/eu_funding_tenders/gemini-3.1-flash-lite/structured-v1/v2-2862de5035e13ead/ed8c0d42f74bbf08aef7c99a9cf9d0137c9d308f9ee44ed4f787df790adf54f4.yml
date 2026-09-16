@@ -1,0 +1,26 @@
+---
+result:
+  summary: Este financiamento visa apoiar projetos que aumentem a resiliência das
+    comunidades rurais face a choques externos. O apoio destina-se a municípios ou
+    autoridades locais que desenvolvam estratégias e ações capazes de fortalecer a
+    capacidade de resposta e adaptação destes territórios.
+  opening_date: '2027-04-20'
+  deadline: '2027-09-23'
+  themes:
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl6-2027-02-communities-01
+input_digest: 97588d7090a067e3ac75917368906f955eefd9d0c329cf8d7216b33d6ec2a294
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

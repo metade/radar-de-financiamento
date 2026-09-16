@@ -1,0 +1,29 @@
+---
+result:
+  summary: Este financiamento apoia a execução de soluções práticas e exequíveis de
+    adaptação climática dirigidas a regiões e autoridades locais. O objetivo é facilitar
+    a implementação de estratégias que aumentem a resiliência territorial face às
+    alterações climáticas.
+  opening_date: '2026-02-04'
+  deadline: '2026-09-23'
+  themes:
+  - climate
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso indica a necessidade de constituição de consórcio ou parceria,
+      devendo os termos ser consultados no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-01-clima-02
+input_digest: d060925e08dee144b1663785ebba990e1689ed0c9e74cb329cb2d07d38b00fbb
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

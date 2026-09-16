@@ -1,0 +1,27 @@
+---
+result:
+  summary: Este programa apoia projetos de geminação entre municípios de diferentes
+    países, promovendo o intercâmbio cultural, a cidadania ativa e a participação
+    democrática a nível local através da cooperação entre autoridades locais.
+  opening_date: '2026-05-06'
+  deadline: '2026-09-23'
+  themes:
+  - civic_participation
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: Não especificado no texto fornecido.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-cerv-2026-citizens-town-tt
+input_digest: 6f6e93206d204058f507790d426f432aab449daa06671d0947f61fe1f9bd41e8
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

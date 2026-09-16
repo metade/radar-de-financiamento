@@ -1,0 +1,27 @@
+---
+result:
+  summary: Este financiamento apoia projetos alinhados com a Nova Bauhaus Europeia,
+    focados em antecipar o futuro a longo prazo dos bairros através de soluções inovadoras,
+    integradas e sustentáveis ao nível local.
+  opening_date: '2027-05-05'
+  deadline: '2027-12-01'
+  themes:
+  - community_development
+  - public_space
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: not_stated
+    details: ''
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-neb-2027-01-business-03
+input_digest: 3f2ac801f073e208b0112e5e6e10be559a4f2547da09231f3a08cc7573899d2f
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

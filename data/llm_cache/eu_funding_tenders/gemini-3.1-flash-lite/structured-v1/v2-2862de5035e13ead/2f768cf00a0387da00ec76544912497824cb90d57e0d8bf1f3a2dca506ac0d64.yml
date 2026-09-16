@@ -1,0 +1,30 @@
+---
+result:
+  summary: Este projeto financia iniciativas para a criação de sistemas de transporte
+    multimodal acessíveis, fiáveis e a preços comportáveis, visando reforçar a conectividade
+    em áreas rurais e urbanas através de projetos-piloto de prontidão social.
+  opening_date: '2027-06-03'
+  deadline: '2027-10-07'
+  themes:
+  - mobility
+  - accessibility
+  - inclusion
+  - community_development
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso indica a existência de requisitos de consórcio ou parceria que
+      devem ser confirmados na documentação oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-cl5-2027-06-d6-08
+input_digest: 198e868049baed9dca6d73a7c77100149a4fe0f926d177e83d38540e30b05e54
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

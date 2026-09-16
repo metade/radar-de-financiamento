@@ -1,0 +1,27 @@
+---
+result:
+  summary: Financiamento para o desenvolvimento de soluções de logística circular
+    em ambientes urbanos, visando otimizar a distribuição de bens e reduzir o impacto
+    ambiental das atividades de transporte e entrega em áreas metropolitanas.
+  opening_date: '2027-02-09'
+  deadline: '2027-10-07'
+  themes:
+  - mobility
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios
+    - Autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso exige a constituição de consórcio ou parceria, devendo os termos
+      específicos ser confirmados na documentação oficial.
+    confidence: high
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2027-04-cit-ccri-04
+input_digest: 6d980599c8cc3af3da6e4cc16b45de19af78c12a9ce4b0c95a1b0336176825f8
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1

@@ -1,0 +1,28 @@
+---
+result:
+  summary: Este programa financia o desenvolvimento da capacidade de implementação
+    do formato europeu de intercâmbio de registos de saúde eletrónicos (EEHRxF), bem
+    como a criação de serviços e sistemas de saúde digitais para reforçar os direitos
+    dos cidadãos e permitir a reutilização de dados de saúde no contexto do Espaço
+    Europeu de Dados de Saúde.
+  opening_date: '2026-04-21'
+  deadline: '2026-10-01'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso indica a necessidade de cumprir requisitos de consórcio ou parceria,
+      sendo aconselhável a consulta do portal oficial para detalhes.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-digital-2026-bestuse-10-ehds
+input_digest: c9cf4e0a2d5c5ce15af8f1d88c06c982e5e6d13b0a9bdb4cbff80f42cdd63c64
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
