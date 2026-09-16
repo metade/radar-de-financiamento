@@ -1,0 +1,27 @@
+---
+result:
+  summary: Esta oportunidade do programa Europa Digital visa reforçar a capacidade
+    de implementação do EEHRxF e de serviços de saúde digitais, apoiando os direitos
+    dos cidadãos e a reutilização de dados de saúde no âmbito do Espaço Europeu de
+    Dados de Saúde.
+  opening_date: '2026-04-21'
+  deadline: '2026-10-01'
+  themes:
+  - digital_public_services
+  eligibility:
+    status: eligible
+    criteria:
+    - Entidades públicas
+    confidence: high
+  partnership:
+    status: required
+    details: O texto da oportunidade indica requisitos de consórcio ou parceria, sendo
+      necessária a verificação no aviso oficial.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-digital-2026-bestuse-10-ehds
+input_digest: bc0e5b3572f2e2e064be2321127d13f79c588bf65b9a056d0efc2b06e354e392
+prompt_version: v1
+prompt_digest: 697c8ffcda6ad237d6f565235d65c71023a2e33acda8b48e1038a38e0db67c60
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
