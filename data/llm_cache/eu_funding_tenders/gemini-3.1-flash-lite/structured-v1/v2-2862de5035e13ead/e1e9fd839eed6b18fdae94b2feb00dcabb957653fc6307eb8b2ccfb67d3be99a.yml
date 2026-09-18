@@ -1,0 +1,29 @@
+---
+result:
+  summary: Este financiamento apoia a implementação de modelos de economia circular
+    no setor da construção, abrangendo desde o nível da edificação até à escala urbana,
+    com o objetivo de promover a sustentabilidade ambiental no desenvolvimento dos
+    centros urbanos.
+  opening_date: '2026-02-04'
+  deadline: '2026-10-08'
+  themes:
+  - climate
+  - community_development
+  - environment
+  eligibility:
+    status: eligible
+    criteria:
+    - Municípios ou autoridades locais
+    confidence: high
+  partnership:
+    status: required
+    details: O aviso exige a constituição de consórcio ou parceria para a execução
+      dos projetos.
+    confidence: medium
+source_key: eu_funding_tenders
+opportunity_id: eu-ft-horizon-miss-2026-04-cit-neb-b4p-ccri-03
+input_digest: 738adf1c19360b7913a2fa6591c9aded8559019c701be4fe29b93dcd1d54ddfc
+prompt_version: v2
+prompt_digest: 2862de5035e13ead37629982240f24c686665f343b8e5c5e062f4430e344bb9e
+model: gemini-3.1-flash-lite
+schema_version: structured-v1
