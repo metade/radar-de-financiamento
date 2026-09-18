@@ -89,6 +89,12 @@ module FundingRadar
     end
 
     class Cache
+      DEFAULT_DIRECTORY = "tmp/cache/funding_radar_llm".freeze
+
+      def self.directory(root:, env: ENV)
+        File.expand_path(env.fetch("FUNDING_RADAR_LLM_CACHE_DIR", DEFAULT_DIRECTORY), root)
+      end
+
       def initialize(directory:)
         @directory = directory
       end
@@ -108,7 +114,34 @@ module FundingRadar
         File.write(path, value.to_yaml)
       end
 
+      # Remove valid cache entries older than +max_age_seconds+. Invalid YAML is
+      # left in place so a maintenance pass cannot remove data it cannot read.
+      def prune(max_age_seconds:, now: Time.now)
+        return 0 unless Dir.exist?(@directory)
+
+        cutoff = now - max_age_seconds
+        removed = 0
+        Dir.glob(File.join(@directory, "**", "*.yml"), File::FNM_EXTGLOB).each do |path|
+          next unless File.file?(path)
+          next unless File.mtime(path) < cutoff
+          next unless valid_entry?(path)
+
+          File.delete(path)
+          removed += 1
+        rescue Errno::ENOENT
+          # Another local process may have removed it between the checks.
+        end
+        removed
+      end
+
       private
+
+      def valid_entry?(path)
+        value = YAML.safe_load_file(path, aliases: false)
+        value.is_a?(Hash)
+      rescue Psych::Exception, ArgumentError
+        false
+      end
 
       def path_for(key, namespace: nil)
         directory = namespace ? File.join(@directory, *namespace) : @directory

@@ -9,6 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: write
   pages: write
   id-token: write
@@ -17,6 +18,7 @@ env:
   FUNDING_RADAR_LLM: ${{ vars.FUNDING_RADAR_LLM || 'enabled' }}
   REPORT_PROCESSING: ${{ vars.REPORT_PROCESSING || 'both' }}
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  FUNDING_RADAR_LLM_CACHE_DIR: tmp/cache/funding_radar_llm
 
 concurrency:
   group: pages
@@ -31,6 +33,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          # Keep history available for the one-time legacy cache migration.
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -50,15 +55,53 @@ jobs:
       - name: Run tests
         run: bundle exec rake test
 
+      - name: Restore LLM cache artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$FUNDING_RADAR_LLM_CACHE_DIR"
+          latest_run="$(gh run list --workflow pages.yml --branch main --status success --limit 1 --json databaseId --jq '.[0].databaseId')"
+          download_dir="$(mktemp -d)"
+          if [ -n "$latest_run" ] && [ "$latest_run" != "null" ] && gh run download "$latest_run" --name funding-radar-llm-cache --dir "$download_dir"; then
+            cp -R "$download_dir"/. "$FUNDING_RADAR_LLM_CACHE_DIR"/
+            echo "Restored LLM cache from main run $latest_run."
+          else
+            legacy_commit="$(git rev-list --all -- data/llm_cache | while IFS= read -r candidate; do
+              if git cat-file -e "$candidate:data/llm_cache/.gitkeep" 2>/dev/null; then
+                echo "$candidate"
+                break
+              fi
+            done)"
+            if [ -n "$legacy_commit" ] && git archive --format=tar "$legacy_commit" data/llm_cache | tar -xf - -C "$download_dir" 2>/dev/null && [ -d "$download_dir/data/llm_cache" ]; then
+              cp -R "$download_dir/data/llm_cache"/. "$FUNDING_RADAR_LLM_CACHE_DIR"/
+              echo "Migrated the legacy committed LLM cache from commit $legacy_commit."
+            else
+              echo "No reusable LLM cache artifact or legacy cache found; continuing with an empty cache."
+            fi
+          fi
+          rm -rf "$download_dir"
+
       - name: Generate weekly report
         run: bundle exec ruby bin/generate_report
+
+      - name: Prune LLM cache
+        run: bundle exec ruby bin/prune_llm_cache
+
+      - name: Upload LLM cache artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: funding-radar-llm-cache
+          path: ${{ env.FUNDING_RADAR_LLM_CACHE_DIR }}
+          if-no-files-found: ignore
+          retention-days: 90
+          overwrite: true
 
       - name: Commit generated report changes
         run: |
           if [ -n "$(git status --porcelain _reports)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add _reports data/llm_cache
+            git add _reports
             git commit -m "Update weekly funding report"
             git push
           else

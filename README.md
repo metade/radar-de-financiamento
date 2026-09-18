@@ -101,7 +101,16 @@ LLM-assisted summaries are opt-in and configured per source in `data/llm_process
 FUNDING_RADAR_LLM=enabled GEMINI_API_KEY=... REPORT_PROCESSING=source_config bundle exec ruby bin/generate_report
 ```
 
-Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful results are cached in the committed `data/llm_cache/` directory, namespaced by source, model, schema, and prompt fingerprint, and are invalidated when the source content or processing configuration changes.
+Use `REPORT_PROCESSING=both` to generate one marked comparison report containing deterministic and LLM summaries side by side. Set `FUNDING_RADAR_LLM=disabled` to override every source setting and stop all model calls immediately. Successful results are cached in the disposable, ignored `tmp/cache/funding_radar_llm/` directory by default, namespaced by source, model, schema, and prompt fingerprint, and invalidated when the source content or processing configuration changes. Override it with `FUNDING_RADAR_LLM_CACHE_DIR` when needed.
+
+There are two separate caches. The HTTP cache (`tmp/cache/funding_radar/`) is a short-lived local/runtime cache for avoiding duplicate source requests during a run. The LLM cache stores successful model results and is optional: a cache miss simply invokes the model again (or uses the normal fallback behavior). Local report generation never contacts GitHub automatically. To restore the latest cache from the successful main workflow run, use:
+
+```sh
+bin/pull_llm_cache
+bundle exec ruby bin/generate_report
+```
+
+The Pages workflow persists the LLM cache as one artifact named `funding-radar-llm-cache`, replacing the previous artifact on each successful run. On the first migration run, if no artifact exists, it also seeds the new cache from the legacy committed cache in the previous Git commit. GitHub retains the artifact for 90 days, and the workflow removes valid cache files whose modification time is more than 180 days old before upload. Malformed cache files are ignored safely during pruning. To start from a clean cache, remove the ignored local directory (or point `FUNDING_RADAR_LLM_CACHE_DIR` at an empty directory); no committed cache data is required.
 
 Lisboa 2030 opportunities are covered by the central Portugal 2030 workbook. When LLM processing is enabled, the Portugal 2030 workflow processes the available opportunity data; a separate Lisboa adapter remains available only if the regional portal later publishes detail missing from the central plan.
 
@@ -146,7 +155,9 @@ The workflow in `.github/workflows/pages.yml`:
 - installs Ruby and Node dependencies
 - runs the Ruby test suite
 - generates the weekly report
-- commits generated `_reports` and LLM cache changes only when changes exist
+- restores the latest successful main-run LLM cache artifact when available
+- prunes and uploads the LLM cache as one replaceable artifact with 90-day retention
+- commits generated `_reports` only when changes exist
 - builds Tailwind CSS and Jekyll
 - deploys `_site` to GitHub Pages
 

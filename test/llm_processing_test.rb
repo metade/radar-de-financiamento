@@ -177,6 +177,54 @@ class LlmProcessingTest < Minitest::Test
     assert FundingRadar::LlmProcessing::StructuredSchema.build
   end
 
+  def test_cache_directory_is_configurable_and_defaults_to_ignored_path
+    root = "/project"
+
+    assert_equal "/project/tmp/cache/funding_radar_llm", FundingRadar::LlmProcessing::Cache.directory(root: root, env: {})
+    assert_equal "/custom/llm-cache", FundingRadar::LlmProcessing::Cache.directory(
+      root: root,
+      env: {"FUNDING_RADAR_LLM_CACHE_DIR" => "/custom/llm-cache"}
+    )
+    assert_equal "/project/tmp/cache/custom", FundingRadar::LlmProcessing::Cache.directory(
+      root: root,
+      env: {"FUNDING_RADAR_LLM_CACHE_DIR" => "tmp/cache/custom"}
+    )
+  end
+
+  def test_cache_prunes_old_valid_entries_and_preserves_recent_entries
+    Dir.mktmpdir do |dir|
+      cache = FundingRadar::LlmProcessing::Cache.new(directory: dir)
+      cache.write("old", {"result" => {"summary" => "old"}}, namespace: ["source"])
+      cache.write("recent", {"result" => {"summary" => "recent"}}, namespace: ["source"])
+      old_time = Time.now - (181 * 24 * 60 * 60)
+      File.utime(old_time, old_time, File.join(dir, "source", "old.yml"))
+
+      assert_equal 1, cache.prune(max_age_seconds: 180 * 24 * 60 * 60)
+      refute_path_exists File.join(dir, "source", "old.yml")
+      assert_path_exists File.join(dir, "source", "recent.yml")
+    end
+  end
+
+  def test_cache_pruning_ignores_malformed_entries
+    Dir.mktmpdir do |dir|
+      cache = FundingRadar::LlmProcessing::Cache.new(directory: dir)
+      malformed = File.join(dir, "malformed.yml")
+      File.write(malformed, "not: [valid")
+      old_time = Time.now - (365 * 24 * 60 * 60)
+      File.utime(old_time, old_time, malformed)
+
+      assert_equal 0, cache.prune(max_age_seconds: 180 * 24 * 60 * 60)
+      assert_path_exists malformed
+      assert_nil cache.fetch("malformed")
+    end
+  end
+
+  def test_cache_pruning_handles_missing_directory
+    cache = FundingRadar::LlmProcessing::Cache.new(directory: File.join(Dir.tmpdir, "missing-llm-cache-#{Process.pid}"))
+
+    assert_equal 0, cache.prune(max_age_seconds: 180 * 24 * 60 * 60)
+  end
+
   private
 
   def opportunity
