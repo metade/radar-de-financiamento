@@ -33,8 +33,6 @@ class AiPageTest < Minitest::Test
       javascript = File.read(File.join(ROOT, "assets", "js", "input.js"))
       assert_includes html, "<title>AI Integration — Radar de Financiamento"
       assert_includes html, '<meta name="description" content="Instruções para assistentes de IA'
-      assert_includes html, "Retrieval workflow"
-      assert_includes html, "Interpret the JSON conservatively"
       assert_includes html, "A sua pergunta"
       assert_includes html, "https://radar-de-financiamento.decidimosarroios.pt/ai/SKILL.md"
       assert_includes html, "https://radar-de-financiamento.decidimosarroios.pt/api/v1/meta.json"
@@ -47,6 +45,8 @@ class AiPageTest < Minitest::Test
       assert_includes javascript, "navigator.clipboard.writeText(prompt.textContent)"
       assert_includes html, "Exemplo de pergunta"
       assert_includes html, "O Radar de Financiamento não recebe a sua conversa."
+      refute_includes html, "Retrieval workflow"
+      refute_includes html, "Interpret the JSON conservatively"
       assert_includes raw, "## Retrieval workflow"
       assert_equal File.read(File.join(ROOT, "ai", "SKILL.md")), raw
 

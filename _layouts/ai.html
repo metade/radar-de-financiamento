@@ -7,6 +7,7 @@ layout: default
     <h1 class="mt-2 max-w-4xl text-3xl font-bold text-ink sm:text-5xl">Radar de Financiamento — instruções para IA</h1>
     <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-700">O Radar de Financiamento publica dados estáticos sobre oportunidades de financiamento público. Estas instruções explicam como um assistente de IA deve usar o conjunto de dados para encontrar oportunidades relevantes.</p>
     <p class="mt-4 max-w-3xl text-slate-700">O Radar não opera um chatbot nem faz inferência LLM por consulta. Pode usar o seu próprio assistente; a conversa e o raciocínio são feitos por esse assistente, enquanto o Radar disponibiliza uma API pública gerada periodicamente. Confirme sempre elegibilidade e condições na fonte oficial.</p>
+    <p class="mt-4 max-w-3xl border-l-4 border-civic-blue bg-white px-4 py-3 text-sm text-slate-700"><strong class="text-ink">Para assistentes de IA:</strong> consulte e siga as <a class="font-semibold text-civic-blue underline hover:text-ink" href="https://radar-de-financiamento.decidimosarroios.pt/ai/SKILL.md">instruções canónicas em SKILL.md</a> antes de consultar a API pública.</p>
     <div class="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold">
       <a class="text-civic-blue underline hover:text-ink" href="{{ '/ai/SKILL.md' | absolute_url }}">Ver SKILL.md original</a>
       <a class="text-civic-blue underline hover:text-ink" href="{{ '/api/v1/meta.json' | absolute_url }}">API: metadados</a>
@@ -50,7 +51,4 @@ Identifica as oportunidades mais relevantes, consulta os respetivos detalhes e d
     <p class="mt-5 text-sm text-slate-600">O Radar de Financiamento não recebe a sua conversa. O seu assistente consulta apenas os dados públicos do Radar.</p>
   </section>
 
-  <article class="max-w-4xl text-slate-700">
-    {{ content }}
-  </article>
 </div>
