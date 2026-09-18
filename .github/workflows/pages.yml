@@ -28,14 +28,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
+      name: ${{ github.ref == 'refs/heads/main' && 'github-pages' || 'github-pages-test' }}
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          # Keep the previous commit available for the one-time legacy cache migration.
-          fetch-depth: 2
+          # Keep history available for the one-time legacy cache migration.
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -65,11 +65,19 @@ jobs:
           if [ -n "$latest_run" ] && [ "$latest_run" != "null" ] && gh run download "$latest_run" --name funding-radar-llm-cache --dir "$download_dir"; then
             cp -R "$download_dir"/. "$FUNDING_RADAR_LLM_CACHE_DIR"/
             echo "Restored LLM cache from main run $latest_run."
-          elif git archive --format=tar HEAD^ data/llm_cache | tar -xf - -C "$download_dir" 2>/dev/null && [ -d "$download_dir/data/llm_cache" ]; then
-            cp -R "$download_dir/data/llm_cache"/. "$FUNDING_RADAR_LLM_CACHE_DIR"/
-            echo "Migrated the legacy committed LLM cache from the previous commit."
           else
-            echo "No reusable LLM cache artifact or legacy cache found; continuing with an empty cache."
+            legacy_commit="$(git rev-list --all -- data/llm_cache | while IFS= read -r candidate; do
+              if git cat-file -e "$candidate:data/llm_cache/.gitkeep" 2>/dev/null; then
+                echo "$candidate"
+                break
+              fi
+            done)"
+            if [ -n "$legacy_commit" ] && git archive --format=tar "$legacy_commit" data/llm_cache | tar -xf - -C "$download_dir" 2>/dev/null && [ -d "$download_dir/data/llm_cache" ]; then
+              cp -R "$download_dir/data/llm_cache"/. "$FUNDING_RADAR_LLM_CACHE_DIR"/
+              echo "Migrated the legacy committed LLM cache from commit $legacy_commit."
+            else
+              echo "No reusable LLM cache artifact or legacy cache found; continuing with an empty cache."
+            fi
           fi
           rm -rf "$download_dir"
 
@@ -110,13 +118,16 @@ jobs:
         run: bundle exec jekyll build
 
       - name: Configure Pages
+        if: github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
