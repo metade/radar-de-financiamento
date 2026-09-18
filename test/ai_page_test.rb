@@ -3,6 +3,15 @@ require "test_helper"
 
 class AiPageTest < Minitest::Test
   ROOT = File.expand_path("..", __dir__)
+  PROMPT = <<~PROMPT.chomp
+    Consulta e segue as instruções para assistentes de IA do Radar de Financiamento em https://radar-de-financiamento.decidimosarroios.pt/ai/.
+
+    Usa o Radar de Financiamento para responder à seguinte questão:
+
+    [Descreve aqui a entidade, o projeto ou a necessidade para a qual procuras financiamento.]
+
+    Identifica as oportunidades mais relevantes, consulta os respetivos detalhes e distingue claramente entre informação confirmada e aspetos cuja elegibilidade ou aplicabilidade ainda precisa de ser verificada. Inclui as fontes oficiais sempre que estejam disponíveis.
+  PROMPT
 
   def test_normal_build_publishes_html_page_and_raw_skill
     Dir.mktmpdir do |destination|
@@ -21,6 +30,7 @@ class AiPageTest < Minitest::Test
 
       html = File.read(html_path)
       raw = File.read(raw_path)
+      javascript = File.read(File.join(ROOT, "assets", "js", "input.js"))
       assert_includes html, "<title>AI Integration — Radar de Financiamento"
       assert_includes html, '<meta name="description" content="Instruções para assistentes de IA'
       assert_includes html, "Retrieval workflow"
@@ -31,6 +41,12 @@ class AiPageTest < Minitest::Test
       assert_includes html, "https://radar-de-financiamento.decidimosarroios.pt/api/v1/catalog.json"
       assert_includes html, "https://radar-de-financiamento.decidimosarroios.pt/api/v1/schema.json"
       assert_includes html, "/api/v1/opportunities/{id}.json"
+      assert_includes html, PROMPT
+      assert_includes html, '<button id="copiar-prompt" type="button"'
+      assert_includes html, ">Copiar prompt</button>"
+      assert_includes javascript, "navigator.clipboard.writeText(prompt.textContent)"
+      assert_includes html, "Exemplo de pergunta"
+      assert_includes html, "O Radar de Financiamento não recebe a sua conversa."
       assert_includes raw, "## Retrieval workflow"
       assert_equal File.read(File.join(ROOT, "ai", "SKILL.md")), raw
 
