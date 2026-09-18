@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require_relative "../lib/funding_radar"
+
+root = File.expand_path("..", __dir__)
+options = {days: Integer(ENV.fetch("FUNDING_RADAR_LLM_CACHE_MAX_AGE_DAYS", "180"))}
+OptionParser.new do |parser|
+  parser.banner = "Usage: prune_llm_cache [options]"
+  parser.on("--days DAYS", Integer, "Remove valid entries older than DAYS (default: 180)") { |days| options[:days] = days }
+end.parse!
+
+abort "Cache age must be non-negative" if options[:days].negative?
+
+directory = FundingRadar::LlmProcessing::Cache.directory(root: root)
+removed = FundingRadar::LlmProcessing::Cache.new(directory: directory).prune(
+  max_age_seconds: options[:days] * 24 * 60 * 60
+)
+puts "Pruned #{removed} LLM cache #{removed == 1 ? 'file' : 'files'} from #{directory}"

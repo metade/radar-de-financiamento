@@ -31,6 +31,8 @@ else
   abort "Unsupported REPORT_MODE=#{report_mode.inspect}; use production or development"
 end
 
+llm_cache_dir = FundingRadar::LlmProcessing::Cache.directory(root: root)
+
 registry = FundingRadar::SourceRegistry.new(
   sources: FundingRadar::SourceBuilder.default(root: root)
 )
@@ -40,7 +42,7 @@ llm_processor = if processing_mode != "deterministic" && ENV.fetch("FUNDING_RADA
   )
   FundingRadar::LlmProcessing::Processor.new(
     configuration: configuration,
-    cache: FundingRadar::LlmProcessing::Cache.new(directory: File.join(root, "data/llm_cache")),
+    cache: FundingRadar::LlmProcessing::Cache.new(directory: llm_cache_dir),
     client: FundingRadar::LlmProcessing::RubyLlmClient.new
   )
 end
