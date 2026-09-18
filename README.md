@@ -161,7 +161,7 @@ The workflow in `.github/workflows/pages.yml`:
 - builds Tailwind CSS and Jekyll
 - deploys `_site` to GitHub Pages
 
-The workflow enables LLM processing by default. Manual runs on feature branches run the build and cache migration/upload but skip the protected GitHub Pages deployment; only runs on `main` deploy the site. Set the repository variable
+The workflow enables LLM processing by default. Set the repository variable
 `FUNDING_RADAR_LLM` to `disabled` for an immediate kill switch, or set
 `REPORT_PROCESSING` to `source_config` when the comparison phase is complete.
 
