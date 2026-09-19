@@ -112,6 +112,8 @@ bundle exec ruby bin/generate_report
 
 The Pages workflow persists the LLM cache as one artifact named `funding-radar-llm-cache`, replacing the previous artifact on each successful run. On the first migration run, if no artifact exists, it also seeds the new cache from the legacy committed cache in the previous Git commit. GitHub retains the artifact for 90 days, and the workflow removes valid cache files whose modification time is more than 180 days old before upload. Malformed cache files are ignored safely during pruning. To start from a clean cache, remove the ignored local directory (or point `FUNDING_RADAR_LLM_CACHE_DIR` at an empty directory); no committed cache data is required.
 
+When LLM processing is active, report generation warns if the newest valid local LLM cache entry is more than seven days old and suggests `bin/pull_llm_cache`. Configure the warning threshold with `FUNDING_RADAR_LLM_CACHE_WARN_AFTER_DAYS`, or set it to `0` to disable the warning.
+
 Lisboa 2030 opportunities are covered by the central Portugal 2030 workbook. When LLM processing is enabled, the Portugal 2030 workflow processes the available opportunity data; a separate Lisboa adapter remains available only if the regional portal later publishes detail missing from the central plan.
 
 The structured LLM analysis currently enabled for EU Funding & Tenders returns a summary, canonical themes, an eligibility interpretation with status/criteria/confidence, and a partnership interpretation with status/details/confidence. These remain evaluation fields; deterministic dates, budgets, identity, and relevance scoring remain authoritative.

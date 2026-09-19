@@ -114,6 +114,19 @@ module FundingRadar
         File.write(path, value.to_yaml)
       end
 
+      def latest_modified_at
+        return unless Dir.exist?(@directory)
+
+        Dir.glob(File.join(@directory, "**", "*.yml"), File::FNM_EXTGLOB).filter_map do |path|
+          next unless File.file?(path)
+          next unless valid_entry?(path)
+
+          File.mtime(path)
+        rescue Errno::ENOENT
+          nil
+        end.max
+      end
+
       # Remove valid cache entries older than +max_age_seconds+. Invalid YAML is
       # left in place so a maintenance pass cannot remove data it cannot read.
       def prune(max_age_seconds:, now: Time.now)

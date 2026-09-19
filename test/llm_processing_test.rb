@@ -198,10 +198,13 @@ class LlmProcessingTest < Minitest::Test
       cache.write("recent", {"result" => {"summary" => "recent"}}, namespace: ["source"])
       old_time = Time.now - (181 * 24 * 60 * 60)
       File.utime(old_time, old_time, File.join(dir, "source", "old.yml"))
+      recent_time = Time.now - (2 * 24 * 60 * 60)
+      File.utime(recent_time, recent_time, File.join(dir, "source", "recent.yml"))
 
       assert_equal 1, cache.prune(max_age_seconds: 180 * 24 * 60 * 60)
       refute_path_exists File.join(dir, "source", "old.yml")
       assert_path_exists File.join(dir, "source", "recent.yml")
+      assert_in_delta recent_time.to_f, cache.latest_modified_at.to_f, 1
     end
   end
 
@@ -216,6 +219,7 @@ class LlmProcessingTest < Minitest::Test
       assert_equal 0, cache.prune(max_age_seconds: 180 * 24 * 60 * 60)
       assert_path_exists malformed
       assert_nil cache.fetch("malformed")
+      assert_nil cache.latest_modified_at
     end
   end
 

@@ -32,6 +32,7 @@ else
 end
 
 llm_cache_dir = FundingRadar::LlmProcessing::Cache.directory(root: root)
+llm_cache = FundingRadar::LlmProcessing::Cache.new(directory: llm_cache_dir)
 
 registry = FundingRadar::SourceRegistry.new(
   sources: FundingRadar::SourceBuilder.default(root: root)
@@ -42,12 +43,20 @@ llm_processor = if processing_mode != "deterministic" && ENV.fetch("FUNDING_RADA
   )
   FundingRadar::LlmProcessing::Processor.new(
     configuration: configuration,
-    cache: FundingRadar::LlmProcessing::Cache.new(directory: llm_cache_dir),
+    cache: llm_cache,
     client: FundingRadar::LlmProcessing::RubyLlmClient.new
   )
 end
 if processing_mode != "deterministic" && llm_processor.nil?
   warn "[funding-radar] LLM processing is not active: set FUNDING_RADAR_LLM=enabled"
+end
+if llm_processor
+  warning_days = Integer(ENV.fetch("FUNDING_RADAR_LLM_CACHE_WARN_AFTER_DAYS", "7"))
+  latest_cache_at = llm_cache.latest_modified_at
+  if warning_days.positive? && latest_cache_at && latest_cache_at < Time.now - (warning_days * 24 * 60 * 60)
+    age_days = ((Time.now - latest_cache_at) / (24 * 60 * 60)).floor
+    warn "[funding-radar] LLM cache is #{age_days} days old (last entry #{latest_cache_at.strftime('%Y-%m-%d')}); consider running bin/pull_llm_cache"
+  end
 end
 generator = FundingRadar::ReportGenerator.new(
   source_registry: registry,
