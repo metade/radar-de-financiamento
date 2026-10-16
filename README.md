@@ -184,7 +184,7 @@ The adapter should expose `#fetch` and return normalized `FundingRadar::Opportun
 After adding the adapter:
 
 1. Add tests for the adapter.
-2. Register it in `bin/generate_report`.
+2. Require it in `lib/funding_radar.rb` and register it in `FundingRadar::SourceBuilder.default`.
 3. Add a `bin/check_<source>_source` debugging script that can inspect the live/raw source without writing a report.
 4. Ensure duplicate handling still produces one record per real opportunity.
 
@@ -196,12 +196,19 @@ The Interreg Sudoe adapter reads the official open-call index and linked call pa
 
 The Turismo de Portugal adapter reads the official current-notices listing and enriches each notice from its linked detail page where available. It keeps open/current entries, extracts published deadlines, amounts and applicant signals, and treats detail-page failures as non-fatal.
 
+The Fundação EDP adapter monitors the [EDP Energia Solidária programme](https://www.fundacaoedp.pt/pt/edp-solidaria) and its linked regulation/FAQ page. It excludes completed editions and expired first-phase deadlines; the invitation-only second phase is not a new application opportunity. It imports dates, per-project funding and eligibility only from rules matching the edition, and keeps explicitly open calls with unknown fields if the rules are unavailable. Under the published 2025 rules, municipalities and parish councils can participate as partners but cannot apply individually or lead a partnership; the adapter preserves that restriction. The 2025–2026 edition has announced its winners, so it currently contributes no opportunities. Inspect without writing a report:
+
+```sh
+bundle exec ruby bin/check_edp_solidaria_source
+```
+
 ## Funding Source Roadmap
 
 Use this checklist to track the source suggestions from the project’s funding-source shortlist. Before implementation, confirm that each candidate publishes actual funding calls through an official, stable source and is relevant to Portuguese local authorities.
 
 | Source | Status | Difficulty | Official source | Data format | Municipal relevance | Overlap | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| Fundação EDP — EDP Energia Solidária | Done | Medium | [Programme and linked rules](https://www.fundacaoedp.pt/pt/edp-solidaria) | Official HTML programme and FAQ, with PDF regulation | Partnership relevance; public bodies other than schools/universities/polytechnics cannot apply or lead under the 2025 rules | Low; private foundation funding | Monitors new editions; excludes completed calls and uses the first-phase deadline. No current opportunity from the completed 2025–2026 edition. |
 | EU Funding & Tenders | Done | Medium | [Funding & Tenders](https://ec.europa.eu/info/funding-tenders/opportunities/portal/) | Public search API | High for eligible EU projects | Baseline | Existing API adapter; covers Erasmus+, LIFE, CERV, and Creative Europe records where available. |
 | Portugal 2030 | Done | Easy | [Annual notice plan](https://portugal2030.pt/plano-anual-de-avisos/) | Official XLSX plus portal listings | High, with current AML/nationwide/multi-region scope | Baseline | Existing adapter retains Lisboa/AML, nationwide, extra-regional, and multi-region notices including AML. |
 | Lisboa 2030 | Covered by Portugal 2030 | — | [Lisboa 2030 notices](https://lisboa.portugal2030.pt/avisos/) | Same official annual-plan XLSX | High for AML municipalities | Duplicate of Portugal 2030 for the current radar scope | The central workbook already includes `LISBOA2030` and `AML` rows. Revisit only if regional detail is published there that is absent from the central plan. |

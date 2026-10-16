@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/funding_radar"
+
+ENV["FUNDING_RADAR_DEBUG"] = "true" unless ENV.key?("FUNDING_RADAR_DEBUG")
+
+source = FundingRadar::Sources::EdpSolidariaSource.new(http_client: FundingRadar::HttpClient.new)
+opportunities = source.fetch
+puts "EDP Energia Solidária opportunities: #{opportunities.size}"
+puts "No current call found. Completed editions and expired first-phase deadlines are excluded; check debug output for request failures." if opportunities.empty?
+opportunities.each do |opportunity|
+  puts "- #{opportunity.id}: #{opportunity.title}"
+  puts "  #{opportunity.opening_date || 'Por confirmar'} -> #{opportunity.deadline || 'Por confirmar'}"
+  puts "  #{opportunity.funding_amount}"
+  puts "  applicants: #{opportunity.eligible_applicants.join('; ')}"
+  puts "  partnership: #{opportunity.partnership_requirements}"
+  puts "  link: #{opportunity.official_link}"
+end

@@ -73,7 +73,17 @@ bundle exec ruby bin/check_interreg_sudoe_source
 
 ## Funding Sources
 
-The default sources are `FundingRadar::Sources::EuFundingTendersSource`, `FundingRadar::Sources::Portugal2030Source`, `FundingRadar::Sources::InterregSudoeSource`, and `FundingRadar::Sources::EuropeanUrbanInitiativeSource`.
+The default sources are:
+
+- `FundingRadar::Sources::EuFundingTendersSource`
+- `FundingRadar::Sources::Portugal2030Source`
+- `FundingRadar::Sources::InterregSudoeSource`
+- `FundingRadar::Sources::EuropeanUrbanInitiativeSource`
+- `FundingRadar::Sources::TurismoDePortugalSource`
+- `FundingRadar::Sources::ImtMobilityFundSource`
+- `FundingRadar::Sources::EdpSolidariaSource`
+
+The EDP Energia Solidária adapter monitors the programme page and edition-matched HTML rules. Exclude completed editions and expired phase-1 deadlines; phase 2 is invitation-only. Preserve public-body restrictions (municipalities and parish councils are partners only under the 2025 rules), and do not infer eligibility or budgets from old rules. Inspect with `bundle exec ruby bin/check_edp_solidaria_source`. Tests must use fake HTTP clients.
 
 The Portugal 2030 adapter reads the official annual-plan XLSX workbook. It retains Lisboa/AML opportunities, multi-region opportunities that explicitly include AML, and nationwide or extra-regional opportunities; it excludes notices limited to other regions. It must not depend on live calls in tests.
 
